@@ -1,0 +1,648 @@
+// Prisma Schema for Next.js Starter Kit
+// ==========================================
+// Core schema with authentication, notifications, audit logging,
+// rate limiting, user preferences, API keys, webhooks, file uploads,
+// blog posts, and service monitoring.
+
+// ==========================================
+// GENERATOR & DATASOURCE
+// ==========================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum UserRole {
+  USER
+  VIEWER
+  EDITOR
+  MODERATOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum AuditAction {
+  LOGIN
+  LOGOUT
+  REGISTER
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  BAN
+  UNBAN
+  IMPERSONATE
+  PASSWORD_RESET
+  EMAIL_VERIFY
+  EXPORT
+  IMPORT
+  SETTINGS_UPDATE
+  API_KEY_CREATE
+  WEBHOOK_CREATE
+  FILE_UPLOAD
+  ROLE_CHANGE
+  MONITOR_CHECK
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// ==========================================
+// USER MODEL (Extended with Role + Auth Plugins)
+// ==========================================
+
+model User {
+  // Better Auth fields
+  id            String   @id
+  name          String
+  email         String
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Role-based access control
+  role UserRole @default(USER)
+
+  // Admin plugin fields
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
+
+  // Two-factor plugin fields
+  twoFactorEnabled    Boolean  @default(false)
+  twoFactorSecret     String?
+  twoFactorBackupCodes String?
+
+  // Username plugin field
+  username String? @unique
+
+  // Soft delete support
+  deletedAt DateTime?
+
+  // Relationships
+  sessions           Session[]
+  accounts           Account[]
+  notifications      Notification[]
+  auditLogs          AuditLog[]       @relation("AuditLogsCreated")
+  userPreferences    UserPreferences?
+  apiKeys            ApiKey[]
+  webhookDeliveries  WebhookDelivery[]
+  fileUploads        FileUpload[]
+  posts              Post[]
+  memberships        Member[]
+  createdInvitations Invitation[]     @relation("InvitationsCreated")
+
+  // Indexes
+  @@unique([email])
+  @@index([email, deletedAt])
+  @@index([role])
+  @@index([createdAt])
+  @@map("user")
+}
+
+// ==========================================
+// BETTER AUTH MODELS
+// ==========================================
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Admin plugin fields
+  impersonatedBy String?
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+// ==========================================
+// ORGANIZATION MODELS (Better Auth Organization Plugin)
+// ==========================================
+
+model Organization {
+  id        String   @id
+  name      String
+  slug      String?  @unique
+  logo      String?
+  createdAt DateTime @default(now())
+  modifiedAt DateTime @updatedAt
+
+  members     Member[]
+  invitations Invitation[]
+
+  @@map("organization")
+}
+
+model Member {
+  id             String   @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String   @default("member") // "owner", "admin", "member"
+  createdAt      DateTime @default(now())
+
+  @@unique([organizationId, userId])
+  @@index([userId])
+  @@map("member")
+}
+
+model Invitation {
+  id             String   @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String   @default("member")
+  status         String   @default("pending") // "pending", "accepted", "rejected", "canceled"
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+  invitedById    String?
+  invitedBy      User?    @relation("InvitationsCreated", fields: [invitedById], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitation")
+}
+
+// ==========================================
+// NOTIFICATION MODEL
+// ==========================================
+
+model Notification {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Notification content
+  title       String
+  description String
+  type        String // e.g., "system", "alert", "info", "warning"
+
+  // Related entity (generic)
+  entityType String?
+  entityId   String?
+
+  // Status
+  read   Boolean   @default(false)
+  readAt DateTime?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  // User relationship
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([userId])
+  @@index([userId, read])
+  @@index([createdAt])
+  @@index([type])
+  @@map("notification")
+}
+
+// ==========================================
+// AUDIT LOG MODEL
+// ==========================================
+
+model AuditLog {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Action tracking
+  action     AuditAction
+  entityType String // e.g., "User", "Post", "Setting"
+  entityId   String
+
+  // Human-readable summary
+  title       String
+  description String?
+
+  // Changes tracking (JSON field for flexibility)
+  oldValues Json?
+  newValues Json?
+
+  // Additional context
+  ipAddress String?
+  userAgent String?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  // Actor relationship (who performed the action)
+  createdById String?
+  createdBy   User?   @relation("AuditLogsCreated", fields: [createdById], references: [id])
+
+  // Indexes for audit queries
+  @@index([entityType, entityId])
+  @@index([createdById])
+  @@index([action])
+  @@index([createdAt])
+  @@index([entityType, action])
+  @@index([title])
+  @@map("audit_log")
+}
+
+// ==========================================
+// RATE LIMIT MODEL
+// ==========================================
+
+model RateLimit {
+  /// Primary identifier for the rate limit entry
+  id String @id @default(cuid())
+
+  /// Unique identifier for each rate limit key (e.g., "login:${ip}")
+  key String @unique
+
+  /// Number of requests made in the current window
+  count Int @default(0)
+
+  /// When the current window resets (Unix timestamp in seconds)
+  resetAt DateTime @default(now())
+
+  /// Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  /// Indexes
+  @@index([key])
+  @@index([resetAt])
+  @@map("rate_limit")
+}
+
+// ============================================
+// USER PREFERENCES MODEL
+// ============================================
+
+model UserPreferences {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // User relationship
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // UI preferences
+  theme           String  @default("system") // "light", "dark", "system"
+  language        String  @default("en")     // i18n language code
+  timezone        String  @default("UTC")
+
+  // Notification preferences
+  emailNotifications  Boolean @default(true)
+  inAppNotifications  Boolean @default(true)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Indexes
+  @@index([userId])
+  @@map("user_preferences")
+}
+
+// ============================================
+// BLOG MODELS
+// ============================================
+
+model Category {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Category details
+  name        String @unique
+  slug        String @unique
+  description String?
+
+  // Hierarchy
+  parentId String?
+  parent   Category? @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryTree")
+
+  // Posts in this category
+  posts Post[]
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Indexes
+  @@index([slug])
+  @@index([parentId])
+  @@map("category")
+}
+
+model Tag {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Tag details
+  name String @unique
+  slug String @unique
+
+  // M2M with posts
+  posts PostTag[]
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Indexes
+  @@index([slug])
+  @@map("tag")
+}
+
+model Post {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Content
+  title    String
+  slug     String   @unique
+  excerpt  String
+  content  String
+  coverImage String?
+
+  // Publishing
+  status      PostStatus @default(DRAFT)
+  publishedAt DateTime?
+  featured    Boolean    @default(false)
+  viewCount   Int        @default(0)
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+
+  // Author
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Category
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  // Tags
+  tags PostTag[]
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Soft delete
+  deletedAt DateTime?
+
+  // Indexes
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([slug, status])
+  @@index([publishedAt])
+  @@map("post")
+}
+
+model PostTag {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Join
+  postId String
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tagId  String
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  @@unique([postId, tagId])
+  @@index([tagId])
+  @@map("post_tag")
+}
+
+// ============================================
+// SERVICE MONITORING MODEL
+// ============================================
+
+model SystemMetric {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Service being monitored
+  service String // e.g., "database", "auth", "api", "email", "upload"
+
+  // Health data
+  status   String // "ok", "degraded", "down"
+  responseTime Int // milliseconds
+
+  // Metadata
+  metadata Json?
+
+  // Timestamps
+  recordedAt DateTime @default(now())
+
+  // Indexes
+  @@index([service, recordedAt])
+  @@index([status])
+  @@map("system_metric")
+}
+
+// ============================================
+// API KEY MODEL
+// ============================================
+
+model ApiKey {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Key details
+  name        String
+  key         String   @unique // Hashed key
+  keyPrefix   String   // First 8 chars for identification (e.g., "sk_live_abc12345")
+  description String?
+
+  // Permissions
+  permissions Json? // e.g., ["read:users", "write:posts"]
+
+  // Status
+  isActive Boolean   @default(true)
+  expiresAt DateTime?
+  lastUsedAt DateTime?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // User relationship
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes
+  @@index([userId])
+  @@index([keyPrefix])
+  @@index([isActive])
+  @@map("api_key")
+}
+
+// ============================================
+// WEBHOOK MODEL
+// ============================================
+
+model Webhook {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Webhook details
+  url         String
+  secret      String // HMAC secret for signature verification
+  description String?
+
+  // Events to subscribe to
+  events Json // e.g., ["user.created", "user.deleted", "post.published"]
+
+  // Status
+  isActive Boolean @default(true)
+
+  // Retry configuration
+  maxRetries      Int     @default(3)
+  retryDelay      Int     @default(60) // seconds
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Deliveries
+  deliveries WebhookDelivery[]
+
+  // Indexes
+  @@index([isActive])
+  @@map("webhook")
+}
+
+// ============================================
+// WEBHOOK DELIVERY MODEL
+// ============================================
+
+model WebhookDelivery {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // Delivery details
+  webhookId    String
+  webhook      Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  eventType    String // e.g., "user.created"
+  payload      Json
+  responseStatus Int?
+  responseBody String?
+
+  // Status
+  success      Boolean
+  attempts     Int     @default(1)
+  maxAttempts  Int     @default(3)
+  nextRetryAt  DateTime?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  deliveredAt DateTime?
+
+  // User relationship (who triggered the event)
+  userId String?
+  user   User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Indexes
+  @@index([webhookId])
+  @@index([eventType])
+  @@index([success])
+  @@index([createdAt])
+  @@map("webhook_delivery")
+}
+
+// ============================================
+// FILE UPLOAD MODEL
+// ============================================
+
+model FileUpload {
+  // Primary identifier
+  id String @id @default(cuid())
+
+  // File details
+  originalName String
+  fileName     String   @unique // Stored filename (UUID or hash)
+  mimeType     String
+  fileSize     Int      // in bytes
+
+  // Storage
+  storagePath  String   // Path in storage (local or S3 key)
+  storageType  String   @default("local") // "local" or "s3"
+  url          String   // Public or signed URL
+
+  // Metadata
+  description  String?
+  tags         Json?    // e.g., ["avatar", "profile"]
+
+  // Ownership
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Status
+  isPublic     Boolean  @default(false)
+
+  // Timestamps
+  createdAt    DateTime @default(now())
+
+  // Indexes
+  @@index([userId])
+  @@index([storageType])
+  @@index([createdAt])
+  @@index([mimeType])
+  @@map("file_upload")
+}

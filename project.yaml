@@ -1,0 +1,111 @@
+# P-Core Universal Project Identity
+project:
+  name: nextjs-starter-kit
+  slug: nextjs-starter-kit
+  display_name: "Next.js Starter Kit"
+  type: web
+  category: starter-kit
+  owner: peter-gtg
+  description: >
+    A production-ready Next.js starter kit with Better Auth (email/password +
+    email verification), Prisma + PostgreSQL, Hono API routes, admin panel,
+    file uploads, email notifications, and modular feature architecture.
+
+version:
+  current: 0.1.0
+  channel: dev
+  release_name: genesis
+  build_number: 1
+
+lifecycle:
+  stage: development
+  status: active
+  started: 2026-08-20
+  updated: 2026-08-20
+
+team:
+  lead: peter-gtg
+  members:
+    - name: peter-gtg
+      role: developer
+
+repository:
+  url: ""
+  branch: master
+  provider: local
+  visibility: private
+
+stack:
+  languages:
+    - typescript
+    - sql
+  frameworks:
+    - nextjs
+    - react
+    - hono
+  databases:
+    - postgresql
+  infrastructure:
+    - vercel
+    - prisma
+  package_manager: bun
+  runtime: node
+
+environments:
+  development:
+    url: http://localhost:3000
+    branch: master
+    auto_deploy: false
+  staging:
+    url: ""
+    branch: ""
+    auto_deploy: false
+  production:
+    url: ""
+    branch: ""
+    auto_deploy: false
+
+integrations:
+  ci_cd: none
+  monitoring: none
+  analytics: none
+  error_tracking: none
+  logs: none
+
+ai:
+  assistant: opencode
+  context_dir: context/
+  entry_point: AGENTS.md
+  rules:
+    - orchestra-loop
+    - six-file-context
+
+security:
+  authentication: better-auth
+  authorization: rbac
+  audit_log: true
+  secrets_manager: env
+
+orchestra:
+  route: core
+  max_iterations: 8
+  plan_only: false
+  token_budgets:
+    planner: 10000
+    implementer: 30000
+    verifier: 15000
+    reviewer: 8000
+    cycle: 63000
+  phases: []
+
+# P-Core managed fields (updated by orchestra)
+_pcore:
+  version: 2
+  initialized: 2026-08-20
+  last_orchestration: null
+  orchestration_count: 0
+  quality_gate_passes: 0
+  quality_gate_failures: 0
+  agent_invocations: {}
+  version_history: []
+  lifecycle_transitions: []
