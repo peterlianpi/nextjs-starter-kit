@@ -1,8 +1,9 @@
 # Unit 02: Laravel DX CLI (scripts/make.ts)
 
-> **Status: IMPLEMENTED (framework + make:model + make:migration) — 2026-08-24.**
-> Deferred generators below are still planned; extend the `GENERATORS` registry
-> in `scripts/make.ts` per build unit.
+> **Status: IMPLEMENTED (all generators) — 2026-08-24.**
+> Framework + make:model + make:migration shipped first; the six remaining
+> generators (controller, component, action, seeder, hook, schema) were added
+> the same day. Extend the `GENERATORS` registry in `scripts/make.ts` for new ones.
 
 ## Goal
 
@@ -51,14 +52,35 @@ generator CLI. This round ships the framework plus `make:model` and
   `bunx prisma migrate dev --name <name>` (schema is the single source of truth,
   mirroring Laravel's migration flow but declarative).
 
-### Deferred generators (not in scope this round)
+### make:controller `<name>` (implemented 2026-08-24)
 
-- make:controller → Hono sub-router `app/api/[[...route]]/<name>.ts`
-- make:component → `features/<feature>/components/`
-- make:action → Server Action `action/<name>.ts`
-- make:seeder → seeder + `prisma/seed.ts` registration
-- make:hook → `features/<feature>/hooks/`
-- make:schema → Zod schema `features/<feature>/schemas/`
+- Hono sub-router stub `app/api/[[...route]]/<kebab>.ts` with zValidator,
+  `{ success, data?, error: { code, message } }` response shape, typed default
+  export. NOT auto-mounted — prints manual mount instructions for route.ts.
+
+### make:component `<PascalCaseName>` (implemented 2026-08-24)
+
+- Server Component at `features/<kebab>/components/<kebab>.tsx`; `--client`
+  adds the `"use client"` directive.
+
+### make:action `<name>` (implemented 2026-08-24)
+
+- Server Action `action/<kebab>.ts` with Zod safeParse input validation and
+  revalidatePath pattern, returning `ActionResult<T>`.
+
+### make:seeder `<name>` (implemented 2026-08-24)
+
+- Seeder stub `prisma/seeders/<camel>.seeder.ts` importing the prisma
+  singleton; NOT auto-registered — prints wiring hint for prisma/seed.ts.
+
+### make:hook `<name>` (implemented 2026-08-24)
+
+- TanStack Query hook `features/<kebab>/hooks/use-<kebab>.ts` (`"use client"`),
+  typed fetch + useQuery with queryKey.
+
+### make:schema `<name>` (implemented 2026-08-24)
+
+- Zod schema `features/<kebab>/schemas/<kebab>.schema.ts` with inferred types.
 
 ## Dependencies
 
@@ -66,7 +88,8 @@ generator CLI. This round ships the framework plus `make:model` and
 
 ## Verify when done
 
-- [ ] `bun run make --help` lists generators
-- [ ] `bun run make model example` produces schema stub + service module
-- [ ] Generated code passes lint/typecheck
-- [ ] No destructive behavior on existing schema entries
+- [x] `bun run make --help` lists generators
+- [x] `bun run make model example` produces schema stub + service module
+- [x] Generated code passes lint/typecheck
+- [x] No destructive behavior on existing schema entries
+- [x] All six remaining generators smoke-tested (generated → inspected → reverted); duplicate-file refusal and name validation verified (2026-08-24)
