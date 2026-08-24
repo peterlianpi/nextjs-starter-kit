@@ -31,6 +31,7 @@ Update this file after every meaningful implementation change.
 - [x] Laravel DX CLI: all six remaining generators implemented (make:controller, make:component, make:action, make:seeder, make:hook, make:schema); smoke-tested + reverted; lint + build green (2026-08-24)
 - [x] Registered project in portfolio tracking (`D:\peter-gtg\context\assignments.md`, A-007) (2026-08-24)
 - [x] Deployment config wired: Vercel target, Resend + S3 marked as production defaults in `.env.example`; `docs/DEPLOYMENT.md` added; architecture decision recorded (2026-08-24)
+- [x] Performance engineering methodology: `docs/PERFORMANCE.md` runbook (measure-first loop, classification, baselines, RCA/verification templates); perf-agent upgraded to evidence-driven rules; Performance section in code-standards; architecture invariant #9 (2026-08-24)
 
 ## In Progress
 

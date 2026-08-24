@@ -44,6 +44,13 @@
 - Wrap all database calls in try-catch blocks
 - Metadata belongs in the database; large generated content belongs in file/blob storage
 
+## Performance
+
+- Measure before optimizing — every change needs a baseline, a target, and a post-change measurement
+- No blind caching, no speculative indexes (EXPLAIN ANALYZE first), no timeout bumps as fixes
+- Use recharts/dashboard patterns already documented to surface metrics; label findings FACT vs INFERENCE
+- Full methodology and runbook: `docs/PERFORMANCE.md`
+
 ## File Organization
 
 - `app/` — pages, route groups, Hono catch-all

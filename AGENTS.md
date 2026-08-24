@@ -152,14 +152,20 @@ This version has breaking changes — APIs, conventions, and file structure may 
 7. All provider credentials stored as env vars — never hardcoded
 
 ### perf-agent
-**Responsibility:** Performance optimization, caching, bundle analysis, image optimization
-**Scope:** All files — focuses on performance aspects
+**Responsibility:** Performance diagnosis and optimization — evidence-driven only
+**Scope:** All files — focuses on performance aspects. **Runbook: `docs/PERFORMANCE.md`**
+**Core principle:** Measure first → Diagnose → Optimize → Verify — always.
+**Investigation loop:** Observe → Measure → Profile → Correlate → Hypothesize → Validate → Fix → Verify (see `docs/PERFORMANCE.md`)
 **Rules:**
-1. Server Components for data fetching (no client bundle bloat)
-2. Use `revalidatePath` / `revalidateTag` for cache invalidation
-3. Dynamic imports for heavy client components
-4. Monitor bundle size — alert on significant increases
-5. Database query optimization: proper indexes, avoid N+1
+1. Never optimize without a measured baseline; state Metric + Before + Target before changing anything
+2. No timeout bumps as a fix, no speculative indexes (EXPLAIN ANALYZE first), no blind caching, no framework swaps without profiling evidence
+3. Label findings FACT / INFERENCE / HYPOTHESIS / RECOMMENDATION — never present inference as fact
+4. "Insufficient evidence to optimize" is a valid outcome — go back to Measure
+5. Server Components for data fetching (no client bundle bloat)
+6. Use `revalidatePath` / `revalidateTag` for cache invalidation
+7. Dynamic imports for heavy client components
+8. Monitor bundle size — alert on significant increases
+9. Database query optimization: proper indexes (justified by profiling), avoid N+1
 
 ## 3. Security Agents (Hat-Based)
 

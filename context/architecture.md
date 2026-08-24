@@ -57,6 +57,7 @@ Rules that must not be broken without updating this file:
 6. **Do not modify `components/ui/`** — shadcn primitives are treated as generated.
 7. **Prisma 7 conventions** — `provider = "prisma-client"`, import from `./generated/prisma/client` (with `/client`).
 8. **No secrets in git** — `.env` is gitignored; `.env.example` is the only template.
+9. **Performance changes are evidence-driven** — see `docs/PERFORMANCE.md`.
 
 ## Data model (summary)
 
