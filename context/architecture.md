@@ -14,6 +14,13 @@
 | Uploads | Cloudinary / R2 / S3 / local (`UPLOAD_PROVIDER`) | File storage |
 | Runtime | Node (Bun) | Dev + build, Vercel-ready |
 
+## Deployment (decided 2026-08-24)
+
+- Target platform: **Vercel** (zero-config Next.js deploy; no `vercel.json` needed today).
+- Email provider: **Resend** (`EMAIL_PROVIDER="resend"`).
+- Upload provider: **AWS S3** (`UPLOAD_PROVIDER="s3"`); local storage is dev-only.
+- Database: managed Postgres over standard TCP URL (Neon recommended). See `docs/DEPLOYMENT.md`.
+
 ## System Boundaries
 
 - `app/` — Next.js App Router pages and route groups. `(protected)/` requires a session.
