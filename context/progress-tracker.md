@@ -4,7 +4,7 @@ Update this file after every meaningful implementation change.
 
 ## Current Phase
 
-**Bootstrap** — Six-File Context scaffolded 2026-08-20 and upgraded to the JS Mastery methodology structure. Orchestra loop verified. Package manager standardized on Bun.
+**Feature development** — Six-File Context scaffolded 2026-08-20; first feature milestone shipped (Unit 10 CMS rich text editor, 2026-08-24). Orchestra loop verified. Package manager standardized on Bun.
 
 ## Current Goal
 
@@ -50,7 +50,7 @@ Update this file after every meaningful implementation change.
 
 **Playwright binary status:** Chromium headless shell v1234 installed successfully (`bunx playwright install chromium`). E2E suite runs against dev server: 3 passed / 0 failed.
 
-- [x] Unit 10 — rich text editor complete (2026-08-24): TipTap editor module (`features/editor/` with schemas, hooks, components), posts CRUD API (`app/api/[[...route]]/posts.ts`, mounted in catch-all route), admin pages list/new/edit (`app/(protected)/admin/posts/`), `blog/[slug]` SSR render + `.prose-post` styles; lint + build green
+- [x] Unit 10 — rich text editor complete (2026-08-24): TipTap editor module (`features/editor/` with schemas, hooks, components), posts CRUD API (`app/api/[[...route]]/posts.ts`, mounted in catch-all route), admin pages list/new/edit (`app/(protected)/admin/posts/`), `blog/[slug]` SSR render + `.prose-post` styles; lint + build green. Root cause note: Hono RPC calls go through `client.api.posts.*` because all routes mount under basePath `/api`.
 
 ## In Progress
 

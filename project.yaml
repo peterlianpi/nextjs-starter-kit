@@ -9,17 +9,18 @@ project:
   description: >
     A production-ready Next.js starter kit with Better Auth (email/password +
     email verification), Prisma + PostgreSQL, Hono API routes, admin panel,
-    blog content management, multi-tenant organizations, service monitoring,
-    file uploads, email notifications, and modular feature architecture.
+    blog content management with a CMS rich text editor (TipTap), multi-tenant
+    organizations, service monitoring, file uploads, email notifications, and
+    modular feature architecture.
 
 version:
-  current: 0.1.0
+  current: 0.2.0
   channel: dev
-  release_name: genesis
-  build_number: 1
+  release_name: cms-editor
+  build_number: 2
 
 lifecycle:
-  stage: development
+  stage: feature-development
   status: active
   started: 2026-08-20
   updated: 2026-08-24
