@@ -48,3 +48,7 @@ docs/*
 !docs/PERFORMANCE.md
 features/notifications/api/__tests__/test-specifications.md
 .env copy
+
+# playwright
+test-results/
+playwright-report/
