@@ -45,5 +45,6 @@ next-env.d.ts
 /app/generated/prisma
 docs/*
 !docs/DEPLOYMENT.md
+!docs/PERFORMANCE.md
 features/notifications/api/__tests__/test-specifications.md
 .env copy
