@@ -27,15 +27,15 @@ Update this file after every meaningful implementation change.
 - [x] Infra unit 2: context/specs/* rewritten to build-plan structure (2026-08-24)
 - [x] Infra unit 3: .env.example audit (2026-08-24)
 - [x] Infra unit 4: build-drift fixes — hono-client AdminStatsResponse, admin.ts auditLog createdById, features/mail/lib/appointment.ts, appointment.ts createAuditLog required title field (2026-08-24)
+- [x] BLOCKER resolved: Appointment feature surface removed (8 files deleted, templates.ts truncated, hono-client typing fixed); email-resend.ts idempotencyKey moved to send options arg (Resend v6.10.0 signature); lint + build green (2026-08-24)
 
 ## In Progress
 
-- [ ] **BLOCKER:** Appointment schema drift — `Appointment` model was dropped in migration `20260820120000_starter_kit_blog_monitoring_audit`, but `app/api/[[...route]]/appointment.ts` (~1300 lines), `cron/cleanup.ts`, `cron/reminders.ts`, `landing.ts`, and `preferences.ts` still reference `prisma.appointment`. Build fails on `Prisma.AppointmentWhereInput`. Needs a decision: remove the appointment feature surface or restore the model.
+- (none)
 
 ## Next Up
 
-1. Resolve Appointment drift (remove feature surface vs restore model) → get `bun run build` green
-2. Laravel DX CLI framework (scripts/make.ts + make:model + make:migration) — next build unit
+1. Laravel DX CLI framework (scripts/make.ts + make:model + make:migration) — next build unit
 3. Register project in portfolio tracking (`D:\peter-gtg\context\assignments.md`)
 
 ## Open Questions

@@ -43,7 +43,9 @@ export async function sendEmail(options: EmailOptions): Promise<EmailResult> {
     return { success: true };
   }
 
-  const { data, error } = await client.emails.send({
+  // Resend's CreateEmailOptions requires at least one of html/text/react/template;
+  // since EmailOptions makes them optional, narrow via the actual send signature.
+  const payload = {
     from,
     to: Array.isArray(options.to) ? options.to : [options.to],
     subject: options.subject,
@@ -51,8 +53,12 @@ export async function sendEmail(options: EmailOptions): Promise<EmailResult> {
     text: options.text,
     replyTo: options.replyTo,
     tags: options.tags,
-    idempotencyKey: options.idempotencyKey,
-  });
+  } as unknown as Parameters<typeof client.emails.send>[0];
+
+  const { data, error } = await client.emails.send(
+    payload,
+    { idempotencyKey: options.idempotencyKey },
+  );
 
   if (error) {
     console.error("Resend email failed:", error);

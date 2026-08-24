@@ -110,7 +110,12 @@ export interface SearchResponse {
 export async function searchEntities(
   params: SearchParams,
 ): Promise<SearchResponse> {
-  const query: Record<string, string> = { q: params.query };
+  const query: {
+    q: string;
+    type?: string;
+    page?: string;
+    limit?: string;
+  } = { q: params.query };
   if (params.type) query.type = params.type;
   if (params.page) query.page = params.page.toString();
   if (params.limit) query.limit = params.limit.toString();
