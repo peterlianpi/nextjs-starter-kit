@@ -8,7 +8,7 @@ Update this file after every meaningful implementation change.
 
 ## Current Goal
 
-- Laravel DX complete; register project and decide deployment target/providers
+- Laravel DX complete; decide deployment target/providers
 
 ## Completed
 
@@ -29,6 +29,7 @@ Update this file after every meaningful implementation change.
 
 - [x] Laravel DX CLI framework: scripts/make.ts (make:model + make:migration), package.json scripts make:model/make:migration (2026-08-24)
 - [x] Laravel DX CLI: all six remaining generators implemented (make:controller, make:component, make:action, make:seeder, make:hook, make:schema); smoke-tested + reverted; lint + build green (2026-08-24)
+- [x] Registered project in portfolio tracking (`D:\peter-gtg\context\assignments.md`, A-007) (2026-08-24)
 
 ## In Progress
 
@@ -36,7 +37,7 @@ Update this file after every meaningful implementation change.
 
 ## Next Up
 
-1. Register project in portfolio tracking (`D:\peter-gtg\context\assignments.md`)
+1. Decide deployment target/providers (Vercel, live email + upload providers)
 
 ## Open Questions
 
