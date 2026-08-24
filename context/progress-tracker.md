@@ -29,13 +29,15 @@ Update this file after every meaningful implementation change.
 - [x] Infra unit 4: build-drift fixes — hono-client AdminStatsResponse, admin.ts auditLog createdById, features/mail/lib/appointment.ts, appointment.ts createAuditLog required title field (2026-08-24)
 - [x] BLOCKER resolved: Appointment feature surface removed (8 files deleted, templates.ts truncated, hono-client typing fixed); email-resend.ts idempotencyKey moved to send options arg (Resend v6.10.0 signature); lint + build green (2026-08-24)
 
+- [x] Laravel DX CLI framework: scripts/make.ts (make:model + make:migration), package.json scripts make:model/make:migration (2026-08-24)
+
 ## In Progress
 
 - (none)
 
 ## Next Up
 
-1. Laravel DX CLI framework (scripts/make.ts + make:model + make:migration) — next build unit
+1. Deferred generators from spec 02 (make:controller, make:component, make:action, make:seeder, make:hook, make:schema)
 3. Register project in portfolio tracking (`D:\peter-gtg\context\assignments.md`)
 
 ## Open Questions

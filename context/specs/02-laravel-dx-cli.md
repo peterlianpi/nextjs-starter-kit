@@ -1,5 +1,9 @@
 # Unit 02: Laravel DX CLI (scripts/make.ts)
 
+> **Status: IMPLEMENTED (framework + make:model + make:migration) — 2026-08-24.**
+> Deferred generators below are still planned; extend the `GENERATORS` registry
+> in `scripts/make.ts` per build unit.
+
 ## Goal
 
 Port the ergonomics of `php artisan make:*` to this stack via a Bun-run
