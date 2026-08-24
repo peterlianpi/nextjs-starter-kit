@@ -33,6 +33,21 @@ Update this file after every meaningful implementation change.
 - [x] Deployment config wired: Vercel target, Resend + S3 marked as production defaults in `.env.example`; `docs/DEPLOYMENT.md` added; architecture decision recorded (2026-08-24)
 - [x] Performance engineering methodology: `docs/PERFORMANCE.md` runbook (measure-first loop, classification, baselines, RCA/verification templates); perf-agent upgraded to evidence-driven rules; Performance section in code-standards; architecture invariant #9 (2026-08-24)
 
+- [x] Dependency upgrade round complete (2026-08-24): recharts 3 + react-day-picker 10 deferred (break generated `components/ui/*`, invariant forbids editing), `@vercel/config` removed as dead dep, hono bumped to 4.13.4; lint+build green, Playwright chromium installed, e2e 3/3 passed
+
+### Dependency Upgrade Summary
+
+| Package | From → To | Status | Reason |
+|---------|-----------|--------|--------|
+| recharts | 2.15.4 → 3.10.1 | **Deferred** | Breaks generated `components/ui/chart.tsx` (10 TS errors); fix requires editing components/ui — invariant violation |
+| react-day-picker | 9.14.0 → 10.0.1 | **Deferred** | Breaks generated `components/ui/calendar.tsx` (`table` classNames key removed) — same invariant |
+| @vercel/config | 0.0.29 → 0.6.1 | **Removed** | Dead dependency, no code usage anywhere |
+| hono | 4.13.3 → 4.13.4 | Upgraded | Safe patch bump |
+| typescript | 5.9.3 → 7.0.2 | Deferred | Major breaking (documented previously) |
+| eslint | 9.39.5 → 10.9.0 | Deferred | Major breaking (documented previously) |
+
+**Playwright binary status:** Chromium headless shell v1234 installed successfully (`bunx playwright install chromium`). E2E suite runs against dev server: 3 passed / 0 failed.
+
 ## In Progress
 
 - (none)
