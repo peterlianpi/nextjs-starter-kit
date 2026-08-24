@@ -5,7 +5,7 @@ import { ac, roles } from "./access";
 // TYPES
 // ==========================================
 
-type Resource = "user" | "session" | "webhook" | "upload";
+type Resource = "user" | "session" | "content" | "webhook" | "upload" | "settings";
 type Action = string;
 
 interface PermissionCheck {

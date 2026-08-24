@@ -7,6 +7,7 @@ import search from "./search";
 import upload from "./upload";
 import apiKeys from "./api-keys";
 import webhooks from "./webhooks";
+import posts from "./posts";
 
 // ============================================
 // MAIN APP ROUTER
@@ -21,7 +22,8 @@ const route = app
   .route("/search", search)
   .route("/upload", upload)
   .route("/keys", apiKeys)
-  .route("/webhooks", webhooks);
+  .route("/webhooks", webhooks)
+  .route("/posts", posts);
 
 export const GET = handle(app);
 export const POST = handle(app);

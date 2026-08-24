@@ -131,3 +131,100 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================================
+   .prose-post — TipTap rendered content styles
+   Dark-mode aware via oklch tokens (muted-foreground,
+   border, muted, primary). No hardcoded colors.
+   ============================================ */
+
+@layer components {
+  .prose-post {
+    @apply text-foreground/90 leading-relaxed;
+  }
+
+  .prose-post > * + * {
+    @apply mt-4;
+  }
+
+  /* Headings */
+  .prose-post h1 {
+    @apply mt-8 mb-2 text-3xl font-bold tracking-tight text-foreground;
+  }
+  .prose-post h2 {
+    @apply mt-8 mb-2 text-2xl font-semibold tracking-tight text-foreground;
+  }
+  .prose-post h3 {
+    @apply mt-6 mb-1 text-xl font-semibold text-foreground;
+  }
+  .prose-post h4,
+  .prose-post h5,
+  .prose-post h6 {
+    @apply mt-6 mb-1 text-lg font-medium text-foreground;
+  }
+
+  /* Paragraphs & inline */
+  .prose-post p {
+    @apply leading-7;
+  }
+  .prose-post a {
+    @apply font-medium text-primary underline underline-offset-4;
+  }
+  .prose-post strong {
+    @apply font-semibold text-foreground;
+  }
+  .prose-post mark {
+    @apply rounded-sm bg-primary/20 px-1 text-foreground;
+  }
+
+  /* Lists */
+  .prose-post ul {
+    @apply list-disc pl-6;
+  }
+  .prose-post ol {
+    @apply list-decimal pl-6;
+  }
+  .prose-post li {
+    @apply my-1;
+  }
+  .prose-post li > p {
+    @apply my-0;
+  }
+
+  /* Blockquote */
+  .prose-post blockquote {
+    @apply border-l-2 border-border pl-4 italic text-muted-foreground;
+  }
+
+  /* Code */
+  .prose-post code {
+    @apply rounded-sm bg-muted px-1.5 py-0.5 font-mono text-[0.85em] text-foreground;
+  }
+  .prose-post pre {
+    @apply overflow-x-auto rounded-md border border-border bg-muted p-4;
+  }
+  .prose-post pre code {
+    @apply bg-transparent p-0 font-mono text-sm;
+  }
+
+  /* Horizontal rule */
+  .prose-post hr {
+    @apply my-6 border-border;
+  }
+
+  /* Images */
+  .prose-post img {
+    @apply my-6 w-full rounded-lg border border-border object-cover;
+  }
+
+  /* Tables */
+  .prose-post table {
+    @apply my-6 w-full border-collapse overflow-hidden rounded-md text-sm;
+  }
+  .prose-post th {
+    @apply border border-border bg-muted px-3 py-2 text-left font-semibold text-foreground;
+  }
+  .prose-post td {
+    @apply border border-border px-3 py-2 align-top;
+  }
+}

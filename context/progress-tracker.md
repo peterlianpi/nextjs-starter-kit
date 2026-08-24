@@ -50,13 +50,15 @@ Update this file after every meaningful implementation change.
 
 **Playwright binary status:** Chromium headless shell v1234 installed successfully (`bunx playwright install chromium`). E2E suite runs against dev server: 3 passed / 0 failed.
 
+- [x] Unit 10 — rich text editor complete (2026-08-24): TipTap editor module (`features/editor/` with schemas, hooks, components), posts CRUD API (`app/api/[[...route]]/posts.ts`, mounted in catch-all route), admin pages list/new/edit (`app/(protected)/admin/posts/`), `blog/[slug]` SSR render + `.prose-post` styles; lint + build green
+
 ## In Progress
 
 - (none)
 
 ## Next Up
 
-1. Unit 10 — rich text editor (TipTap v3): see `context/specs/10-rich-text-editor.md`; then 13 → 11 ∥ 12, 14 independent (see `00-build-plan.md` Workstream C)
+1. Unit 13 — image crop: see `context/specs/13-image-crop.md`; then 11 ∥ 12, 14 independent (see `00-build-plan.md` Workstream C)
 
 ## Open Questions
 
