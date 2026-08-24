@@ -305,7 +305,7 @@ const admin = new Hono()
     const limit = parseInt(c.req.query("limit") || "20");
 
     const auditLogs = await prisma.auditLog.findMany({
-      where: { userId: id },
+      where: { createdById: id },
       orderBy: { createdAt: "desc" },
       take: limit,
     });

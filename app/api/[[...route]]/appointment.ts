@@ -49,6 +49,7 @@ interface AuditLogParams {
   entityType: string;
   entityId: string;
   userId: string;
+  title?: string;
   oldValues?: Record<string, unknown>;
   newValues?: Record<string, unknown>;
   ipAddress?: string;
@@ -157,6 +158,7 @@ async function createAuditLog(params: AuditLogParams) {
       action: params.action,
       entityType: params.entityType,
       entityId: params.entityId,
+      title: params.title ?? `${params.action} on ${params.entityType}`,
       createdById: params.userId,
       oldValues: params.oldValues as Prisma.InputJsonValue,
       newValues: params.newValues as Prisma.InputJsonValue,

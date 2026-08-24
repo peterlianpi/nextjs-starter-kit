@@ -22,15 +22,20 @@ Update this file after every meaningful implementation change.
 - [x] Schema rearchitecture: blog content (Post/Category/Tag/PostTag), organizations (Organization/Member/Invitation), monitoring (SystemMetric) documented in architecture + project-overview (2026-08-24)
 - [x] Doc sync: CLAUDE.md, AGENTS.md, code-standards, ui-context, project.yaml updated to match rearchitected schema (2026-08-24)
 
+- [x] Doc sync: CLAUDE.md, AGENTS.md, code-standards, ui-context, project.yaml updated to match rearchitected schema (2026-08-24)
+- [x] Infra unit 1: Playwright e2e scaffold (playwright.config.ts, tests/e2e/, package.json script) (2026-08-24)
+- [x] Infra unit 2: context/specs/* rewritten to build-plan structure (2026-08-24)
+- [x] Infra unit 3: .env.example audit (2026-08-24)
+- [x] Infra unit 4: build-drift fixes — hono-client AdminStatsResponse, admin.ts auditLog createdById, features/mail/lib/appointment.ts, appointment.ts createAuditLog required title field (2026-08-24)
+
 ## In Progress
 
-- [ ] Review existing feature modules against `context/` ground truth
-- [ ] Add feature specs under `context/specs/` for active work
+- [ ] **BLOCKER:** Appointment schema drift — `Appointment` model was dropped in migration `20260820120000_starter_kit_blog_monitoring_audit`, but `app/api/[[...route]]/appointment.ts` (~1300 lines), `cron/cleanup.ts`, `cron/reminders.ts`, `landing.ts`, and `preferences.ts` still reference `prisma.appointment`. Build fails on `Prisma.AppointmentWhereInput`. Needs a decision: remove the appointment feature surface or restore the model.
 
 ## Next Up
 
-1. Verify `bun run lint` and `bun run build` pass
-2. Fill `context/specs/00-build-plan.md` with first build unit
+1. Resolve Appointment drift (remove feature surface vs restore model) → get `bun run build` green
+2. Laravel DX CLI framework (scripts/make.ts + make:model + make:migration) — next build unit
 3. Register project in portfolio tracking (`D:\peter-gtg\context\assignments.md`)
 
 ## Open Questions

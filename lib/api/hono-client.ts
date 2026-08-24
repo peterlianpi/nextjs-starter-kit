@@ -12,8 +12,13 @@ export interface AdminStatsResponse {
   data: {
     totalUsers: number;
     activeUsers: number;
+    verifiedUsers: number;
     adminUsers: number;
+    bannedUsers: number;
     newUsersToday: number;
+    newUsersThisWeek: number;
+    newUsersThisMonth: number;
+    totalFiles: number;
   };
 }
 

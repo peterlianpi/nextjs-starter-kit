@@ -1,20 +1,41 @@
 # Build Plan 00
 
-Order of build units for the Next.js Starter Kit. Mark `[x]` when a unit is complete.
+Ordered build units for the Next.js Starter Kit, covering both workstreams:
+infrastructure hardening and the Laravel-style DX CLI. Mark `[x]` when a unit
+is complete. Detailed specs live in sibling `NN-*.md` files.
 
-## Units
+## Workstream A — Infrastructure (units 1–4)
 
-1. [ ] **01-auth-foundation** — Better Auth config, protected route group, login/signup
-2. [ ] **02-admin-panel** — user management, RBAC enforcement
-3. [ ] **03-uploads** — multi-provider upload feature
-4. [ ] **04-email** — provider abstraction, verification/password-reset templates
-5. [ ] **05-hono-api** — catch-all API routes, RPC client, validation
-6. [ ] **06-analytics-dashboard** — stats cards, trend charts (recharts)
-7. [ ] **07-webhooks** — delivery tracking, HMAC verification
-8. [ ] **08-api-keys** — hashed key storage, rate limiting
+1. [x] **01-playwright-e2e** — Playwright config, health + auth guard specs (`01-playwright-e2e.md`)
+2. [ ] **02-laravel-dx-cli** — Laravel-style generators: `scripts/make.ts` framework + make:model + make:migration this round; make:controller/component/action/seeder/hook/schema deferred (`02-laravel-dx-cli.md`)
+3. [x] **03-build-verify** — `bun run lint` + `bun run build` green; fix root causes (`03-build-verify.md`)
+4. [x] **04-env-audit** — `.env.example` audited against actual env var usage (`04-env-audit.md`)
+
+## Workstream B — Laravel DX (deferred generators)
+
+After unit 2 lands, extend `scripts/make.ts` with the remaining generators:
+
+5. [ ] **make:controller** → Hono sub-router stub at `app/api/[[...route]]/<name>.ts`
+6. [ ] **make:component** → feature component in `features/<name>/components/`
+7. [ ] **make:action** → Server Action in `action/<name>.ts`
+8. [ ] **make:seeder** → seeder registered in `prisma/seed.ts`
+9. [ ] **make:hook** → hook in `features/<name>/hooks/`
+10. [ ] **make:schema** → Zod schema in `features/<name>/schemas/`
+
+## Laravel → project mapping
+
+| Artisan command | This project | Output |
+|-----------------|--------------|--------|
+| `php artisan make:model Post -m` | `bun run make model post --migration` | Prisma model stub appended to `prisma/schema.prisma`; migration via `bunx prisma migrate dev`; service module at `features/post/lib/post.service.ts` |
+| `php artisan make:controller PostController` | `bun run make controller post` | Hono sub-router at `app/api/[[...route]]/post.ts`, mounted in catch-all route.ts |
+| `php artisan make:migration create_posts_table` | `bun run make migration <name>` | Guided edit of `prisma/schema.prisma` + run `bunx prisma migrate dev --name <name>` |
+| `php artisan make:seeder PostSeeder` | `bun run make seeder post` | Seeder file + registration in `prisma/seed.ts` |
+| `php artisan make:component` | `bun run make component <feature>/<Name>` | Component in `features/<feature>/components/` |
+| `php artisan make:action` (custom) | `bun run make action <name>` | Server Action in `action/<name>.ts` with Zod validation scaffold |
+| `make:hook` / `make:schema` (custom) | `bun run make hook\|schema ...` | Hook / Zod schema inside the matching feature folder |
 
 ## Status
 
-**In progress:** —
+**In progress:** 02-laravel-dx-cli
 
-**Done:** —
+**Done:** 01-playwright-e2e, 03-build-verify, 04-env-audit
