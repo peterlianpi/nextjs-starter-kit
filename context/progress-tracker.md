@@ -8,7 +8,7 @@ Update this file after every meaningful implementation change.
 
 ## Current Goal
 
-- Validate the setup: confirm `bun run lint` and `bun run build` pass with context files in place
+- Document rearchitected schema across all context files
 
 ## Completed
 
@@ -19,6 +19,8 @@ Update this file after every meaningful implementation change.
 - [x] Context files upgraded to JS Mastery methodology structure (2026-08-20)
 - [x] Orchestra health check passes; project detected (6/6 context files + project.yaml)
 - [x] Package manager standardized on Bun (`bun run`, `bunx prisma`) across docs
+- [x] Schema rearchitecture: blog content (Post/Category/Tag/PostTag), organizations (Organization/Member/Invitation), monitoring (SystemMetric) documented in architecture + project-overview (2026-08-24)
+- [x] Doc sync: CLAUDE.md, AGENTS.md, code-standards, ui-context, project.yaml updated to match rearchitected schema (2026-08-24)
 
 ## In Progress
 
@@ -41,6 +43,9 @@ Update this file after every meaningful implementation change.
 - Bun is the package manager (package.json uses `bun.lock`, `bun prisma generate` in postinstall)
 - Hono catch-all at `app/api/[[...route]]/route.ts` is the only API surface
 - Prisma 7 with `prisma-client` provider, driver adapter, generated client in `lib/generated/prisma`
+- Blog content is DB-stored (`Post`/`Category`/`Tag`/`PostTag`) — no file-based content
+- Multi-tenancy via `Organization`/`Member`/`Invitation` models
+- Monitoring metrics recorded in `SystemMetric`; surfaced via timeline/dashboard views
 
 ## Session Notes
 

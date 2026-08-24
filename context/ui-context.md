@@ -53,6 +53,11 @@ shadcn/ui on top of Tailwind v4. Components live in `components/ui/` — use the
 - **Auth pages**: centered card layouts (`/login`, `/signup`, etc.)
 - **Mobile-first**: Tailwind breakpoints; sidebar collapses on small screens
 
+## Feature UI
+
+- **Nav** (`features/nav/`): app sidebar built on shadcn `sidebar` primitives — `app-sidebar.tsx` plus `nav-main.tsx`, `nav-user.tsx`, `nav-projects.tsx`, `team-switcher.tsx`, `admin-switch.tsx`; theme toggle in `theme-toggle.tsx`. Uses the `--sidebar-*` color tokens.
+- **Timeline** (`features/timeline/`): activity/history views rendered with card/list layouts using standard surface tokens (`--card`, `--muted`) and Lucide icons.
+
 ## Icons
 
 Lucide React. Stroke-based icons only. Sizes: `h-4 w-4` for inline, `h-5 w-5` for buttons.

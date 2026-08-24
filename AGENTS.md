@@ -76,7 +76,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 3. Use `lib/prisma.ts` singleton — never instantiate `PrismaClient` directly
 4. Generated client outputs to `lib/generated/prisma`
 5. Keep `prisma/seed.ts` updated for new models
-6. Core models to preserve: `User`, `Session`, `Account`, `Verification`, `Notification`, `AuditLog`, `RateLimit`, `UserPreferences`, `ApiKey`, `Webhook`, `WebhookDelivery`, `FileUpload`
+6. Core models to preserve: `User`, `Session`, `Account`, `Verification`, `Organization`, `Member`, `Invitation`, `Post`, `Category`, `Tag`, `PostTag`, `SystemMetric`, `Notification`, `AuditLog`, `RateLimit`, `UserPreferences`, `ApiKey`, `Webhook`, `WebhookDelivery`, `FileUpload`
 7. Use `provider = "prisma-client"` (not `prisma-client-js`)
 8. Import from `./generated/prisma/client` (with `/client`)
 9. Use `@prisma/adapter-pg` driver adapter with `adapter` property

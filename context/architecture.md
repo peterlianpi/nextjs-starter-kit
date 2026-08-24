@@ -12,7 +12,7 @@
 | Forms | React Hook Form + Zod (`@hookform/resolvers/zod`) | Client/server validation |
 | Email | Nodemailer or Resend (`EMAIL_PROVIDER`) | Transactional email |
 | Uploads | Cloudinary / R2 / S3 / local (`UPLOAD_PROVIDER`) | File storage |
-| Runtime | Node (Bun) | Dev + build, Vercel-ready (`vercel.ts`) |
+| Runtime | Node (Bun) | Dev + build, Vercel-ready |
 
 ## System Boundaries
 
@@ -20,14 +20,14 @@
 - `app/api/[[...route]]/` — all Hono API endpoints mount here. No ad-hoc route handlers.
 - `features/<feature>/` — feature modules: `components/`, `hooks/`, `lib/`, `schemas/`, `types/`, `api/`.
 - `components/ui/` — shadcn/ui primitives. **Do not modify**.
-- `lib/` — `site.ts` (config), `auth.ts` (server), `prisma.ts` (singleton), `api/`, `services/`, `utils/`.
+- `lib/` — `site.ts` (config), `auth.ts` (server), `auth/access.ts`, `auth/admin.ts`, `auth/api-helpers.ts` (auth/RBAC helpers), `prisma.ts` (singleton), `api/`, `services/` (incl. `activity.ts` audit/activity logging), `utils/`.
 - `prisma/` — `schema.prisma` (single source of truth), `seed.ts`, migrations.
 - `action/` — Server Actions for mutations.
-- `providers/` — React providers (themes, query).
+- `providers/` — React providers (theme via next-themes).
 
 ## Storage Model
 
-- **Database (PostgreSQL)**: users, sessions, accounts, verifications, notifications, audit logs, rate limits, preferences, API keys, webhooks, deliveries, file uploads metadata. See `prisma/schema.prisma`.
+- **Database (PostgreSQL)**: users, sessions, accounts, verifications, organizations/members/invitations, blog content (posts, categories, tags), system metrics, notifications, audit logs, rate limits, preferences, API keys, webhooks, deliveries, file uploads metadata. Blog content is DB-stored (not files). See `prisma/schema.prisma`.
 - **File/blob storage**: uploaded files (Cloudinary / R2 / S3 / local via `UPLOAD_PROVIDER`). Only metadata + URL stored in DB.
 - **No cache layer in scope yet** — in-memory/page cache via Next.js.
 
@@ -53,4 +53,4 @@ Rules that must not be broken without updating this file:
 
 ## Data model (summary)
 
-Core models: `User` (role, ban, soft delete), `Session`, `Account`, `Verification`, `Notification`, `AuditLog`, `RateLimit`, `UserPreferences`, `ApiKey`, `Webhook`, `WebhookDelivery`, `FileUpload`. Full definition in `prisma/schema.prisma`; generated client at `lib/generated/prisma`.
+Core models: `User` (role, ban, soft delete), `Session`, `Account`, `Verification`, `Organization`, `Member`, `Invitation`, `Post`, `Category`, `Tag`, `PostTag`, `SystemMetric`, `Notification`, `AuditLog`, `RateLimit`, `UserPreferences`, `ApiKey`, `Webhook`, `WebhookDelivery`, `FileUpload`. Full definition in `prisma/schema.prisma`; generated client at `lib/generated/prisma`.

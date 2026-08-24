@@ -9,6 +9,7 @@ project:
   description: >
     A production-ready Next.js starter kit with Better Auth (email/password +
     email verification), Prisma + PostgreSQL, Hono API routes, admin panel,
+    blog content management, multi-tenant organizations, service monitoring,
     file uploads, email notifications, and modular feature architecture.
 
 version:
@@ -21,7 +22,7 @@ lifecycle:
   stage: development
   status: active
   started: 2026-08-20
-  updated: 2026-08-20
+  updated: 2026-08-24
 
 team:
   lead: peter-gtg

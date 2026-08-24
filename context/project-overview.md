@@ -16,7 +16,7 @@ A production-ready Next.js 16 starter kit providing secure authentication (Bette
 2. User verifies email and logs in via `/login`
 3. User lands on the protected dashboard `/dashboard`
 4. Admin manages users and media from `/admin`
-5. Scheduled cron jobs send appointment/reminder emails
+5. Scheduled cron jobs handle service monitoring and reminder emails
 
 ## Features
 
@@ -32,6 +32,19 @@ A production-ready Next.js 16 starter kit providing secure authentication (Bette
 ### API & Infrastructure
 - Hono API routes mounted at `app/api/[[...route]]/route.ts` with Zod validation
 - Webhooks with delivery tracking, API keys with hashed storage, audit logging, rate limiting, notifications
+- Cron endpoints under `app/api/[[...route]]/cron` for scheduled jobs (service monitoring / reminders)
+
+### Organizations
+- Multi-tenant organizations backed by `Organization`, `Member`, `Invitation` models
+- Membership roles and invitation flow per organization
+
+### Blog
+- DB-stored blog content via `Post`, `Category`, `Tag`, `PostTag` models
+- Categories and many-to-many tagging; content lives in the database, media in blob storage
+
+### Monitoring & Timeline
+- Service monitoring with metrics recorded in `SystemMetric`
+- Timeline feature module (`features/timeline/`) surfacing activity/history views
 
 ### Notifications & Files
 - Email via Nodemailer or Resend (`EMAIL_PROVIDER`)
@@ -46,12 +59,13 @@ A production-ready Next.js 16 starter kit providing secure authentication (Bette
 ### In Scope
 
 - Auth, RBAC, admin panel, uploads, email, Hono API, cron, webhooks, API keys
+- Blog content (posts, categories, tags) and multi-tenant organizations
+- Service monitoring and timeline views
 - shadcn/ui component library with both light and dark themes
 
 ### Out of Scope
 
 - Payment / billing integration
-- Multi-tenant organizations
 - i18n beyond the single `en` locale
 - Real-time collaboration
 

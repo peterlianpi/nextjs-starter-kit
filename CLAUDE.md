@@ -35,7 +35,7 @@ If implementation changes architecture, scope, or standards documented in the co
 - **Feature-sliced** (`features/`) — domain modules with api/, components/, hooks/, types/
 - **Centralized config** (`lib/site.ts`) — site metadata, OG, Twitter, JSON-LD
 - **Auth** (`lib/auth.ts`) — Better Auth with admin plugin, email OTP
-- **Database** (`prisma/schema.prisma`) — User, Session, Account, Verification, Notification, AuditLog, RateLimit, UserPreferences, ApiKey, Webhook, WebhookDelivery, FileUpload
+- **Database** (`prisma/schema.prisma`) — User, Session, Account, Verification, Organization, Member, Invitation, Post, Category, Tag, PostTag, SystemMetric, Notification, AuditLog, RateLimit, UserPreferences, ApiKey, Webhook, WebhookDelivery, FileUpload
 
 ## Key Patterns
 

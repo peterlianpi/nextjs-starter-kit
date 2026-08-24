@@ -51,7 +51,6 @@
 - `components/` + `components/ui/` — shared + shadcn primitives (do not modify `ui/`)
 - `lib/` — config, auth, prisma, api, services, utils
 - `prisma/` — schema, migrations, seed
-- `tests/` — Playwright E2E specs
 
 ## Testing
 
@@ -60,7 +59,7 @@
 | Lint | `bun run lint` (eslint) |
 | Build | `bun run build` (next build) |
 | DB smoke | `bun run db:test` (tsx) |
-| E2E | Playwright (`@playwright/test`) — run `bun run build` first |
+| E2E | Playwright (`@playwright/test`) — **pending setup**; dependency installed but no config or specs yet. Run `bun run build` first once configured |
 
 ## Git commits
 
