@@ -11,6 +11,24 @@ Port the ergonomics of `php artisan make:*` to this stack via a Bun-run
 generator CLI. This round ships the framework plus `make:model` and
 `make:migration`; remaining generators are deferred (see 00-build-plan.md).
 
+## Usage
+
+Every generator is runnable directly via `bun run` (args pass through to
+`scripts/make.ts`, e.g. `bun run make:hook SmokeTest` →
+`bun scripts/make.ts make:hook SmokeTest`):
+
+| Script | Generator |
+|---|---|
+| `bun run make <generator> <name>` | any generator |
+| `bun run make:model <Name> [-m]` | Prisma model stub (+ optional migration) |
+| `bun run make:migration <name>` | guided migration |
+| `bun run make:controller <name>` | Hono sub-router |
+| `bun run make:component <Name>` | Server Component (`--client` for client) |
+| `bun run make:action <name>` | Server Action |
+| `bun run make:seeder <name>` | DB seeder stub |
+| `bun run make:hook <name>` | TanStack Query hook |
+| `bun run make:schema <name>` | Zod schema |
+
 ## Design
 
 - Single entrypoint: `scripts/make.ts`, run as `bun run make <generator> <name>`
