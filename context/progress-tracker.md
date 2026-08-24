@@ -35,6 +35,8 @@ Update this file after every meaningful implementation change.
 
 - [x] Dependency upgrade round complete (2026-08-24): recharts 3 + react-day-picker 10 deferred (break generated `components/ui/*`, invariant forbids editing), `@vercel/config` removed as dead dep, hono bumped to 4.13.4; lint+build green, Playwright chromium installed, e2e 3/3 passed
 
+- [x] CMS feature specs written: `context/specs/10-rich-text-editor.md` … `14-theme-system.md`; build plan Workstream C (order 10→13→11∥12, 14 independent) + Unit 15 backlog added; Next Up set to Unit 10 (2026-08-24)
+
 ### Dependency Upgrade Summary
 
 | Package | From → To | Status | Reason |
@@ -54,7 +56,7 @@ Update this file after every meaningful implementation change.
 
 ## Next Up
 
-1. Create Vercel project, provision Neon Postgres, verify Resend domain, create S3 bucket + IAM keys, first deploy
+1. Unit 10 — rich text editor (TipTap v3): see `context/specs/10-rich-text-editor.md`; then 13 → 11 ∥ 12, 14 independent (see `00-build-plan.md` Workstream C)
 
 ## Open Questions
 

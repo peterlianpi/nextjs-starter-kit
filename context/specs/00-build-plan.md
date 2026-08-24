@@ -22,6 +22,28 @@ After unit 2 lands, extend `scripts/make.ts` with the remaining generators:
 9. [ ] **make:hook** → hook in `features/<name>/hooks/`
 10. [ ] **make:schema** → Zod schema in `features/<name>/schemas/`
 
+## Workstream C — CMS features (units 10–14)
+
+Recommended order: **10 → 13 → (11 ∥ 12)**; **14 is independent** and can run
+any time, but its dark-mode migration must be tested in both modes.
+
+1. [ ] **10-rich-text-editor** — TipTap v3 editor + SSR blog rendering (`10-rich-text-editor.md`) — Size L
+2. [ ] **13-image-crop** — react-easy-crop + Canvas resize, media library, editor upload hook (`13-image-crop.md`) — Size M
+3. [ ] **11-print-support** — `@media print` CSS (+ optional react-to-print) (`11-print-support.md`) — Size S
+4. [ ] **12-social-sharing** — react-share + native share fallback + OG metadata (`12-social-sharing.md`) — Size S
+5. [ ] **14-theme-system** — multi-theme via `data-theme`, keep `.dark` compat; persists to `UserPreferences.theme` (`14-theme-system.md`) — Size M. **RISK: test both modes.**
+
+## Unit 15 — Backlog (not yet specced)
+
+Candidates for future units; write specs when scheduled:
+
+- Post revisions / draft history
+- Scheduled publishing
+- Comments
+- Media management enhancements
+- Auto-generated excerpts from content JSON
+- SEO preview panel
+
 ## Laravel → project mapping
 
 | Artisan command | This project | Output |
