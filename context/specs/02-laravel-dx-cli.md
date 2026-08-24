@@ -8,8 +8,11 @@
 ## Goal
 
 Port the ergonomics of `php artisan make:*` to this stack via a Bun-run
-generator CLI. This round ships the framework plus `make:model` and
-`make:migration`; remaining generators are deferred (see 00-build-plan.md).
+generator CLI. All generators are implemented: the framework plus
+`make:model` and `make:migration` shipped first, followed by
+`make:controller`, `make:component`, `make:action`, `make:seeder`,
+`make:hook`, and `make:schema`. Extend the `GENERATORS` registry in
+`scripts/make.ts` for new ones.
 
 ## Usage
 

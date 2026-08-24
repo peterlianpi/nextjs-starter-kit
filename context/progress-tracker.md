@@ -8,7 +8,7 @@ Update this file after every meaningful implementation change.
 
 ## Current Goal
 
-- Document rearchitected schema across all context files
+- Laravel DX complete; register project and decide deployment target/providers
 
 ## Completed
 
@@ -20,8 +20,6 @@ Update this file after every meaningful implementation change.
 - [x] Orchestra health check passes; project detected (6/6 context files + project.yaml)
 - [x] Package manager standardized on Bun (`bun run`, `bunx prisma`) across docs
 - [x] Schema rearchitecture: blog content (Post/Category/Tag/PostTag), organizations (Organization/Member/Invitation), monitoring (SystemMetric) documented in architecture + project-overview (2026-08-24)
-- [x] Doc sync: CLAUDE.md, AGENTS.md, code-standards, ui-context, project.yaml updated to match rearchitected schema (2026-08-24)
-
 - [x] Doc sync: CLAUDE.md, AGENTS.md, code-standards, ui-context, project.yaml updated to match rearchitected schema (2026-08-24)
 - [x] Infra unit 1: Playwright e2e scaffold (playwright.config.ts, tests/e2e/, package.json script) (2026-08-24)
 - [x] Infra unit 2: context/specs/* rewritten to build-plan structure (2026-08-24)
