@@ -343,9 +343,9 @@ export function StarterHome() {
                 <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-medium">
                   {i + 1}
                 </span>
-                <span className="min-w-0 flex-1 break-words text-sm sm:text-base">
+                <span className="min-w-0 flex-1 overflow-x-auto break-words text-sm sm:text-base">
                   {step.label}:{" "}
-                  <code className="rounded bg-muted px-1.5 py-0.5 text-xs sm:text-sm">
+                  <code className="whitespace-nowrap rounded bg-muted px-1.5 py-0.5 text-xs sm:text-sm">
                     {step.command}
                   </code>
                 </span>

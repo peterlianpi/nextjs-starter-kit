@@ -118,7 +118,7 @@ export default function AdminUsersPage() {
             </div>
           ) : users.length > 0 ? (
             <>
-              <div className="rounded-md border">
+              <div className="overflow-x-auto rounded-md border">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -188,7 +188,7 @@ export default function AdminUsersPage() {
                                 <Link href={`/admin/users/${user.id}`}>Edit User</Link>
                               </DropdownMenuItem>
                               {user.role !== "ADMIN" && (
-                                <DropdownMenuItem className="text-red-600" asChild>
+                                <DropdownMenuItem                                 className="text-destructive" asChild>
                                   <Link href={`/admin/users/${user.id}`}>Ban User</Link>
                                 </DropdownMenuItem>
                               )}

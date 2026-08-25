@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -245,10 +246,11 @@ export default function UserDetailPage() {
   return (
     <div className="flex flex-1 flex-col gap-4 p-0">
       {/* Header */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <Button
           variant="ghost"
           size="icon"
+          className="min-h-11 min-w-11"
           onClick={() => router.push("/admin/users")}
         >
           <ArrowLeft className="h-4 w-4" />
@@ -265,7 +267,7 @@ export default function UserDetailPage() {
             <Badge variant="destructive">Banned</Badge>
           )}
           {user.emailVerified && (
-            <Badge variant="default" className="bg-green-500/10 text-green-600 hover:bg-green-500/20">
+            <Badge variant="default" className="bg-primary/10 text-primary hover:bg-primary/20">
               Verified
             </Badge>
           )}
@@ -325,9 +327,9 @@ export default function UserDetailPage() {
               Email Status
             </CardTitle>
             {user.emailVerified ? (
-              <CheckCircle className="h-4 w-4 text-green-500" />
+              <CheckCircle className="h-4 w-4 text-primary" />
             ) : (
-              <XCircle className="h-4 w-4 text-red-500" />
+              <XCircle className="h-4 w-4 text-destructive" />
             )}
           </CardHeader>
           <CardContent>
@@ -343,11 +345,11 @@ export default function UserDetailPage() {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="details" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="details">Details</TabsTrigger>
-          <TabsTrigger value="activity">Activity</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="sessions">Sessions</TabsTrigger>
+        <TabsList className="flex w-full overflow-x-auto">
+          <TabsTrigger value="details" className="flex-1 whitespace-nowrap">Details</TabsTrigger>
+          <TabsTrigger value="activity" className="flex-1 whitespace-nowrap">Activity</TabsTrigger>
+          <TabsTrigger value="notifications" className="flex-1 whitespace-nowrap">Notifications</TabsTrigger>
+          <TabsTrigger value="sessions" className="flex-1 whitespace-nowrap">Sessions</TabsTrigger>
         </TabsList>
 
         {/* Details Tab */}
@@ -460,7 +462,7 @@ export default function UserDetailPage() {
 
                 <div className="pt-4 border-t">
                   <p className="text-sm text-muted-foreground">
-                    User ID: <code className="text-xs bg-muted px-1 py-0.5 rounded">{user.id}</code>
+                    User ID: <code className="text-xs bg-muted px-1 py-0.5 rounded break-all">{user.id}</code>
                   </p>
                 </div>
               </CardContent>
@@ -521,9 +523,9 @@ export default function UserDetailPage() {
                   {notifications.map((notification: Notification) => (
                     <div key={notification.id} className="flex items-start gap-3 pb-4 border-b last:border-0">
                       <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                        notification.read ? "bg-muted" : "bg-blue-500/10"
+                        notification.read ? "bg-muted" : "bg-primary/10"
                       }`}>
-                        <Bell className={`h-4 w-4 ${notification.read ? "text-muted-foreground" : "text-blue-500"}`} />
+                        <Bell className={`h-4 w-4 ${notification.read ? "text-muted-foreground" : "text-primary"}`} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
@@ -648,12 +650,11 @@ export default function UserDetailPage() {
           </AlertDialogHeader>
           {!user.banned && (
             <div className="py-4">
-              <input
+              <Input
                 type="text"
                 placeholder="Ban reason (optional)"
                 value={banReason}
                 onChange={(e) => setBanReason(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md text-sm"
               />
             </div>
           )}

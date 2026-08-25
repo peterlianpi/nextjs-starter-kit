@@ -181,7 +181,7 @@ export default function MediaManagementPage() {
       {/* Header with CardHeader */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <CardTitle>Media Library</CardTitle>
               <CardDescription>
@@ -192,6 +192,7 @@ export default function MediaManagementPage() {
               <Button
                 variant={viewMode === "grid" ? "default" : "outline"}
                 size="icon"
+                className="min-h-11 min-w-11"
                 onClick={() => setViewMode("grid")}
               >
                 <Grid3X3 className="h-4 w-4" />
@@ -199,6 +200,7 @@ export default function MediaManagementPage() {
               <Button
                 variant={viewMode === "list" ? "default" : "outline"}
                 size="icon"
+                className="min-h-11 min-w-11"
                 onClick={() => setViewMode("list")}
               >
                 <List className="h-4 w-4" />
@@ -262,7 +264,7 @@ export default function MediaManagementPage() {
       </Card>
 
       {/* Filters */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input

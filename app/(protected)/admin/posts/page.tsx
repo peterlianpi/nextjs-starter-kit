@@ -146,7 +146,7 @@ export default function AdminPostsPage() {
             </div>
           ) : posts.length > 0 ? (
             <>
-              <div className="rounded-md border">
+              <div className="overflow-x-auto rounded-md border">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -209,7 +209,7 @@ export default function AdminPostsPage() {
                                 </DropdownMenuItem>
                               )}
                               <DropdownMenuItem
-                                className="text-red-600"
+                                className="text-destructive"
                                 onClick={() => {
                                   if (confirm(`Delete "${post.title}"?`)) {
                                     deletePost.mutate(post.id);

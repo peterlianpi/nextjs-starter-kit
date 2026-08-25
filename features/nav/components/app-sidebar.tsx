@@ -91,6 +91,11 @@ const adminNavItems = [
         url: "/admin/media",
         icon: Image,
       },
+      {
+        title: "Timeline",
+        url: "/admin/activity",
+        icon: History,
+      },
     ],
   },
 ];

@@ -10,6 +10,7 @@ import webhooks from "./webhooks";
 import posts from "./posts";
 import orgs from "./orgs";
 import notifications from "./notifications";
+import timeline from "./timeline";
 
 // ============================================
 // MAIN APP ROUTER
@@ -27,7 +28,8 @@ const route = app
   .route("/webhooks", webhooks)
   .route("/posts", posts)
   .route("/orgs", orgs)
-  .route("/notifications", notifications);
+  .route("/notifications", notifications)
+  .route("/timeline", timeline);
 
 export const GET = handle(app);
 export const POST = handle(app);
