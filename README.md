@@ -17,7 +17,7 @@ A production-ready [Next.js 16](https://nextjs.org) starter kit: secure authenti
 - **Auth — Better Auth**: email/password with email verification, password reset, optional Google OAuth (opt-in via env), RBAC roles (USER → SUPER_ADMIN), protected route group with server-side session checks
 - **CMS blog**: TipTap rich text editor, posts/categories/tags stored in Postgres, image uploads with crop pipeline (aspect presets + zoom), print stylesheet, social share buttons
 - **Multi-theme system**: light/dark plus oklch preset themes (Sepia, Nord, Rosé Pine) via a theme switcher
-- **Hono API**: all endpoints mounted under one catch-all route with Zod validation and type-safe RPC client (`hc<AppType>`)
+- **Hono API**: all endpoints mounted under one catch-all route with Zod validation and type-safe RPC client (`hc<AppType>`) — interactive docs at `/api/docs` (Swagger UI), raw OpenAPI spec at `/api/openapi`
 - **Admin panel**: user management (roles, ban), media library backed by Cloudinary / R2 / S3 / local storage
 - **Artisan-style CLI generators**: `make:model`, `make:migration`, `make:controller`, and more (Laravel DX)
 - **Testing**: Playwright E2E suite

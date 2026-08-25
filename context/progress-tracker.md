@@ -86,6 +86,9 @@ Update this file after every meaningful implementation change.
 
 - [x] Editor-side image cropping wired (2026-08-25): TipTap toolbar image button now runs the Unit 13 crop pipeline — file pick → validateImageFile → ImageCropper modal (aspect presets/zoom) → getCroppedBlob canvas export → uploadImageFile with processed blob → URL inserted into editor; inline error message on validation/upload failure. lint + build green, dev server login 200.
 
+- [x] Responsive frontend pass (2026-08-25): mobile-first fixes across nav sidebar/user/team-switcher, blog + docs h1 scaling, editor toolbar h-9 touch targets; token colors only. lint + build green.
+- [x] OpenAPI docs (2026-08-25): hand-authored OpenAPI 3.1 spec in lib/openapi.ts (health/auth/posts/admin/upload/search/keys/webhooks), served as JSON at /api/openapi and rendered via @hono/swagger-ui at /api/docs with theme-aware styling (prefers-color-scheme + theme-preset); in-app docs gained an "API Reference" page with curl examples; README API bullet updated. lint + build green.
+
 ## Next Up
 
 1. Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`): 16.1 blog index → 16.2 role/account switch → 16.3 notifications → 16.4 search → 16.8 timeline, then 16.5–16.7/16.9, 16.10 orgs last

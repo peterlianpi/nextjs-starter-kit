@@ -27,6 +27,7 @@
     "@aws-sdk/s3-request-presigner": "^3.1116.0",
     "@base-ui/react": "^1.7.0",
     "@better-auth/cli": "^1.4.21",
+    "@hono/swagger-ui": "^0.6.1",
     "@hono/zod-validator": "^0.9.0",
     "@hookform/resolvers": "^5.9.1",
     "@playwright/test": "^1.62.1",

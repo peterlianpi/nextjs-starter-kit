@@ -459,6 +459,70 @@ const { data: widget } = await created.json();`,
 
   // ---------------------------------------------------------------
   {
+    slug: "api-reference",
+    title: "API Reference",
+    description:
+      "Interactive OpenAPI/Swagger docs at /api/docs, raw spec at /api/openapi.",
+    category: "Architecture",
+    updated: "2026-08-25",
+    body: [
+      {
+        type: "p",
+        text: "The whole Hono API is documented as an OpenAPI 3.1 spec. Browse it interactively with Swagger UI, or fetch the raw JSON for codegen and tooling.",
+      },
+      {
+        type: "list",
+        items: [
+          "/api/docs — interactive Swagger UI (Try it out supported)",
+          "/api/openapi — raw OpenAPI 3.1 JSON document",
+        ],
+      },
+      {
+        type: "note",
+        variant: "info",
+        text: "The spec is hand-authored in lib/openapi.ts. When you add or change a Hono endpoint, update the matching path entry there so docs stay accurate.",
+      },
+      { type: "h2", text: "Quick examples" },
+      {
+        type: "code",
+        lang: "bash",
+        code: `# Health check (public)
+curl -s https://your-app.vercel.app/api/health
+
+# List published posts (public)
+curl -s "https://your-app.vercel.app/api/posts?page=1&limit=10"
+
+# Upload a file (requires session cookie)
+curl -s -X POST https://your-app.vercel.app/api/upload \\
+  -H "Cookie: better-auth.session_token=<token>" \\
+  -F "file=@./photo.png"`,
+      },
+      {
+        type: "code",
+        lang: "bash",
+        // Sign in to obtain a session cookie for authenticated calls
+        code: `# Sign in and capture the session cookie
+curl -s -c cookies.txt -X POST https://your-app.vercel.app/api/auth/sign-in/email \\
+  -H "Content-Type: application/json" \\
+  -d '{"email":"user@example.com","password":"••••••••"}'
+
+# Authenticated request using the cookie jar
+curl -s -b cookies.txt https://your-app.vercel.app/api/posts`,
+      },
+      { type: "h2", text: "Auth model" },
+      {
+        type: "list",
+        items: [
+          "Browser flows use the better-auth.session_token cookie automatically",
+          "Machine clients can use a Bearer API key issued via POST /api/keys (stored hashed; plaintext shown once)",
+          "Every response uses the envelope { success, data?, error?: { code, message } }",
+        ],
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------
+  {
     slug: "database",
     title: "Database (Prisma 7)",
     description:
