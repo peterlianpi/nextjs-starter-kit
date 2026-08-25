@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Editor } from "@tiptap/react";
 import {
   Bold,
@@ -24,6 +25,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+
+import { ImageCropper } from "@/features/media/components/image-cropper";
+import { getCroppedBlob, readFileAsDataUrl, validateImageFile } from "@/features/media/hooks/use-crop";
 
 import { uploadImageFile } from "../hooks/use-editor";
 
@@ -57,6 +61,13 @@ function ToolbarButton({ onClick, active, disabled, title, children }: ToolbarBu
 }
 
 export function Toolbar({ editor }: ToolbarProps) {
+  // Pending image going through the crop pipeline: file name + data URL.
+  const [pendingImage, setPendingImage] = useState<
+    { name: string; src: string } | null
+  >(null);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
   if (!editor) {
     return <div className="h-9 rounded-t-md border border-input bg-muted/50" />;
   }
@@ -71,21 +82,61 @@ export function Toolbar({ editor }: ToolbarProps) {
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   };
 
-  const addImage = async () => {
+  /**
+   * Image insertion runs through the Unit 13 crop pipeline (spec
+   * context/specs/13-image-crop.md): pick → validate → cropper modal →
+   * canvas export → upload processed blob → insert returned URL.
+   */
+  const addImage = () => {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/*";
-    input.onchange = async () => {
+    input.onchange = () => {
       const file = input.files?.[0];
       if (!file) return;
-      try {
-        const url = await uploadImageFile(file);
-        editor.chain().focus().setImage({ src: url }).run();
-      } catch (error) {
-        console.error("[Toolbar] Image upload failed:", error);
+
+      const validationError = validateImageFile(file);
+      if (validationError) {
+        setImageError(validationError);
+        return;
       }
+
+      readFileAsDataUrl(file)
+        .then((src) => setPendingImage({ name: file.name, src }))
+        .catch((error: unknown) => {
+          console.error("[Toolbar] Failed to read image:", error);
+          setImageError("Failed to read image file.");
+        });
     };
     input.click();
+  };
+
+  const handleCropConfirm = async (croppedAreaPixels: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }) => {
+    if (!pendingImage) return;
+
+    setUploadingImage(true);
+    setImageError(null);
+    try {
+      const blob = await getCroppedBlob(pendingImage.src, croppedAreaPixels);
+      const file = new File([blob], pendingImage.name, {
+        type: blob.type || "image/jpeg",
+      });
+      const url = await uploadImageFile(file);
+      editor.chain().focus().setImage({ src: url }).run();
+      setPendingImage(null);
+    } catch (error) {
+      console.error("[Toolbar] Image upload failed:", error);
+      setImageError(
+        error instanceof Error ? error.message : "Image upload failed.",
+      );
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   return (
@@ -157,6 +208,23 @@ export function Toolbar({ editor }: ToolbarProps) {
       <ToolbarButton title="Redo" disabled={!editor.can().chain().focus().redo().run()} onClick={() => editor.chain().focus().redo().run()}>
         <Redo2 className="h-4 w-4" />
       </ToolbarButton>
+
+      {imageError && (
+        <span role="alert" className="ml-2 text-xs text-destructive">
+          {imageError}
+        </span>
+      )}
+
+      {pendingImage && (
+        <ImageCropper
+          imageSrc={pendingImage.src}
+          open={!!pendingImage && !uploadingImage}
+          onConfirm={handleCropConfirm}
+          onCancel={() => {
+            if (!uploadingImage) setPendingImage(null);
+          }}
+        />
+      )}
     </div>
   );
 }

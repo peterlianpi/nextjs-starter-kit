@@ -82,12 +82,15 @@ Update this file after every meaningful implementation change.
 
 - [x] Better Auth audit round closed (2026-08-25): (a) Neon DB live — migrations + fresh seed applied, demo logins verified working via API (login 200, signup 200); (b) Better Auth v1.7 schema alignment — Account.issuer added, RateLimit.lastRequest BigInt, seed accountId=user.id + issuer="local:credential"; full field audit vs canonical schema found NO remaining gaps; (c) Google OAuth wired (conditional socialProviders in lib/auth.ts, login/register buttons, docs walkthrough).
 
+- [x] db:test restored (2026-08-25): `scripts/test-database.ts` recreated (dotenv → pg Pool + PrismaPg adapter → `SELECT 1` + user.count() smoke query, clean exit 0/1, pool.end()); `bun run db:test` verified passing against live DB.
+
+- [x] Editor-side image cropping wired (2026-08-25): TipTap toolbar image button now runs the Unit 13 crop pipeline — file pick → validateImageFile → ImageCropper modal (aspect presets/zoom) → getCroppedBlob canvas export → uploadImageFile with processed blob → URL inserted into editor; inline error message on validation/upload failure. lint + build green, dev server login 200.
+
 ## Next Up
 
 1. Production env vars + redeploy verification (Vercel)
-2. Editor-side crop integration (`uploadImageFile()` in features/editor/hooks/use-editor.ts)
-3. Theme preset DB persistence (UserPreferences.theme write)
-4. Unit 15 backlog
+2. Theme preset DB persistence (UserPreferences.theme write)
+3. Unit 15 backlog
 
 ## Open Questions
 
