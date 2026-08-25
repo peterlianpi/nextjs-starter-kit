@@ -38,16 +38,23 @@ any time, but its dark-mode migration must be tested in both modes.
 Ordered from the backend-to-frontend audit (`16-frontend-gap-plan.md`).
 Quick wins first, orgs last (largest, needs its own detailed spec before start).
 
-1. [ ] **16.1 blog-index** — public `/blog` listing page — Size S
-2. [ ] **16.2 role-account-switch** — org switcher, role-aware nav, account menu — Size M
-3. [ ] **16.3 notifications-ui** — mount router + bell dropdown — Size M
-4. [ ] **16.4 search-surface** — mount search bar on dashboard — Size S
-5. [ ] **16.8 timeline-page** — wire timeline component to a route — Size S
+1. [x] **16.1 blog-index** — public `/blog` listing page — Size S
+2. [x] **16.2 role-account-switch** — org switcher, role-aware nav, account menu — Size M
+3. [x] **16.3 notifications-ui** — mount router + bell dropdown — Size M
+4. [x] **16.4 search-surface** — mount search bar on dashboard — Size S
+5. [x] **16.8 timeline-page** — wire timeline component to a route — Size S
 6. [ ] **16.5 admin-audit-log-viewer** — Size M
 7. [ ] **16.6 api-keys-settings** — Size M
 8. [ ] **16.7 webhooks-admin** — Size M
 9. [ ] **16.9 settings-persistence** — UserPreferences writes (incl. theme) — Size M
 10. [ ] **16.10 organizations-e2e** — org API + member mgmt + invites — Size L (write spec first)
+
+## Workstream E — Next gap plan (post-Workstream-D)
+
+Ordered roadmap with sizes and dependencies lives in `17-next-gap-plan.md`.
+It covers the remaining 16.x units (16.5 → 16.10), the Unit 15 backlog
+(revisions, scheduled publishing, comments), and candidate new-gap units
+spotted during the 2026-08-25 audit.
 
 ## Unit 15 — Backlog (not yet specced)
 

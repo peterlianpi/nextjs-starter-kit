@@ -26,13 +26,18 @@
 ## System Boundaries
 
 - `app/` — Next.js App Router pages and route groups. `(protected)/` requires a session.
-- `app/api/[[...route]]/` — all Hono API endpoints mount here. No ad-hoc route handlers.
+- `app/api/[[...route]]/` — all Hono API endpoints mount here (sub-routers: admin, health, search, upload, keys, webhooks, posts, orgs, notifications, timeline). No ad-hoc route handlers.
 - `features/<feature>/` — feature modules: `components/`, `hooks/`, `lib/`, `schemas/`, `types/`, `api/`.
 - `components/ui/` — shadcn/ui primitives. **Do not modify**.
 - `lib/` — `site.ts` (config), `auth.ts` (server), `auth/access.ts`, `auth/admin.ts`, `auth/api-helpers.ts` (auth/RBAC helpers), `prisma.ts` (singleton), `api/`, `services/` (incl. `activity.ts` audit/activity logging), `utils/`.
 - `prisma/` — `schema.prisma` (single source of truth), `seed.ts`, migrations.
 - `action/` — Server Actions for mutations.
 - `providers/` — React providers (theme via next-themes).
+
+### Mounted frontend surfaces (2026-08-25)
+
+- Public: `/blog` index + `/blog/[slug]` reader, `/docs/*`, landing.
+- Protected: `/dashboard`, `/search`, `/notifications`, `/settings`, `/admin` (users, posts, media, activity/timeline).
 
 ## Storage Model
 

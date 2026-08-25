@@ -56,7 +56,13 @@ shadcn/ui on top of Tailwind v4. Components live in `components/ui/` — use the
 ## Feature UI
 
 - **Nav** (`features/nav/`): app sidebar built on shadcn `sidebar` primitives — `app-sidebar.tsx` plus `nav-main.tsx`, `nav-user.tsx`, `nav-projects.tsx`, `team-switcher.tsx`, `admin-switch.tsx`; theme toggle in `theme-toggle.tsx`. Uses the `--sidebar-*` color tokens.
+- **Org switcher** (`team-switcher.tsx`): functional dropdown fed by `use-orgs.ts` (GET/POST `/api/orgs`); shows role badge per org (Owner/Admin/Member), persists active org id to localStorage, offers create-org dialog when empty.
+- **Role-aware sidebar**: `app-sidebar.tsx` gates nav items by session role (ADMIN/SUPER_ADMIN → admin section, EDITOR → posts); `nav-user.tsx` shows a role `Badge`. Client-side gating is convenience only — routes keep server-side checks.
+- **Notification bell** (`features/notifications/components/notification-bell.tsx`): sidebar popover with unread count badge, mark-read/mark-all-read; links to `/notifications`.
 - **Timeline** (`features/timeline/`): activity/history views rendered with card/list layouts using standard surface tokens (`--card`, `--muted`) and Lucide icons.
+- **Docs** (`features/docs/`): in-app docs at `/docs` — categorized card-grid index, sticky desktop sidebar + mobile `<details>` collapsible nav (`components/docs-sidebar.tsx`), server-rendered structured content (`components/docs-content.tsx`) reusing `.prose-post` styles.
+- **Search** (`features/search/`): `/search` page — debounced input (300ms), entity-type filter tabs, grouped results with pagination; token-only styling.
+- **Notifications** (`features/notifications/`): sidebar bell popover with unread badge, mobile Drawer bell variant, notification list with load-more; mark-read via TanStack Query mutations.
 
 ## Icons
 

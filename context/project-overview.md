@@ -28,6 +28,7 @@ A production-ready Next.js 16 starter kit providing secure authentication (Bette
 ### Admin
 - User management (list, view, ban, role assignment)
 - Media library (file uploads with multi-provider storage)
+- Activity/timeline page (`/admin/activity`) surfacing audit logs + system metrics
 
 ### API & Infrastructure
 - Hono API routes mounted at `app/api/[[...route]]/route.ts` with Zod validation
@@ -37,16 +38,30 @@ A production-ready Next.js 16 starter kit providing secure authentication (Bette
 ### Organizations
 - Multi-tenant organizations backed by `Organization`, `Member`, `Invitation` models
 - Membership roles and invitation flow per organization
+- Functional org switcher in the sidebar (`/api/orgs`, create-org when empty)
 
 ### Blog
 - DB-stored blog content via `Post`, `Category`, `Tag`, `PostTag` models
-- Categories and many-to-many tagging; content lives in the database, media in blob storage
+- Public `/blog` index (published posts, category/tag metadata) + `/blog/[slug]` reader; content lives in the database, media in blob storage
+
+### Theme Presets
+- Three oklch preset palettes (`sepia`, `nord`, `rose-pine`) layered over light/dark mode via `[data-theme]` tokens in globals.css
+- ModeToggle dropdown includes labeled swatch picker sourced from `lib/site.ts` (`themePresets`); choice persisted to localStorage (`theme-preset`) with default fallback
+
+### Search
+- `/search` page with debounced queries (300ms), entity-type filters (posts/users/audit logs), grouped results with pagination, backed by `/api/search`
+
+### Notifications
+- Sidebar bell popover with unread badge + mobile drawer variant; `/notifications` page with cursor pagination and load-more
+- Mark-read and mark-all-read flows against the mounted notifications router
 
 ### Monitoring & Timeline
 - Service monitoring with metrics recorded in `SystemMetric`
-- Timeline feature module (`features/timeline/`) surfacing activity/history views
+- Admin activity/timeline page (`/admin/activity`) surfacing merged AuditLog + SystemMetric feed with All/Audit/Metrics filter tabs and Previous/Next pagination
 
 ### Notifications & Files
+- Notifications UI: sidebar bell with unread badge, mark-read/mark-all-read, `/notifications` page
+- Search page (`/search`) with debounced queries and entity-type filters
 - Email via Nodemailer or Resend (`EMAIL_PROVIDER`)
 - Uploads via Cloudinary, R2, S3, or local (`UPLOAD_PROVIDER`)
 

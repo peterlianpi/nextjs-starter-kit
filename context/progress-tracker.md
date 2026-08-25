@@ -99,13 +99,15 @@ Update this file after every meaningful implementation change.
 
 ## Next Up
 
-1. Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`): 16.1 blog index → 16.2 role/account switch → ~~16.3 notifications~~ → ~~16.4 search page~~ → ~~16.8 timeline~~ → remaining units 16.5–16.7/16.9, then 16.10 orgs last
-2. Theme preset DB persistence (UserPreferences.theme write — folded into unit 16.9)
-3. Unit 15 backlog
+Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`):
+1. 16.2 role/account switch (org switcher, role-aware nav, account menu)
+2. 16.5 admin audit-log viewer → 16.6 API keys page → 16.7 webhooks admin
+3. 16.9 settings persistence (notification toggles, theme preset → UserPreferences.theme)
+4. 16.10 organizations end-to-end (API + switcher + members/invites) — last
 
-## Backend→Frontend Gap Audit (2026-08-25)
+## Backend→Frontend Gap Audit (updated 2026-08-25)
 
-Full matrix in `context/specs/16-frontend-gap-plan.md`; rendered in-app at `/docs/frontend-roadmap`. Top gaps: (1) no public `/blog` index, (2) notifications router unmounted + zero UI, (3) zero UI for webhooks/API keys, (4) organizations have DB models but no API and only a static placeholder switcher (role/account-switch unit 16.2), (5) search bar component exists but is mounted nowhere; timeline component has no page; audit-log viewer missing; settings notification toggles are local-only. `check-role.ts` router identified as dead code (unmounted).
+Full matrix in `context/specs/16-frontend-gap-plan.md`; rendered in-app at `/docs/frontend-roadmap`. Completed since the original audit: ~~16.1 blog index~~ (`/blog` public listing), ~~16.3 notifications~~ (mounted router, bell popover + drawer, `/notifications` page), ~~16.4 search~~ (`/search` debounced page with type filters), ~~16.8 timeline~~ (`/admin/activity` with filter tabs). Remaining gaps: org switcher is still a static placeholder (16.2/16.10), zero UI for webhooks (16.7) and API keys (16.6), no global audit-log viewer (16.5), settings notification toggles are local-only and theme preset localStorage-only (16.9). `check-role.ts` router remains dead code (unmounted) — delete in a cleanup pass.
 
 ## Open Questions
 

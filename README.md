@@ -19,6 +19,7 @@ A production-ready [Next.js 16](https://nextjs.org) starter kit: secure authenti
 - **Multi-theme system**: light/dark plus oklch preset themes (Sepia, Nord, Rosé Pine) via a theme switcher
 - **Hono API**: all endpoints mounted under one catch-all route with Zod validation and type-safe RPC client (`hc<AppType>`) — interactive docs at `/api/docs` (Swagger UI), raw OpenAPI spec at `/api/openapi`
 - **Admin panel**: user management (roles, ban), media library backed by Cloudinary / R2 / S3 / local storage
+- **Dashboard extras**: in-app notifications (bell + `/notifications`), global search (`/search` with entity filters), admin activity timeline, API keys & webhooks APIs
 - **Artisan-style CLI generators**: `make:model`, `make:migration`, `make:controller`, and more (Laravel DX)
 - **Testing**: Playwright E2E suite
 - **In-app docs**: full documentation served at `/docs`

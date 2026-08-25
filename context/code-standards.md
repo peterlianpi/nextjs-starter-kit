@@ -66,7 +66,8 @@
 | Lint | `bun run lint` (eslint) |
 | Build | `bun run build` (next build) |
 | DB smoke | `bun run db:test` (tsx) |
-| E2E | Playwright (`@playwright/test`) — **pending setup**; dependency installed but no config or specs yet. Run `bun run build` first once configured |
+| DB seed | `bun run db:seed` (tsx, idempotent demo data) |
+| E2E | Playwright (`@playwright/test`) — active: `playwright.config.ts` + specs in `tests/e2e/`; run `bun run test:e2e` (build/dev server required, chromium installed) |
 
 ## Git commits
 

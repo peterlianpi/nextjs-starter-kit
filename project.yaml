@@ -14,16 +14,16 @@ project:
     modular feature architecture.
 
 version:
-  current: 0.2.0
+  current: 0.3.0
   channel: dev
-  release_name: cms-editor
-  build_number: 2
+  release_name: workstream-d-frontend
+  build_number: 3
 
 lifecycle:
   stage: feature-development
   status: active
   started: 2026-08-20
-  updated: 2026-08-24
+  updated: 2026-08-25
 
 team:
   lead: peter-gtg
