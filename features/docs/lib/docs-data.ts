@@ -833,4 +833,244 @@ getThemePreset();       // reads localStorage key "theme-preset"; falls back to 
       },
     ],
   },
+
+  // ---------------------------------------------------------------
+  {
+    slug: "frontend-roadmap",
+    title: "Frontend Roadmap",
+    description:
+      "Gap analysis: every backend capability mapped to its current frontend surface and what is planned next.",
+    category: "Architecture",
+    updated: "2026-08-25",
+    body: [
+      {
+        type: "p",
+        text: "Every backend route was audited against the pages that consume it. The table below is the result; the ordered build plan lives in context/specs/16-frontend-gap-plan.md.",
+      },
+      { type: "h2", text: "Current state by area" },
+      {
+        type: "table",
+        headers: ["Area", "Backend", "Frontend today"],
+        rows: [
+          ["Auth", "Better Auth (email/password, verification, reset, RBAC, Google)", "/login, /signup, /forgot-password, /reset-password, /verify-email — complete"],
+          ["Blog", "posts router (/api/posts CRUD)", "Admin editor pages + SSR reader at /blog/[slug]; no public listing page yet"],
+          ["Media", "upload router (multi-provider storage)", "/admin/media grid with crop pipeline — complete for admins"],
+          ["Search", "search router (/api/search)", "Component exists in features/search but is mounted nowhere"],
+          ["Notifications", "notifications router (exists but not mounted in the API catch-all)", "None"],
+          ["Admin analytics", "/api/admin/stats, per-user audit logs/sessions/notifications", "/admin overview stats; no global audit-log viewer"],
+          ["API keys", "keys router (/api/keys, hashed storage)", "None"],
+          ["Webhooks", "webhooks router + delivery tracking", "None"],
+          ["Organizations", "DB models only (Organization/Member/Invitation) — no API yet", "Static placeholder switcher only"],
+          ["Timeline", "SystemMetric data + audit logs", "timeline.tsx component exists with no page using it"],
+          ["Settings", "UserPreferences model", "Profile/password/sessions UI; notification toggles are local-only; theme preset is localStorage-only"],
+        ],
+      },
+      { type: "h2", text: "Planned build units" },
+      {
+        type: "table",
+        headers: ["#", "Unit", "Size"],
+        rows: [
+          ["16.1", "Public blog index at /blog", "S"],
+          ["16.2", "Role/account switch (org switcher, role-aware nav, account menu)", "M"],
+          ["16.3", "Notifications: mount router, bell dropdown, mark-read", "M"],
+          ["16.4", "Search surface on dashboard", "S"],
+          ["16.5", "Admin audit-log viewer", "M"],
+          ["16.6", "API keys settings page", "M"],
+          ["16.7", "Webhooks admin page + deliveries drawer", "M"],
+          ["16.8", "Timeline/activity page", "S"],
+          ["16.9", "Settings persistence to UserPreferences", "M"],
+          ["16.10", "Organizations end-to-end (API + switcher + members/invites)", "L"],
+        ],
+      },
+      {
+        type: "note",
+        variant: "warning",
+        text: "Unit/integration testing beyond Playwright E2E is minimal today; external services (email, storage) should be mocked when added.",
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------
+  {
+    slug: "organizations",
+    title: "Organizations (Multi-Tenancy)",
+    description:
+      "Organization, Member, and Invitation models for multi-tenant workspaces with membership roles.",
+    category: "Architecture",
+    updated: "2026-08-25",
+    body: [
+      {
+        type: "p",
+        text: "Multi-tenancy is modeled directly in Prisma: an Organization owns Members (users with a per-org role) and Invitations (pending membership offers). There is no separate tenant service — queries scope by organization id through the Prisma singleton.",
+      },
+      { type: "h2", text: "Data model" },
+      {
+        type: "table",
+        headers: ["Model", "Key fields", "Purpose"],
+        rows: [
+          ["Organization", "id, name, slug", "The tenant workspace itself"],
+          ["Member", "organizationId, userId, role", "A user's membership + role inside one org"],
+          ["Invitation", "email, organizationId, status", "Pending invite awaiting accept/decline"],
+        ],
+      },
+      { type: "h2", text: "Roles within an organization" },
+      {
+        type: "list",
+        items: [
+          "OWNER — full control of the organization, can delete it",
+          "ADMIN — manages members and invitations",
+          "MEMBER — standard participant access",
+        ],
+      },
+      {
+        type: "note",
+        variant: "info",
+        text: "Org roles are independent of global RBAC roles. A USER globally can be OWNER of their own organization.",
+      },
+      { type: "h2", text: "Querying" },
+      {
+        type: "code",
+        lang: "ts",
+        code: `import prisma from "@/lib/prisma";
+
+// All organizations a user belongs to
+const orgs = await prisma.organization.findMany({
+  where: { members: { some: { userId } } },
+});
+
+// Members with user details
+const members = await prisma.member.findMany({
+  where: { organizationId },
+  include: { user: { select: { name: true, email: true } } },
+});`,
+      },
+      {
+        type: "note",
+        variant: "warning",
+        text: "Every mutation boundary must verify the caller is a Member of the org (with sufficient role) before acting — same server-side rule as global RBAC.",
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------
+  {
+    slug: "upload-providers",
+    title: "Upload Providers",
+    description:
+      "Multi-provider file storage behind one abstraction: Cloudinary, Cloudflare R2, AWS S3, or local disk — switched via UPLOAD_PROVIDER.",
+    category: "Features",
+    updated: "2026-08-25",
+    body: [
+      {
+        type: "p",
+        text: "All uploads go through lib/services/upload.ts — never call a provider SDK directly from feature code. The active provider is selected by one environment variable; only metadata + URL are stored in the FileUpload model, binaries live in blob storage.",
+      },
+      { type: "h2", text: "Provider matrix" },
+      {
+        type: "table",
+        headers: ["Provider", 'UPLOAD_PROVIDER', "Best for"],
+        rows: [
+          ["Cloudinary", '"cloudinary"', "Images/video with CDN transformations"],
+          ["Cloudflare R2", '"r2"', "S3-compatible, zero egress fees"],
+          ["AWS S3", '"s3"', "Enterprise storage, signed URLs (production default)"],
+          ["Local disk", '"local"', "Development only"],
+        ],
+      },
+      { type: "h2", text: "Environment variables" },
+      {
+        type: "table",
+        headers: ["Provider", "Required env vars"],
+        rows: [
+          [
+            "R2",
+            "R2_ENDPOINT, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME, R2_PUBLIC_DOMAIN",
+          ],
+          [
+            "S3",
+            "S3_ENDPOINT, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, S3_BUCKET_NAME, S3_PUBLIC_DOMAIN",
+          ],
+          [
+            "Cloudinary",
+            "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET",
+          ],
+        ],
+      },
+      { type: "h2", text: "Rules" },
+      {
+        type: "list",
+        ordered: true,
+        items: [
+          "Validate file type and size before upload (lib/services/file-upload.ts)",
+          "Generate unique filenames (UUID) to prevent collisions",
+          "Track every upload in the FileUpload model with metadata",
+          "Use @aws-sdk/client-s3 for both R2 and S3 — R2 is S3-compatible (region auto)",
+          "Signed URLs via @aws-sdk/s3-request-presigner for private content on S3",
+        ],
+      },
+      {
+        type: "code",
+        lang: "bash",
+        code: "# Verify your active provider end-to-end\nbun run scripts/test-upload.ts",
+      },
+      {
+        type: "note",
+        variant: "info",
+        text: "Current production setup uses Cloudflare R2 with bucket nextjs-starter-kit at nextjs-starter-kit-s3.peterlianpi.site.",
+      },
+    ],
+  },
+
+  // ---------------------------------------------------------------
+  {
+    slug: "email-providers",
+    title: "Email Providers",
+    description:
+      "Transactional email behind one abstraction: Nodemailer (SMTP) or Resend — switched via EMAIL_PROVIDER.",
+    category: "Features",
+    updated: "2026-08-25",
+    body: [
+      {
+        type: "p",
+        text: "All email goes through lib/services/email.ts — never call Nodemailer or Resend directly from feature code. Auth emails (verification, password reset) use templates from features/mail/lib/templates.ts.",
+      },
+      { type: "h2", text: "Provider matrix" },
+      {
+        type: "table",
+        headers: ["Provider", 'EMAIL_PROVIDER', "Package", "Best for"],
+        rows: [
+          ["Nodemailer", '"nodemailer"', "nodemailer", "Self-hosted SMTP, Gmail app passwords"],
+          ["Resend", '"resend"', "resend", "Modern API, React templates, tracking (production default)"],
+        ],
+      },
+      { type: "h2", text: "Environment variables" },
+      {
+        type: "list",
+        items: [
+          "Nodemailer: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD",
+          "Resend: RESEND_API_KEY, RESEND_FROM_EMAIL, RESEND_FROM_NAME",
+        ],
+      },
+      { type: "h2", text: "Resend conventions" },
+      {
+        type: "list",
+        items: [
+          "Handle the { data, error } response — never try/catch for SDK errors",
+          "Use camelCase params: replyTo, scheduledAt",
+          "Add idempotency keys to prevent duplicate sends",
+          "Use a verified sending domain for the from address in production",
+          "Rate limit: 5 requests/second per team",
+        ],
+      },
+      {
+        type: "code",
+        lang: "bash",
+        code: "# Send a verification SMTP test message\nbun run scripts/test-email.ts",
+      },
+      {
+        type: "note",
+        variant: "info",
+        text: "Resend test addresses: delivered@resend.dev succeeds, bounced@resend.dev bounces — useful for local flow testing without real recipients.",
+      },
+    ],
+  },
 ];

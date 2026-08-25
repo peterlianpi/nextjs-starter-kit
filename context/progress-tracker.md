@@ -88,9 +88,13 @@ Update this file after every meaningful implementation change.
 
 ## Next Up
 
-1. Production env vars + redeploy verification (Vercel)
-2. Theme preset DB persistence (UserPreferences.theme write)
+1. Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`): 16.1 blog index → 16.2 role/account switch → 16.3 notifications → 16.4 search → 16.8 timeline, then 16.5–16.7/16.9, 16.10 orgs last
+2. Theme preset DB persistence (UserPreferences.theme write — folded into unit 16.9)
 3. Unit 15 backlog
+
+## Backend→Frontend Gap Audit (2026-08-25)
+
+Full matrix in `context/specs/16-frontend-gap-plan.md`; rendered in-app at `/docs/frontend-roadmap`. Top gaps: (1) no public `/blog` index, (2) notifications router unmounted + zero UI, (3) zero UI for webhooks/API keys, (4) organizations have DB models but no API and only a static placeholder switcher (role/account-switch unit 16.2), (5) search bar component exists but is mounted nowhere; timeline component has no page; audit-log viewer missing; settings notification toggles are local-only. `check-role.ts` router identified as dead code (unmounted).
 
 ## Open Questions
 

@@ -33,6 +33,22 @@ any time, but its dark-mode migration must be tested in both modes.
 4. [ ] **12-social-sharing** — react-share + native share fallback + OG metadata (`12-social-sharing.md`) — Size S
 5. [ ] **14-theme-system** — multi-theme via `data-theme`, keep `.dark` compat; persists to `UserPreferences.theme` (`14-theme-system.md`) — Size M. **RISK: test both modes.**
 
+## Workstream D — Frontend gaps (units 16.x)
+
+Ordered from the backend-to-frontend audit (`16-frontend-gap-plan.md`).
+Quick wins first, orgs last (largest, needs its own detailed spec before start).
+
+1. [ ] **16.1 blog-index** — public `/blog` listing page — Size S
+2. [ ] **16.2 role-account-switch** — org switcher, role-aware nav, account menu — Size M
+3. [ ] **16.3 notifications-ui** — mount router + bell dropdown — Size M
+4. [ ] **16.4 search-surface** — mount search bar on dashboard — Size S
+5. [ ] **16.8 timeline-page** — wire timeline component to a route — Size S
+6. [ ] **16.5 admin-audit-log-viewer** — Size M
+7. [ ] **16.6 api-keys-settings** — Size M
+8. [ ] **16.7 webhooks-admin** — Size M
+9. [ ] **16.9 settings-persistence** — UserPreferences writes (incl. theme) — Size M
+10. [ ] **16.10 organizations-e2e** — org API + member mgmt + invites — Size L (write spec first)
+
 ## Unit 15 — Backlog (not yet specced)
 
 Candidates for future units; write specs when scheduled:
@@ -58,6 +74,6 @@ Candidates for future units; write specs when scheduled:
 
 ## Status
 
-**In progress:** 02-laravel-dx-cli
+**In progress:** 16.1 blog-index (Workstream D)
 
-**Done:** 01-playwright-e2e, 03-build-verify, 04-env-audit
+**Done:** 01-playwright-e2e, 03-build-verify, 04-env-audit, Workstream C (10–14)
