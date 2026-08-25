@@ -8,7 +8,7 @@ Update this file after every meaningful implementation change.
 
 ## Current Goal
 
-- Deploy to Vercel with Resend + S3 (config documented; actual deploy pending)
+- Unit 15 backlog; editor-side crop integration; theme preset DB persistence
 
 ## Completed
 
@@ -62,13 +62,17 @@ Update this file after every meaningful implementation change.
 
 - [x] In-app docs section complete (2026-08-25): `features/docs/` module (typed structured content in `lib/docs-data.ts`, 10 curated pages distilled from context/docs sources; server renderer `components/docs-content.tsx` reusing `.prose-post`; client sidebar `components/docs-sidebar.tsx` for active-link highlighting), routes `app/docs/page.tsx` (categorized card-grid index) + `app/docs/layout.tsx` (sticky desktop sidebar, mobile `<details>` collapsible nav) + `app/docs/[slug]/page.tsx` (generateStaticParams + generateMetadata, prev/next nav, Edit-on-GitHub link). Zero new deps. All 10 `/docs/*` routes prerendered SSG; lint + build green.
 
+- [x] First Vercel deploy live (2026-08-25): production at https://nextjs-starter-kit-gules.vercel.app — config/docs wired (.env.example production block, project.yaml production env, docs/DEPLOYMENT.md, architecture, in-app docs Deployment page)
+
 ## Next Up
 
-1. Unit 15 backlog or Vercel deployment (all Workstream C units complete — Unit 14 finished 2026-08-25)
+1. Unit 15 backlog
+2. Editor-side crop integration (`uploadImageFile()` in features/editor/hooks/use-editor.ts)
+3. Theme preset DB persistence (UserPreferences.theme write)
 
 ## Open Questions
 
-- Actual production domain / Vercel project URL (pending first deploy)
+- ~~Actual production domain / Vercel project URL~~ — resolved 2026-08-25: https://nextjs-starter-kit-gules.vercel.app
 
 ## Architecture Decisions
 

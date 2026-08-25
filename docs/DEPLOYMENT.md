@@ -2,6 +2,11 @@
 
 Chosen deployment target: **Vercel**. Primary providers: **Resend** (email) and **AWS S3** (uploads). Vercel deploys Next.js with zero config — no `vercel.json` is required.
 
+## Current deployment
+
+- **Live URL:** https://nextjs-starter-kit-gules.vercel.app
+- **First deploy:** 2026-08-25
+
 ## 1. Vercel Project Setup
 
 1. Push the repo to GitHub and import it at [vercel.com/new](https://vercel.com/new).
@@ -20,7 +25,7 @@ Chosen deployment target: **Vercel**. Primary providers: **Resend** (email) and 
 | `NEXT_PUBLIC_API_URL` | `https://yourdomain.com` | |
 | `NEXT_PUBLIC_APP_URL` | `https://yourdomain.com` | |
 | `NEXT_PUBLIC_SITE_URL` | `https://yourdomain.com` | |
-| `NEXT_PUBLIC_BASE_URL` | `https://yourdomain.com` | Fallback used by `lib/utils/domain.ts` |
+| `NEXT_PUBLIC_BASE_URL` | `https://nextjs-starter-kit-gules.vercel.app` | Fallback used by `lib/utils/domain.ts` |
 | `NEXT_PUBLIC_APP_NAME` | `Next.js Starter Kit` | |
 | `NEXT_BETTER_APP_URL` | `https://yourdomain.com` | Better Auth client base URL |
 | `BETTER_AUTH_SECRET` | (random ≥32 chars) | Rotate per environment |

@@ -63,9 +63,9 @@ environments:
     branch: ""
     auto_deploy: false
   production:
-    url: ""
-    branch: ""
-    auto_deploy: false
+    url: https://nextjs-starter-kit-gules.vercel.app
+    branch: main
+    auto_deploy: true
 
 integrations:
   ci_cd: none

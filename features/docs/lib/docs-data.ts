@@ -429,6 +429,11 @@ const { success, data } = await res.json();`,
         type: "p",
         text: "Target platform is Vercel (zero-config Next.js deploy — no vercel.json needed). Production defaults: Resend for email, AWS S3 for uploads, managed Postgres over standard TCP (Neon recommended). Full details: docs/DEPLOYMENT.md.",
       },
+      {
+        type: "note",
+        variant: "info",
+        text: "Current production deployment: https://nextjs-starter-kit-gules.vercel.app (first deploy 2026-08-25) — use as the live reference when setting NEXT_PUBLIC_* URL variables.",
+      },
       { type: "h2", text: "Provider configuration" },
       {
         type: "table",
