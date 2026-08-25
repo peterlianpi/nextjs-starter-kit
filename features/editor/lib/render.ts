@@ -11,9 +11,15 @@ import { buildExtensions, type TiptapJSON } from "./extensions";
 // handlers — never in client bundle code.
 
 export function renderPostContent(content: string | TiptapJSON): string {
+  if (!content) return "";
+
   let doc: TiptapJSON;
 
   if (typeof content === "string") {
+    // If content starts with '<' it's already HTML — return as-is
+    if (content.trimStart().startsWith("<")) {
+      return content;
+    }
     try {
       doc = JSON.parse(content) as TiptapJSON;
     } catch {
