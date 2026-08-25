@@ -76,6 +76,9 @@ Update this file after every meaningful implementation change.
 - [x] Bug-fix round (2026-08-25): (1) P1017 connection pooling — `lib/prisma.ts` + `prisma/seed.ts` now create a `pg.Pool` and pass it to `PrismaPg` instead of a raw connection string; seed closes the pool via `pool.end()`. (2) auth-client duplicate client removed — `lib/auth-client.ts` re-exports signIn/signUp/signOut/useSession/requestPasswordReset/resetPassword/changePassword from the single configured `authClient` (was creating an unconfigured second client). (3) Conditional Google button — `lib/auth.ts` exports `isGoogleEnabled`; login/signup server pages pass `showGoogle={isGoogleEnabled}` through wrappers into `LoginPage`/`RegisterForm`, which render the divider + Google button only when enabled (defaults hidden when Google env vars are absent). lint + build green.
 
 - [x] Email + DB + API test pass (2026-08-25): test email sent to peterpausianlian2020@gmail.com via SMTP (message ID 74ea99a1-197b-4ab8-89f7-7206c34aa5c8@gmail.com); `bunx tsx prisma/seed.ts` ran successfully against live DB for the first time (4 demo users, 3 categories, 5 tags, 6 posts, Acme Inc. org, 120 system metrics); `/api/health` returned 200; `/login` and `/blog/*` pages rendered. `scripts/test-email.ts` added for future SMTP verification. lint + build green.
+- [x] Cloudflare R2 upload provider configured (2026-08-25): bucket `nextjs-starter-kit` at `nextjs-starter-kit-s3.peterlianpi.site`; `UPLOAD_PROVIDER=r2` in .env; `scripts/test-upload.ts` verifies upload + public access end-to-end; `.env.example` updated with R2 as active provider. Committed: `37129a5`.
+
+- [x] Better Auth schema migration (2026-08-25): Added `issuer` field to Account model and `lastRequest` BigInt field to RateLimit model (required by Better Auth v1.7); seed updated to set `accountId: u.id` and `issuer: "local:credential"` for credential accounts; new migration `20260825055711_add_account_issuer` applied.
 
 ## Next Up
 
@@ -100,3 +103,5 @@ Update this file after every meaningful implementation change.
 
 - Bootstrap: `D:\peter-gtg\pcore\bootstrap-project.ps1`
 - Portfolio assignment tracking: `D:\peter-gtg\context\assignments.md`
+- Dev server SMTP config: smtp.gmail.com:587 via pcore.system@gmail.com (app password)
+- R2 bucket: nextjs-starter-kit, public domain nextjs-starter-kit-s3.peterlianpi.site
