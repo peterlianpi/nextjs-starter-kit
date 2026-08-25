@@ -74,6 +74,8 @@ Update this file after every meaningful implementation change.
 
 - [x] Card routing audit + fix (2026-08-25): home cards carry no hrefs and docs index derives slugs from `getDocsByCategory()` — both verified clean. Dashboard "Available Features" cards fixed: 7 placeholder `/dashboard` links rerouted to real targets (`/admin/media`, `/admin/posts`, `/docs/cms-features`, `/docs/database`, `/docs/api-and-rpc`). Seed attempt failed with P1017 (DATABASE_URL set but server closes connection — DB unreachable/paused locally); needs a reachable Postgres to run `bun run db:seed`. lint + build green.
 
+- [x] Bug-fix round (2026-08-25): (1) P1017 connection pooling — `lib/prisma.ts` + `prisma/seed.ts` now create a `pg.Pool` and pass it to `PrismaPg` instead of a raw connection string; seed closes the pool via `pool.end()`. (2) auth-client duplicate client removed — `lib/auth-client.ts` re-exports signIn/signUp/signOut/useSession/requestPasswordReset/resetPassword/changePassword from the single configured `authClient` (was creating an unconfigured second client). (3) Conditional Google button — `lib/auth.ts` exports `isGoogleEnabled`; login/signup server pages pass `showGoogle={isGoogleEnabled}` through wrappers into `LoginPage`/`RegisterForm`, which render the divider + Google button only when enabled (defaults hidden when Google env vars are absent). lint + build green.
+
 ## Next Up
 
 1. Unit 15 backlog

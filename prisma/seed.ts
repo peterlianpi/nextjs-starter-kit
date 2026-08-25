@@ -2,11 +2,14 @@ import { PrismaClient } from "../lib/generated/prisma/client";
 import { PostStatus, UserRole } from "../lib/generated/prisma/enums";
 import { hashPassword } from "better-auth/crypto";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 import "dotenv/config";
 
-const adapter = new PrismaPg({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
+
+const adapter = new PrismaPg(pool);
 
 const prisma = new PrismaClient({
   adapter,
@@ -411,4 +414,5 @@ main()
   .catch(() => process.exit(1))
   .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
   });

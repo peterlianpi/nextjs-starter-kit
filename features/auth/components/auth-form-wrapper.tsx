@@ -12,6 +12,7 @@ import { ResetPasswordForm } from "./reset-password-form";
 interface RegisterFormWrapperProps {
   defaultEmail?: string;
   defaultName?: string;
+  showGoogle?: boolean;
   className?: string;
 }
 
@@ -26,6 +27,7 @@ export function RegisterFormWrapper(props: RegisterFormWrapperProps) {
 interface LoginPageWrapperProps {
   showRegisterLink?: boolean;
   showForgotPasswordLink?: boolean;
+  showGoogle?: boolean;
   redirectUrl?: string;
   className?: string;
 }

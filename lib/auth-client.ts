@@ -14,4 +14,4 @@ export const {
   requestPasswordReset,
   resetPassword,
   changePassword,
-} = createAuthClient();
+} = authClient;

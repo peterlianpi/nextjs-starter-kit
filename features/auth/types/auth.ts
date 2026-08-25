@@ -56,6 +56,7 @@ export interface BaseProps {
 export interface LoginPageProps {
   showRegisterLink?: boolean;
   showForgotPasswordLink?: boolean;
+  showGoogle?: boolean;
   redirectUrl?: string;
   className?: string;
 }
@@ -65,6 +66,7 @@ export interface RegisterFormProps {
   defaultEmail?: string;
   defaultName?: string;
   showLoginLink?: boolean;
+  showGoogle?: boolean;
   className?: string;
 }
 

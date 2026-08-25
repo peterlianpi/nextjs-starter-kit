@@ -49,6 +49,12 @@ const socialProviders = {
     : {}),
 };
 
+// True when Google OAuth credentials are configured; used by server
+// components to decide whether to render the "Continue with Google" button.
+export const isGoogleEnabled = !!(
+  process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+);
+
 export const auth = betterAuth({
   socialProviders,
   database: prismaAdapter(prisma, {
