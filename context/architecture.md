@@ -6,6 +6,7 @@
 |-------|------------|------|
 | Framework | Next.js 16 (App Router, React 19) | Routing, RSC, server components |
 | UI | Tailwind CSS v4 + shadcn/ui | Styling and accessible primitives |
+| Motion | framer-motion + three (landing only, client-only dynamic import) | Hero parallax/fade, staggered reveals, WebGL particle background — reduced-motion aware |
 | Auth | Better Auth (`lib/auth.ts` / `lib/auth-client.ts`) | Sessions, email/password, RBAC |
 | Database | PostgreSQL + Prisma 7 (`provider = "prisma-client"`, `@prisma/adapter-pg`) | Persistence, migrations |
 | API | Hono 4 (`app/api/[[...route]]/route.ts`) | Type-safe REST + RPC client |

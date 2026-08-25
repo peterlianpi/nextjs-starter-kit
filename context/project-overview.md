@@ -52,6 +52,7 @@ A production-ready Next.js 16 starter kit providing secure authentication (Bette
 
 ### UI & Analytics
 - shadcn/ui + Tailwind v4, light/dark themes (next-themes)
+- Animated landing page: framer-motion scroll reveals + Three.js particle hero background (client-only, lazy-loaded, reduced-motion fallback)
 - Dashboard analytics with recharts, data tables with sorting/filtering/pagination
 
 ## Scope

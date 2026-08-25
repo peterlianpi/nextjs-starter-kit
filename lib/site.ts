@@ -20,7 +20,7 @@ export const site = {
   lang: "en" as const,
 
   // Branding
-  creator: "Peter Lianpi",
+  creator: "Peter Pau Sian Lian",
   publisher: "Next.js Starter Kit",
 
   // Social / Open Graph defaults
