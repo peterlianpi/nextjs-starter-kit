@@ -90,6 +90,7 @@ Update this file after every meaningful implementation change.
 - [x] OpenAPI docs (2026-08-25): hand-authored OpenAPI 3.1 spec in lib/openapi.ts (health/auth/posts/admin/upload/search/keys/webhooks), served as JSON at /api/openapi and rendered via @hono/swagger-ui at /api/docs with theme-aware styling (prefers-color-scheme + theme-preset); in-app docs gained an "API Reference" page with curl examples; README API bullet updated. lint + build green.
 
 - [x] Unit 16.3 — notifications complete (2026-08-25): notifications router mounted in catch-all route and rewritten to house conventions; TanStack Query hook (`features/notifications/`); bell popover in app sidebar with unread badge; mark-read and mark-all-read flows. Runtime verified: build green; curl — list OK, read-all updatedCount:1, unread-count → 0.
+- [x] Unit 16.3 finish (2026-08-25): cursor pagination API + infinite-query hook + notification-item/list load-more; mobile Drawer bell; `/notifications` page; Notifications (Bell) entry added to sidebar userNavMain. lint (0 errors) + build green.
 
 ## Next Up
 
