@@ -46,6 +46,7 @@ import {
 } from "lucide-react";
 import { formatBytes } from "@/lib/services/file-upload";
 import { toast } from "sonner";
+import { UploadWithCrop } from "@/features/media/components/upload-with-crop";
 
 interface MediaItem {
   id: string;
@@ -72,6 +73,7 @@ export default function MediaManagementPage() {
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<MediaItem | null>(null);
   const [filter, setFilter] = useState<string>("all");
+  const [cropFile, setCropFile] = useState<File | null>(null);
 
   // Fetch media on mount
   useEffect(() => {
@@ -95,6 +97,11 @@ export default function MediaManagementPage() {
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setUploading(true);
     for (const file of acceptedFiles) {
+      // Route images through the crop pipeline (Unit 13); other files upload directly.
+      if (file.type.startsWith("image/")) {
+        setCropFile(file);
+        continue;
+      }
       try {
         const formData = new FormData();
         formData.append("file", file);
@@ -229,6 +236,28 @@ export default function MediaManagementPage() {
               Uploading...
             </div>
           )}
+          <div className="mt-4">
+            <UploadWithCrop
+              externalFile={cropFile}
+              onExternalFileConsumed={() => setCropFile(null)}
+              onUploaded={(rec) =>
+                setMedia((prev) => [
+                  {
+                    id: rec.id,
+                    originalName: rec.originalName,
+                    fileName: rec.fileName ?? rec.originalName,
+                    mimeType: rec.mimeType ?? "image/jpeg",
+                    fileSize: rec.fileSize ?? 0,
+                    url: rec.url,
+                    storageType: rec.storageType ?? "unknown",
+                    isPublic: rec.isPublic ?? true,
+                    createdAt: rec.createdAt ?? new Date().toISOString(),
+                  },
+                  ...prev,
+                ])
+              }
+            />
+          </div>
         </CardContent>
       </Card>
 

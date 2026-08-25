@@ -52,13 +52,11 @@ Update this file after every meaningful implementation change.
 
 - [x] Unit 10 — rich text editor complete (2026-08-24): TipTap editor module (`features/editor/` with schemas, hooks, components), posts CRUD API (`app/api/[[...route]]/posts.ts`, mounted in catch-all route), admin pages list/new/edit (`app/(protected)/admin/posts/`), `blog/[slug]` SSR render + `.prose-post` styles; lint + build green. Root cause note: Hono RPC calls go through `client.api.posts.*` because all routes mount under basePath `/api`.
 
-## In Progress
-
-- (none)
+- [x] Unit 13 — image crop complete (2026-08-24): `features/media/` module (use-crop.ts hook + helpers, image-cropper.tsx modal, upload-with-crop.tsx pipeline, media-library.tsx); admin media page routes dropped images through the crop pipeline via `cropFile` state → `<UploadWithCrop>` and prepends uploaded records to the existing grid/list. Note: `uploadImageFile()` in `features/editor/hooks/use-editor.ts` is the documented integration point for editor-side cropping.
 
 ## Next Up
 
-1. Unit 13 — image crop: see `context/specs/13-image-crop.md`; then 11 ∥ 12, 14 independent (see `00-build-plan.md` Workstream C)
+1. Units 11 ∥ 12 — print ∥ social (parallel), then Unit 14 themes (see `context/specs/00-build-plan.md` Workstream C)
 
 ## Open Questions
 
