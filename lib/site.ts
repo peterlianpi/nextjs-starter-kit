@@ -11,7 +11,7 @@ export const site = {
   name: "Next.js Starter Kit",
   shortName: "StarterKit",
   description:
-    "A production-ready Next.js starter kit with authentication, admin panel, and modular architecture.",
+    "Production-ready Next.js 16 starter kit with Better Auth, RBAC, admin panel, organizations, blog CMS, multi-provider uploads and email, theme presets, Hono RPC API, and Prisma 7 + PostgreSQL.",
 
   // URL configuration
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
@@ -20,7 +20,7 @@ export const site = {
   lang: "en" as const,
 
   // Branding
-  creator: "Starter Kit Team",
+  creator: "Peter Lianpi",
   publisher: "Next.js Starter Kit",
 
   // Social / Open Graph defaults
@@ -39,12 +39,31 @@ export const site = {
   // Keywords
   keywords: [
     "nextjs",
+    "nextjs starter kit",
+    "next.js 16",
+    "react 19",
     "starter kit",
+    "boilerplate",
     "authentication",
+    "better auth",
+    "rbac",
     "admin panel",
+    "admin dashboard",
+    "multi-tenant organizations",
+    "blog cms",
+    "rich text editor",
+    "file uploads",
+    "theme presets",
+    "hono api",
+    "hono rpc",
     "typescript",
     "prisma",
+    "prisma 7",
     "postgresql",
+    "tailwind css",
+    "shadcn ui",
+    "tanstack query",
+    "vercel deployment",
   ],
 } as const;
 

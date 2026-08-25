@@ -1,11 +1,14 @@
 import Link from "next/link";
 import {
-  Shield,
-  Zap,
-  Code,
-  Database,
+  ShieldCheck,
+  Users,
+  KeyRound,
+  FileText,
+  Palette,
   Mail,
-  LayoutDashboard,
+  Database,
+  Code2,
+  Zap,
   ArrowRight,
   BookOpen,
   Search,
@@ -13,11 +16,9 @@ import {
   Table2,
   FileSpreadsheet,
   Clock,
-  Key,
   Webhook,
   Bell,
   BarChart3,
-  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,46 +31,105 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { site } from "@/lib/site";
 
-const coreFeatures = [
+/** Real public repository — kept in sync with features/docs REPO_URL source. */
+const GITHUB_URL = "https://github.com/peterlianpi/nextjs-starter-kit";
+
+type Feature = {
+  icon: typeof ShieldCheck;
+  title: string;
+  description: string;
+};
+
+const featureGroups: Array<{
+  id: string;
+  title: string;
+  tagline: string;
+  features: Feature[];
+}> = [
   {
-    icon: Shield,
-    title: "Authentication",
-    description:
-      "Better Auth with email/password, email verification, password reset, and session management.",
+    id: "auth-access",
+    title: "Auth & Access",
+    tagline: "Secure sessions and role-based control out of the box",
+    features: [
+      {
+        icon: ShieldCheck,
+        title: "Authentication",
+        description:
+          "Better Auth with email/password, Google OAuth, email verification, password reset, and session management.",
+      },
+      {
+        icon: KeyRound,
+        title: "RBAC & API Keys",
+        description:
+          "Six roles from USER to SUPER_ADMIN, permission helpers, plus hashed API keys with expiration and usage tracking.",
+      },
+      {
+        icon: Users,
+        title: "Organizations",
+        description:
+          "Multi-tenant organizations with memberships and an invitation flow backed by dedicated models.",
+      },
+    ],
   },
   {
-    icon: LayoutDashboard,
-    title: "Admin Panel",
-    description:
-      "Role-based access control with admin dashboard and user management out of the box.",
+    id: "content-media",
+    title: "Content & Media",
+    tagline: "Publish, upload, and personalize — all DB-backed",
+    features: [
+      {
+        icon: FileText,
+        title: "Blog CMS",
+        description:
+          "TipTap rich text editor, posts with categories and tags, server-rendered pages, print styles, and social sharing.",
+      },
+      {
+        icon: Upload,
+        title: "Multi-Provider Uploads",
+        description:
+          "Image cropping pipeline and pluggable storage: Cloudinary, Cloudflare R2, AWS S3, or local disk via one env var.",
+      },
+      {
+        icon: Palette,
+        title: "Theme Presets",
+        description:
+          "Light/dark/system modes on top of four oklch palettes — Default, Sepia, Nord, Rosé Pine — switchable from the navbar.",
+      },
+      {
+        icon: Mail,
+        title: "Email Notifications",
+        description:
+          "Transactional email through Nodemailer or Resend behind a single abstraction; templates for auth and alerts included.",
+      },
+    ],
   },
   {
-    icon: Database,
-    title: "Prisma + PostgreSQL",
-    description:
-      "Type-safe database access with Prisma ORM, migrations, and a clean schema.",
-  },
-  {
-    icon: Code,
-    title: "Hono API",
-    description:
-      "Type-safe API layer with Hono RPC pattern — no manual fetch code needed.",
-  },
-  {
-    icon: Zap,
-    title: "TanStack Query",
-    description:
-      "Server state management with automatic caching, invalidation, and optimistic updates.",
-  },
-  {
-    icon: Mail,
-    title: "Email System",
-    description:
-      "Nodemailer integration with HTML email templates for auth and notifications.",
+    id: "developer-experience",
+    title: "Developer Experience",
+    tagline: "Typed end-to-end, from schema to UI",
+    features: [
+      {
+        icon: Database,
+        title: "Prisma 7 + PostgreSQL",
+        description:
+          "Type-safe database access with the modern prisma-client generator, pg driver adapter, migrations, and seed script.",
+      },
+      {
+        icon: Code2,
+        title: "Hono RPC API",
+        description:
+          "One typed catch-all API surface with Zod validation — call endpoints from the client without writing fetch code.",
+      },
+      {
+        icon: Zap,
+        title: "Modern React Stack",
+        description:
+          "React 19 Server Components, TanStack Query caching, React Hook Form + Zod validation, Tailwind v4 + shadcn/ui.",
+      },
+    ],
   },
 ];
 
-const newFeatures = [
+const extendedFeatures: Feature[] = [
   {
     icon: Search,
     title: "Search",
@@ -77,16 +137,10 @@ const newFeatures = [
       "Full-text search with PostgreSQL, debounced queries, and result highlighting.",
   },
   {
-    icon: Upload,
-    title: "File Upload",
-    description:
-      "Drag-and-drop file uploads with validation, progress tracking, and S3/local storage support.",
-  },
-  {
     icon: Table2,
     title: "Data Tables",
     description:
-      "Sortable, filterable, paginated data tables with loading states and empty states.",
+      "Sortable, filterable, paginated data tables with loading and empty states.",
   },
   {
     icon: FileSpreadsheet,
@@ -98,37 +152,25 @@ const newFeatures = [
     icon: Clock,
     title: "Activity Timeline",
     description:
-      "Beautiful timeline component for audit logs and activity feeds with type indicators.",
-  },
-  {
-    icon: Key,
-    title: "API Keys",
-    description:
-      "API key management with permissions, expiration, usage tracking, and prefix identification.",
+      "Timeline component for audit logs and activity feeds with type indicators.",
   },
   {
     icon: Webhook,
     title: "Webhooks",
     description:
-      "Event-driven webhook system with retry logic, HMAC signatures, and delivery tracking.",
+      "Event-driven webhooks with retry logic, HMAC signatures, and delivery tracking.",
   },
   {
     icon: Bell,
     title: "Notifications",
     description:
-      "In-app and email notifications with read/unread status and type categorization.",
+      "In-app and email notifications with read/unread status and type categories.",
   },
   {
     icon: BarChart3,
     title: "Analytics",
     description:
-      "Data scientist and analyst agent patterns for dashboards, charts, and KPI tracking.",
-  },
-  {
-    icon: Settings,
-    title: "User Preferences",
-    description:
-      "Per-user settings for theme, language, timezone, and notification preferences.",
+      "Dashboards, charts, and KPI tracking built with recharts patterns.",
   },
 ];
 
@@ -150,181 +192,253 @@ const techStack = [
   "Playwright",
 ];
 
+const quickStartSteps = [
+  {
+    label: "Install dependencies",
+    command: "bun install",
+  },
+  {
+    label: "Configure your environment",
+    command: "cp .env.example .env   # fill DATABASE_URL + secrets",
+  },
+  {
+    label: "Set up the database",
+    command: "bunx prisma migrate dev",
+  },
+  {
+    label: "Start the dev server",
+    command: "bun run dev",
+  },
+];
+
 export function StarterHome() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}
-      <section className="container mx-auto px-4 py-24 text-center">
-        <Badge variant="secondary" className="mb-4">
-          Production Ready
+      <section className="container mx-auto px-4 pb-16 pt-14 text-center sm:pb-20 sm:pt-24">
+        <Badge
+          variant="secondary"
+          className="mb-4 inline-flex min-h-[44px] items-center gap-1.5 px-3"
+        >
+          <span
+            aria-hidden="true"
+            className="h-2 w-2 rounded-full bg-emerald-500"
+          />
+          Production Ready — deployed on Vercel
         </Badge>
-        <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
+        <h1 className="mb-6 text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
           {site.name}
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+        <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
           {site.description}
         </p>
-        <div className="flex items-center justify-center gap-4">
-          <Button asChild size="lg">
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+          <Button asChild size="lg" className="min-h-[44px] w-full sm:w-auto">
             <Link href="/signup">
               Get Started <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
-          <Button variant="outline" asChild size="lg">
+          <Button
+            variant="outline"
+            asChild
+            size="lg"
+            className="min-h-[44px] w-full sm:w-auto"
+          >
             <Link href="/login">Sign In</Link>
           </Button>
         </div>
       </section>
 
       {/* Tech Stack */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold mb-2">Tech Stack</h2>
-          <p className="text-muted-foreground">
+      <section className="container mx-auto px-4 py-12 sm:py-16" aria-labelledby="tech-stack-heading">
+        <div className="mb-8 text-center">
+          <h2 id="tech-stack-heading" className="mb-2 text-xl font-bold sm:text-2xl">
+            Tech Stack
+          </h2>
+          <p className="text-sm text-muted-foreground sm:text-base">
             Built with modern, battle-tested tools
           </p>
         </div>
-        <div className="flex flex-wrap justify-center gap-2">
+        <ul className="flex flex-wrap justify-center gap-2">
           {techStack.map((tech) => (
-            <Badge key={tech} variant="outline" className="px-3 py-1">
-              {tech}
-            </Badge>
+            <li key={tech}>
+              <Badge variant="outline" className="px-3 py-1 text-xs sm:text-sm">
+                {tech}
+              </Badge>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      {/* Core Features */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-2">Core Features</h2>
-          <p className="text-muted-foreground">
-            Authentication, admin, database, and API — ready out of the box
-          </p>
-        </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {coreFeatures.map((feature) => (
-            <Card key={feature.title}>
-              <CardHeader>
-                <feature.icon className="h-8 w-8 mb-2 text-primary" />
-                <CardTitle>{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  {feature.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+      {/* Feature groups */}
+      {featureGroups.map((group) => (
+        <section
+          key={group.id}
+          className="container mx-auto px-4 py-12 sm:py-16"
+          aria-labelledby={`${group.id}-heading`}
+        >
+          <div className="mb-8 text-center sm:mb-10">
+            <h2
+              id={`${group.id}-heading`}
+              className="mb-2 text-2xl font-bold tracking-tight sm:text-3xl"
+            >
+              {group.title}
+            </h2>
+            <p className="text-sm text-muted-foreground sm:text-base">
+              {group.tagline}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {group.features.map((feature) => (
+              <FeatureCard key={feature.title} feature={feature} />
+            ))}
+          </div>
+        </section>
+      ))}
 
-      {/* New Features */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-2">Extended Features</h2>
-          <p className="text-muted-foreground">
+      {/* Extended Features */}
+      <section
+        className="container mx-auto px-4 py-12 sm:py-16"
+        aria-labelledby="extended-heading"
+      >
+        <div className="mb-8 text-center sm:mb-10">
+          <h2 id="extended-heading" className="mb-2 text-2xl font-bold tracking-tight sm:text-3xl">
+            Extended Features
+          </h2>
+          <p className="text-sm text-muted-foreground sm:text-base">
             Search, uploads, tables, exports, webhooks, and more
           </p>
         </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {newFeatures.map((feature) => (
-            <Card key={feature.title}>
-              <CardHeader>
-                <feature.icon className="h-8 w-8 mb-2 text-primary" />
-                <CardTitle>{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  {feature.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+          {extendedFeatures.map((feature) => (
+            <FeatureCard key={feature.title} feature={feature} compact />
           ))}
         </div>
       </section>
 
       {/* Quick Start */}
-      <section className="container mx-auto px-4 py-16">
-        <Card className="max-w-2xl mx-auto">
+      <section
+        className="container mx-auto px-4 py-12 sm:py-16"
+        aria-labelledby="quick-start-heading"
+      >
+        <Card className="mx-auto max-w-2xl">
           <CardHeader>
-            <CardTitle>Quick Start</CardTitle>
-            <CardDescription>Get up and running in minutes</CardDescription>
+            <CardTitle id="quick-start-heading">Quick Start</CardTitle>
+            <CardDescription>
+              Get up and running in minutes with Bun
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-medium">
-                1
-              </span>
-              <span>
-                Set up your <code className="text-sm">.env</code> with database
-                and email credentials
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-medium">
-                2
-              </span>
-              <span>
-                Run <code className="text-sm">npx prisma migrate dev</code> to
-                set up your database
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-medium">
-                3
-              </span>
-              <span>
-                Start the dev server with <code className="text-sm">npm run dev</code>
-              </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-medium">
-                4
-              </span>
-              <span>Build your features using the patterns shown in the codebase</span>
-            </div>
+            {quickStartSteps.map((step, i) => (
+              <div key={step.label} className="flex items-start gap-3">
+                <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-medium">
+                  {i + 1}
+                </span>
+                <span className="min-w-0 flex-1 break-words text-sm sm:text-base">
+                  {step.label}:{" "}
+                  <code className="rounded bg-muted px-1.5 py-0.5 text-xs sm:text-sm">
+                    {step.command}
+                  </code>
+                </span>
+              </div>
+            ))}
           </CardContent>
         </Card>
       </section>
 
       {/* CTA */}
-      <section className="container mx-auto px-4 py-16 text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to Build?</h2>
-        <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+      <section className="container mx-auto px-4 py-12 text-center sm:py-16">
+        <h2 className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl">
+          Ready to Build?
+        </h2>
+        <p className="mx-auto mb-8 max-w-xl text-sm text-muted-foreground sm:text-base">
           Start with authentication, explore the admin panel, then build your
           own features using the established patterns.
         </p>
-        <div className="flex items-center justify-center gap-4">
-          <Button asChild>
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+          <Button asChild size="lg" className="min-h-[44px] w-full sm:w-auto">
             <Link href="/dashboard">
               Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
-          <Button variant="outline" asChild>
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+          <Button
+            variant="outline"
+            asChild
+            size="lg"
+            className="min-h-[44px] w-full sm:w-auto"
+          >
+            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
               <GithubIcon className="mr-2 h-4 w-4" /> GitHub
             </a>
           </Button>
-          <Button variant="outline" asChild>
-            <a href="/docs" target="_blank" rel="noopener noreferrer">
+          <Button
+            variant="outline"
+            asChild
+            size="lg"
+            className="min-h-[44px] w-full sm:w-auto"
+          >
+            <Link href="/docs">
               <BookOpen className="mr-2 h-4 w-4" /> Docs
-            </a>
+            </Link>
           </Button>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        <p>
-          &copy; {new Date().getFullYear()} {site.name}. Built with Next.js,
-          Prisma, and Better Auth.
-        </p>
+      <footer className="border-t py-8">
+        <div className="container mx-auto flex flex-col items-center gap-3 px-4 text-center text-sm text-muted-foreground sm:flex-row sm:justify-between sm:text-left">
+          <p>
+            &copy; {new Date().getFullYear()} {site.name}. Built by{" "}
+            {site.creator}.
+          </p>
+          <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+            <Link
+              href="/docs"
+              className="min-h-[44px] leading-[44px] transition-colors hover:text-foreground"
+            >
+              Docs
+            </Link>
+            <Link
+              href="/blog"
+              className="min-h-[44px] leading-[44px] transition-colors hover:text-foreground"
+            >
+              Blog
+            </Link>
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-[44px] items-center gap-1.5 transition-colors hover:text-foreground"
+            >
+              <GithubIcon className="h-4 w-4" /> GitHub
+            </a>
+          </nav>
+        </div>
       </footer>
     </div>
+  );
+}
+
+function FeatureCard({
+  feature,
+  compact = false,
+}: {
+  feature: Feature;
+  compact?: boolean;
+}) {
+  const Icon = feature.icon;
+  return (
+    <Card className="h-full">
+      <CardHeader>
+        <Icon className="mb-2 h-7 w-7 text-primary sm:h-8 sm:w-8" aria-hidden="true" />
+        <CardTitle className="text-base sm:text-lg">{feature.title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <CardDescription className={compact ? "text-sm" : "text-sm sm:text-base"}>
+          {feature.description}
+        </CardDescription>
+      </CardContent>
+    </Card>
   );
 }
 

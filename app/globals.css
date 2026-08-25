@@ -412,7 +412,7 @@
   a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 0.85em;
-    color: #555;
+    color: var(--muted-foreground);
     word-break: break-all;
   }
 }
