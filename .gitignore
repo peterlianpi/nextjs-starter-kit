@@ -46,6 +46,7 @@ next-env.d.ts
 docs/*
 !docs/DEPLOYMENT.md
 !docs/PERFORMANCE.md
+!docs/ENV-VARS.md
 features/notifications/api/__tests__/test-specifications.md
 .env copy
 
