@@ -39,6 +39,10 @@ Note: none of these throw at build time — Next.js prerenders fine and the fail
 |-----|-----------|------------------|-----------------|------------------------|
 | `BETTER_AUTH_SECRET` | **Required** | Random ≥32-char string: `openssl rand -base64 32` | Generate locally | Auth cannot sign sessions/tokens → 500s on all auth endpoints incl. login |
 | `BETTER_AUTH_API_KEY` | Optional (not read anywhere in code today) | API key string | Generate | Nothing currently; reserved |
+| `GOOGLE_CLIENT_ID` | Optional (Google login) | `1234567890-abc123.apps.googleusercontent.com` | console.cloud.google.com → APIs & Services → Credentials → OAuth 2.0 Client ID. Authorized redirect URI must be `https://nextjs-starter-kit-gules.vercel.app/api/auth/callback/google` (add localhost variant for dev) | "Continue with Google" button fails cleanly; email/password auth unaffected |
+| `GOOGLE_CLIENT_SECRET` | Optional (with client ID) | `GOCSPX-xxxxxxxx` | Same Google Cloud Credentials page, alongside the client ID | Same as above |
+
+Both vars must be present together — `lib/auth.ts` only registers the Google provider when both are set.
 
 ## Database
 

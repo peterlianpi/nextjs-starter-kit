@@ -70,6 +70,8 @@ Update this file after every meaningful implementation change.
 
 - [x] Seeder rewrite (2026-08-25): `prisma/seed.ts` now seeds 4 loginable demo users (admin@example.com → SUPER_ADMIN, editor@example.com → EDITOR, mod@example.com → MODERATOR, user@example.com → USER) with Better Auth credential Account rows, all using password `demo1234`; 3 categories + 5 tags + 6 TipTap-HTML posts (PUBLISHED/DRAFT mix); "Acme Inc." org with owner/member + pending invitation. Old random-user generation removed; audit logs/notifications/system metrics are deleteMany'd and re-created idempotently scoped to the demo users. Added `db:seed` npm script (`bunx tsx prisma/seed.ts`). Not yet run against a live DB locally (P1017 connection closed) — verifier should run `bunx tsx prisma/seed.ts`. lint green.
 
+- [x] Google OAuth support (2026-08-25): Better Auth `socialProviders.google` in lib/auth.ts (conditional on GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET being set — feature is opt-in via env); Google sign-in buttons on login/register forms (rendered only when configured, surfaced via a server flag); GOOGLE_CLIENT_ID + GOOGLE_CLIENT_SECRET documented in .env.example and docs/ENV-VARS.md; in-app authentication doc page gained an "Enable Google sign-in" walkthrough (OAuth client creation, callback URIs for prod + localhost, env vars, redeploy, testing-mode consent caveat). lint + build green.
+
 ## Next Up
 
 1. Unit 15 backlog

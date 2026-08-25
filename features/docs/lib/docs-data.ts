@@ -320,6 +320,18 @@ if (!(await checkIsAdmin())) redirect("/dashboard");
 // canSetRole(), canBanUsers(), canUploadFiles(), hasPermission(...)
 import { hasPermission } from "@/lib/auth/admin";`,
       },
+      { type: "h3", text: "Enable Google sign-in" },
+      { type: "p", text: "Google OAuth is optional and enabled automatically once the credentials are present in the environment." },
+      {
+        type: "list",
+        items: [
+          "Create an OAuth client at console.cloud.google.com → APIs & Services → Credentials",
+          "Add an Authorized redirect URI: https://nextjs-starter-kit-gules.vercel.app/api/auth/callback/google (plus http://localhost:3000/api/auth/callback/google for local dev)",
+          "Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables",
+          "Redeploy so the new env vars are picked up — the Google buttons appear on /login and /signup only when both are set",
+          "While the OAuth consent screen is in Testing mode, only explicitly listed test users can sign in with Google",
+        ],
+      },
       {
         type: "note",
         variant: "warning",

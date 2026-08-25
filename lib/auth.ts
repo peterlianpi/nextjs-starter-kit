@@ -31,7 +31,26 @@ async function sendTwoFactorOtpEmail(
   });
 }
 
+// Google OAuth is only enabled when both credentials are configured, so
+// builds/deploys without Google set up keep working (email/password only).
+const googleCredentials = {
+  clientId: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+};
+
+const socialProviders = {
+  ...(googleCredentials.clientId && googleCredentials.clientSecret
+    ? {
+        google: {
+          clientId: googleCredentials.clientId,
+          clientSecret: googleCredentials.clientSecret,
+        },
+      }
+    : {}),
+};
+
 export const auth = betterAuth({
+  socialProviders,
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
