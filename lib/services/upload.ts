@@ -57,7 +57,7 @@ export async function uploadFile(
 
       const fileName = generateFileName(originalName);
       const uploadDir = process.env.UPLOAD_DIR || "./public/uploads";
-      const filePath = path.join(uploadDir, fileName);
+      const filePath = path.join(/*turbopackIgnore: true*/ uploadDir, fileName);
 
       await fs.mkdir(uploadDir, { recursive: true });
       await fs.writeFile(filePath, file);
@@ -89,7 +89,7 @@ export async function deleteFile(key: string): Promise<void> {
       const fs = await import("fs/promises");
       const path = await import("path");
       const uploadDir = process.env.UPLOAD_DIR || "./public/uploads";
-      const filePath = path.join(uploadDir, key);
+      const filePath = path.join(/*turbopackIgnore: true*/ uploadDir, key);
       await fs.unlink(filePath).catch(() => {});
       break;
     }

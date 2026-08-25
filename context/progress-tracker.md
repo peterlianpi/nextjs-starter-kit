@@ -66,6 +66,8 @@ Update this file after every meaningful implementation change.
 
 - [x] Docs usage-first content pass + theme audit (2026-08-25): added "How to use" walkthroughs to getting-started (full first-run steps), authentication (authClient/auth.api.getSession/checkIsAdmin code samples), api-and-rpc (add-endpoint example + client.api.* consumption with basePath gotcha), cms-features (author end-to-end, cropped uploads, programmatic theme switching), cli-generators (realistic model→migration→usage workflow), database (model+migration workflow); theme hardening — warning note text switched from amber palette colors to token-based text-foreground so notes stay readable under sepia/nord/rose-pine presets; all other docs surfaces verified token-only. lint + build green.
 
+- [x] Build fix (2026-08-25): silenced 2 Turbopack "Dynamic filesystem access causes tracing of the whole project" warnings in `lib/services/upload.ts` local provider via `/*turbopackIgnore: true*/` on `path.join()` calls (~lines 60, 92). No behavior change; lint + build green, warnings gone.
+
 ## Next Up
 
 1. Unit 15 backlog
