@@ -30,6 +30,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { site } from "@/lib/site";
+import { Reveal } from "./motion/reveal";
+import { HeroBackground } from "./hero-background";
 
 /** Real public repository — kept in sync with features/docs REPO_URL source. */
 const GITHUB_URL = "https://github.com/peterlianpi/nextjs-starter-kit";
@@ -215,38 +217,41 @@ export function StarterHome() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero */}
-      <section className="container mx-auto px-4 pb-16 pt-14 text-center sm:pb-20 sm:pt-24">
-        <Badge
-          variant="secondary"
-          className="mb-4 inline-flex min-h-[44px] items-center gap-1.5 px-3"
-        >
-          <span
-            aria-hidden="true"
-            className="h-2 w-2 rounded-full bg-emerald-500"
-          />
-          Production Ready — deployed on Vercel
-        </Badge>
-        <h1 className="mb-6 text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          {site.name}
-        </h1>
-        <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-          {site.description}
-        </p>
-        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          <Button asChild size="lg" className="min-h-[44px] w-full sm:w-auto">
-            <Link href="/signup">
-              Get Started <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-          <Button
-            variant="outline"
-            asChild
-            size="lg"
-            className="min-h-[44px] w-full sm:w-auto"
+      <section className="relative overflow-hidden">
+        <HeroBackground />
+        <Reveal className="container relative mx-auto px-4 pb-16 pt-14 text-center sm:pb-20 sm:pt-24">
+          <Badge
+            variant="secondary"
+            className="mb-4 inline-flex min-h-[44px] items-center gap-1.5 px-3"
           >
-            <Link href="/login">Sign In</Link>
-          </Button>
-        </div>
+            <span
+              aria-hidden="true"
+              className="h-2 w-2 rounded-full bg-emerald-500"
+            />
+            Production Ready — deployed on Vercel
+          </Badge>
+          <h1 className="mb-6 text-balance bg-gradient-to-br from-foreground via-foreground to-primary bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl md:text-6xl">
+            {site.name}
+          </h1>
+          <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
+            {site.description}
+          </p>
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+            <Button asChild size="lg" className="min-h-[44px] w-full sm:w-auto">
+              <Link href="/signup">
+                Get Started <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button
+              variant="outline"
+              asChild
+              size="lg"
+              className="min-h-[44px] w-full sm:w-auto"
+            >
+              <Link href="/login">Sign In</Link>
+            </Button>
+          </div>
+        </Reveal>
       </section>
 
       {/* Tech Stack */}
@@ -289,8 +294,10 @@ export function StarterHome() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {group.features.map((feature) => (
-              <FeatureCard key={feature.title} feature={feature} />
+            {group.features.map((feature, i) => (
+              <Reveal key={feature.title} delay={i * 0.08}>
+                <FeatureCard feature={feature} />
+              </Reveal>
             ))}
           </div>
         </section>
@@ -310,8 +317,10 @@ export function StarterHome() {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
-          {extendedFeatures.map((feature) => (
-            <FeatureCard key={feature.title} feature={feature} compact />
+          {extendedFeatures.map((feature, i) => (
+            <Reveal key={feature.title} delay={(i % 4) * 0.08}>
+              <FeatureCard feature={feature} compact />
+            </Reveal>
           ))}
         </div>
       </section>
@@ -428,7 +437,7 @@ function FeatureCard({
 }) {
   const Icon = feature.icon;
   return (
-    <Card className="h-full">
+    <Card className="h-full transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
       <CardHeader>
         <Icon className="mb-2 h-7 w-7 text-primary sm:h-8 sm:w-8" aria-hidden="true" />
         <CardTitle className="text-base sm:text-lg">{feature.title}</CardTitle>
