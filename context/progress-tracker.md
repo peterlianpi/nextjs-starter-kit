@@ -54,9 +54,11 @@ Update this file after every meaningful implementation change.
 
 - [x] Unit 13 — image crop complete (2026-08-24): `features/media/` module (use-crop.ts hook + helpers, image-cropper.tsx modal, upload-with-crop.tsx pipeline, media-library.tsx); admin media page routes dropped images through the crop pipeline via `cropFile` state → `<UploadWithCrop>` and prepends uploaded records to the existing grid/list. Note: `uploadImageFile()` in `features/editor/hooks/use-editor.ts` is the documented integration point for editor-side cropping.
 
+- [x] Units 11 ∥ 12 complete (2026-08-25): Print — `features/print/components/print-button.tsx` (window.print()) + pure `@media print` block in globals.css (centralized hide-list, forced light tokens, break-inside rules, link URL expansion); Social — react-share@5.3.0, `features/social/components/share-buttons.tsx` (X/Facebook/LinkedIn/WhatsApp) + `share-menu.tsx` (native navigator.share on Web Share devices, copy-link fallback with feedback), mounted on blog post page; generateMetadata already emits full OG/Twitter tags. lint + build green.
+
 ## Next Up
 
-1. Units 11 ∥ 12 — print ∥ social (parallel), then Unit 14 themes (see `context/specs/00-build-plan.md` Workstream C)
+1. Unit 14 — theme system (see `context/specs/00-build-plan.md` Workstream C; Units 11 ∥ 12 completed 2026-08-25)
 
 ## Open Questions
 

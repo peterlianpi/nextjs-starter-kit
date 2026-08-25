@@ -6,6 +6,8 @@ import { Separator } from "@/components/ui/separator";
 import prisma from "@/lib/prisma";
 import { site } from "@/lib/site";
 import { PostContent } from "@/features/editor/components/editor-content";
+import { PrintButton } from "@/features/print/components/print-button";
+import { ShareMenu } from "@/features/social/components/share-menu";
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -103,6 +105,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </>
           )}
         </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <PrintButton />
+        </div>
         {post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {post.tags.map(({ tag }) => (
@@ -126,6 +131,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* Body — TipTap JSON rendered server-side to HTML */}
       <PostContent content={post.content} />
+
+      {/* Share */}
+      <ShareMenu
+        url={`${site.url}/blog/${post.slug}`}
+        title={post.title}
+        className="mt-10"
+      />
 
       <footer className="mt-12">
         <Link
