@@ -54,7 +54,7 @@ export function DocsContent({
                 className={cn(
                   "rounded-md border px-4 py-3 text-sm not-prose",
                   block.variant === "warning"
-                    ? "border-amber-500/40 bg-amber-500/10 text-foreground"
+                    ? "border-destructive/30 bg-destructive/5 text-foreground"
                     : "border-primary/30 bg-primary/5 text-foreground",
                 )}
               >
@@ -66,8 +66,9 @@ export function DocsContent({
             );
           case "table":
             return (
-              <table key={i}>
-                <thead>
+              <div key={i} className="overflow-x-auto">
+                <table>
+                  <thead>
                   <tr>
                     {block.headers.map((h, j) => (
                       <th key={j}>{h}</th>
@@ -83,7 +84,8 @@ export function DocsContent({
                     </tr>
                   ))}
                 </tbody>
-              </table>
+                </table>
+              </div>
             );
           default:
             return null;

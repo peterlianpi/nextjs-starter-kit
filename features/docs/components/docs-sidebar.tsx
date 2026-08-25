@@ -40,7 +40,7 @@ export function DocsSidebar({
                     href={href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "block rounded-md px-2 py-1.5 text-sm transition-colors",
+                      "block rounded-md px-2 py-2 text-sm transition-colors lg:py-1.5",
                       active
                         ? "bg-accent font-medium text-accent-foreground"
                         : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",

@@ -69,7 +69,7 @@ function HeadingList({
           <a
             href={`#${h.id}`}
             className={cn(
-              "inline-block py-1 transition-colors hover:text-foreground",
+              "inline-block py-1.5 transition-colors hover:text-foreground xl:py-1",
               activeId === h.id
                 ? "font-medium text-primary"
                 : "text-muted-foreground",
@@ -88,7 +88,7 @@ export function DocsTocMobile() {
   if (headings.length === 0) return null;
   return (
     <details className="mb-6 rounded-md border border-border bg-card p-3 xl:hidden">
-      <summary className="cursor-pointer select-none text-sm font-medium">
+      <summary className="flex min-h-[44px] cursor-pointer select-none items-center text-sm font-medium">
         On this page
       </summary>
       <div className="mt-2">

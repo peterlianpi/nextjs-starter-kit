@@ -245,7 +245,7 @@
 
 @layer components {
   .prose-post {
-    @apply text-foreground/90 leading-relaxed;
+    @apply break-words text-foreground/90 leading-relaxed;
   }
 
   .prose-post > * + * {

@@ -60,7 +60,7 @@ export default async function DocPage({ params }: DocPageProps) {
   const editUrl = `${REPO_URL}/edit/main/features/docs/lib/docs-data.ts`;
 
   return (
-    <article className="py-4">
+    <article className="mx-auto w-full max-w-3xl py-4">
       <header className="mb-6">
         <Badge variant="secondary" className="mb-3 w-fit">
           {doc.category}

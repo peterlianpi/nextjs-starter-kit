@@ -9,7 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { site } from "@/lib/site";
-import { getDocsByCategory } from "@/features/docs/lib/docs-data";
+import {
+  docPages,
+  getDocsByCategory,
+} from "@/features/docs/lib/docs-data";
+import { DocsSearch } from "@/features/docs/components/docs-search";
 
 export const metadata: Metadata = {
   title: `Documentation — ${site.name}`,
@@ -20,6 +24,11 @@ export const metadata: Metadata = {
 
 export default function DocsIndexPage() {
   const groups = getDocsByCategory();
+  const searchable = docPages.map(({ slug, title, description }) => ({
+    slug,
+    title,
+    description,
+  }));
 
   return (
     <article className="py-4">
@@ -30,6 +39,8 @@ export default function DocsIndexPage() {
           setup through deployment and operations.
         </p>
       </header>
+
+      <DocsSearch docs={searchable} variant="page" />
 
       <div className="flex flex-col gap-12">
         {groups.map((group) => (
