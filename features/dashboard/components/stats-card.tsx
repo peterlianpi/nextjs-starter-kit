@@ -69,7 +69,7 @@ export function StatsCard({
       return <Skeleton className="h-8 w-20" />;
     }
     if (error) {
-      return <div className="text-2xl font-bold text-red-500">Error</div>;
+      return <div className="text-2xl font-bold text-destructive">Error</div>;
     }
     if (animate && isNumeric) {
       return <Counter value={numericValue} />;

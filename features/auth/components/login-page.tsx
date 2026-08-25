@@ -179,7 +179,7 @@ export function LoginPage({
                     {...form.register("email")}
                   />
                   {form.formState.errors.email && (
-                    <p className="text-sm text-red-500">
+                    <p className="text-sm text-destructive">
                       {form.formState.errors.email.message}
                     </p>
                   )}
@@ -194,7 +194,7 @@ export function LoginPage({
                     form={form}
                   />
                   {form.formState.errors.password && (
-                    <p className="text-sm text-red-500">
+                    <p className="text-sm text-destructive">
                       {form.formState.errors.password.message}
                     </p>
                   )}
@@ -230,7 +230,7 @@ export function LoginPage({
 
                 {form.formState.errors.root && (
                   <div className="space-y-2">
-                    <p className="text-sm text-red-500">
+                    <p className="text-sm text-destructive">
                       {form.formState.errors.root.message}
                     </p>
                     {(form.formState.errors.root.message
@@ -239,10 +239,10 @@ export function LoginPage({
                       form.formState.errors.root.message
                         ?.toLowerCase()
                         .includes("email")) && (
-                      <p className="text-sm text-blue-600">
+                      <p className="text-sm text-primary">
                         <Link
                           href="/verification-pending"
-                          className="underline underline-offset-4 hover:text-blue-800"
+                          className="underline underline-offset-4 hover:text-primary/80"
                         >
                           Click here to resend verification email
                         </Link>
