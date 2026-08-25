@@ -28,16 +28,19 @@ export type AggregateRateLimit = {
 
 export type RateLimitAvgAggregateOutputType = {
   count: number | null
+  lastRequest: number | null
 }
 
 export type RateLimitSumAggregateOutputType = {
   count: number | null
+  lastRequest: bigint | null
 }
 
 export type RateLimitMinAggregateOutputType = {
   id: string | null
   key: string | null
   count: number | null
+  lastRequest: bigint | null
   resetAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -47,6 +50,7 @@ export type RateLimitMaxAggregateOutputType = {
   id: string | null
   key: string | null
   count: number | null
+  lastRequest: bigint | null
   resetAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -56,6 +60,7 @@ export type RateLimitCountAggregateOutputType = {
   id: number
   key: number
   count: number
+  lastRequest: number
   resetAt: number
   createdAt: number
   updatedAt: number
@@ -65,16 +70,19 @@ export type RateLimitCountAggregateOutputType = {
 
 export type RateLimitAvgAggregateInputType = {
   count?: true
+  lastRequest?: true
 }
 
 export type RateLimitSumAggregateInputType = {
   count?: true
+  lastRequest?: true
 }
 
 export type RateLimitMinAggregateInputType = {
   id?: true
   key?: true
   count?: true
+  lastRequest?: true
   resetAt?: true
   createdAt?: true
   updatedAt?: true
@@ -84,6 +92,7 @@ export type RateLimitMaxAggregateInputType = {
   id?: true
   key?: true
   count?: true
+  lastRequest?: true
   resetAt?: true
   createdAt?: true
   updatedAt?: true
@@ -93,6 +102,7 @@ export type RateLimitCountAggregateInputType = {
   id?: true
   key?: true
   count?: true
+  lastRequest?: true
   resetAt?: true
   createdAt?: true
   updatedAt?: true
@@ -189,6 +199,7 @@ export type RateLimitGroupByOutputType = {
   id: string
   key: string
   count: number
+  lastRequest: bigint
   resetAt: Date
   createdAt: Date
   updatedAt: Date
@@ -221,6 +232,7 @@ export type RateLimitWhereInput = {
   id?: Prisma.StringFilter<"RateLimit"> | string
   key?: Prisma.StringFilter<"RateLimit"> | string
   count?: Prisma.IntFilter<"RateLimit"> | number
+  lastRequest?: Prisma.BigIntFilter<"RateLimit"> | bigint | number
   resetAt?: Prisma.DateTimeFilter<"RateLimit"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"RateLimit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RateLimit"> | Date | string
@@ -230,6 +242,7 @@ export type RateLimitOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
   count?: Prisma.SortOrder
+  lastRequest?: Prisma.SortOrder
   resetAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -242,6 +255,7 @@ export type RateLimitWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.RateLimitWhereInput[]
   NOT?: Prisma.RateLimitWhereInput | Prisma.RateLimitWhereInput[]
   count?: Prisma.IntFilter<"RateLimit"> | number
+  lastRequest?: Prisma.BigIntFilter<"RateLimit"> | bigint | number
   resetAt?: Prisma.DateTimeFilter<"RateLimit"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"RateLimit"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RateLimit"> | Date | string
@@ -251,6 +265,7 @@ export type RateLimitOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
   count?: Prisma.SortOrder
+  lastRequest?: Prisma.SortOrder
   resetAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -268,6 +283,7 @@ export type RateLimitScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"RateLimit"> | string
   key?: Prisma.StringWithAggregatesFilter<"RateLimit"> | string
   count?: Prisma.IntWithAggregatesFilter<"RateLimit"> | number
+  lastRequest?: Prisma.BigIntWithAggregatesFilter<"RateLimit"> | bigint | number
   resetAt?: Prisma.DateTimeWithAggregatesFilter<"RateLimit"> | Date | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RateLimit"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"RateLimit"> | Date | string
@@ -277,6 +293,7 @@ export type RateLimitCreateInput = {
   id?: string
   key: string
   count?: number
+  lastRequest: bigint | number
   resetAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -286,6 +303,7 @@ export type RateLimitUncheckedCreateInput = {
   id?: string
   key: string
   count?: number
+  lastRequest: bigint | number
   resetAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -295,6 +313,7 @@ export type RateLimitUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequest?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   resetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -304,6 +323,7 @@ export type RateLimitUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequest?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   resetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -313,6 +333,7 @@ export type RateLimitCreateManyInput = {
   id?: string
   key: string
   count?: number
+  lastRequest: bigint | number
   resetAt?: Date | string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -322,6 +343,7 @@ export type RateLimitUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequest?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   resetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -331,6 +353,7 @@ export type RateLimitUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   key?: Prisma.StringFieldUpdateOperationsInput | string
   count?: Prisma.IntFieldUpdateOperationsInput | number
+  lastRequest?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   resetAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -340,6 +363,7 @@ export type RateLimitCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
   count?: Prisma.SortOrder
+  lastRequest?: Prisma.SortOrder
   resetAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -347,12 +371,14 @@ export type RateLimitCountOrderByAggregateInput = {
 
 export type RateLimitAvgOrderByAggregateInput = {
   count?: Prisma.SortOrder
+  lastRequest?: Prisma.SortOrder
 }
 
 export type RateLimitMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
   count?: Prisma.SortOrder
+  lastRequest?: Prisma.SortOrder
   resetAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -362,6 +388,7 @@ export type RateLimitMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
   count?: Prisma.SortOrder
+  lastRequest?: Prisma.SortOrder
   resetAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -369,6 +396,7 @@ export type RateLimitMinOrderByAggregateInput = {
 
 export type RateLimitSumOrderByAggregateInput = {
   count?: Prisma.SortOrder
+  lastRequest?: Prisma.SortOrder
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -379,12 +407,21 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type BigIntFieldUpdateOperationsInput = {
+  set?: bigint | number
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
+}
+
 
 
 export type RateLimitSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   key?: boolean
   count?: boolean
+  lastRequest?: boolean
   resetAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -394,6 +431,7 @@ export type RateLimitSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   id?: boolean
   key?: boolean
   count?: boolean
+  lastRequest?: boolean
   resetAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -403,6 +441,7 @@ export type RateLimitSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   id?: boolean
   key?: boolean
   count?: boolean
+  lastRequest?: boolean
   resetAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -412,12 +451,13 @@ export type RateLimitSelectScalar = {
   id?: boolean
   key?: boolean
   count?: boolean
+  lastRequest?: boolean
   resetAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type RateLimitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "count" | "resetAt" | "createdAt" | "updatedAt", ExtArgs["result"]["rateLimit"]>
+export type RateLimitOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "count" | "lastRequest" | "resetAt" | "createdAt" | "updatedAt", ExtArgs["result"]["rateLimit"]>
 
 export type $RateLimitPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "RateLimit"
@@ -435,6 +475,10 @@ export type $RateLimitPayload<ExtArgs extends runtime.Types.Extensions.InternalA
      * Number of requests made in the current window
      */
     count: number
+    /**
+     * Epoch ms timestamp of the last request in the window (Better Auth v1.7 writes a number/bigint)
+     */
+    lastRequest: bigint
     /**
      * When the current window resets (Unix timestamp in seconds)
      */
@@ -870,6 +914,7 @@ export interface RateLimitFieldRefs {
   readonly id: Prisma.FieldRef<"RateLimit", 'String'>
   readonly key: Prisma.FieldRef<"RateLimit", 'String'>
   readonly count: Prisma.FieldRef<"RateLimit", 'Int'>
+  readonly lastRequest: Prisma.FieldRef<"RateLimit", 'BigInt'>
   readonly resetAt: Prisma.FieldRef<"RateLimit", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"RateLimit", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"RateLimit", 'DateTime'>

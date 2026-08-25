@@ -214,15 +214,22 @@ async function seedUsers(hashedPassword: string) {
     if (existingAccount) {
       await prisma.account.update({
         where: { id: accountId },
-        data: { password: hashedPassword },
+        data: {
+          password: hashedPassword,
+          // Self-heal legacy rows: Better Auth v1.7 requires accountId === user.id
+          // and issuer === "local:credential" for credential sign-in.
+          accountId: u.id,
+          issuer: "local:credential",
+        },
       });
     } else {
       await prisma.account.create({
         data: {
           id: accountId,
-          accountId: u.email,
+          accountId: u.id,
           providerId: "credential",
           userId: u.id,
+          issuer: "local:credential",
           password: hashedPassword,
         },
       });

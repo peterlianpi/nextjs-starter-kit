@@ -141,6 +141,7 @@ model Account {
   accountId             String
   providerId            String
   userId                String
+  issuer                String?
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
@@ -308,6 +309,9 @@ model RateLimit {
 
   /// Number of requests made in the current window
   count Int @default(0)
+
+  /// Epoch ms timestamp of the last request in the window (Better Auth v1.7 writes a number/bigint)
+  lastRequest BigInt
 
   /// When the current window resets (Unix timestamp in seconds)
   resetAt DateTime @default(now())

@@ -131,6 +131,7 @@ export const AccountScalarFieldEnum = {
   accountId: 'accountId',
   providerId: 'providerId',
   userId: 'userId',
+  issuer: 'issuer',
   accessToken: 'accessToken',
   refreshToken: 'refreshToken',
   idToken: 'idToken',
@@ -232,6 +233,7 @@ export const RateLimitScalarFieldEnum = {
   id: 'id',
   key: 'key',
   count: 'count',
+  lastRequest: 'lastRequest',
   resetAt: 'resetAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
