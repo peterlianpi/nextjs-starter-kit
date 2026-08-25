@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { LayoutDashboard, Settings2, BarChart3, Users, Image, FileText, Bell, Search } from "lucide-react";
+import { LayoutDashboard, Settings2, BarChart3, Users, Image, FileText, Bell, Search, History } from "lucide-react";
 import { NavMain } from "@/features/nav/components/nav-main";
 import { NavUser } from "@/features/nav/components/nav-user";
 import { TeamSwitcher } from "@/features/nav/components/team-switcher";

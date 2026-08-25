@@ -26,11 +26,13 @@ interface TimelineProps {
   className?: string;
 }
 
+// Token-only colors (theme-preset safe): error uses --destructive,
+// all other severities stay neutral via muted/foreground tokens.
 const typeConfig: Record<string, { icon: LucideIcon; color: string }> = {
-  info: { icon: Clock, color: "text-blue-500" },
-  success: { icon: CheckCircle2, color: "text-green-500" },
-  warning: { icon: AlertCircle, color: "text-yellow-500" },
-  error: { icon: XCircle, color: "text-red-500" },
+  info: { icon: Clock, color: "text-foreground" },
+  success: { icon: CheckCircle2, color: "text-foreground" },
+  warning: { icon: AlertCircle, color: "text-muted-foreground" },
+  error: { icon: XCircle, color: "text-destructive" },
 };
 
 export function Timeline({ items, loading, className }: TimelineProps) {

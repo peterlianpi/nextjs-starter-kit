@@ -91,9 +91,11 @@ Update this file after every meaningful implementation change.
 
 - [x] Unit 16.3 — notifications complete (2026-08-25): notifications router mounted in catch-all route and rewritten to house conventions; TanStack Query hook (`features/notifications/`); bell popover in app sidebar with unread badge; mark-read and mark-all-read flows. Runtime verified: build green; curl — list OK, read-all updatedCount:1, unread-count → 0.
 - [x] Unit 16.3 finish (2026-08-25): cursor pagination API + infinite-query hook + notification-item/list load-more; mobile Drawer bell; `/notifications` page; Notifications (Bell) entry added to sidebar userNavMain. lint (0 errors) + build green.
+- [x] Unit 16.8 — timeline complete (2026-08-25): admin activity page (`app/(protected)/admin/activity/page.tsx`) wired to `/api/timeline` (admin-gated AuditLog + SystemMetric feed) via `useTimeline` TanStack Query hook; All/Audit/Metrics filter tabs with page reset, Previous/Next pagination with `hasMore`, skeleton loading + empty states; `features/timeline/components/timeline.tsx` recolored to token-only classes (destructive for errors, muted/foreground otherwise — theme-preset safe); sidebar "Timeline" nav entry → `/admin/activity`. lint (0 errors) + build green.
+
 - [x] Unit 16.4 — search page complete (2026-08-25): /search page with debounced input (300ms), type filters (All/Posts/Users/Audit Logs), grouped results with pagination, sidebar Search trigger + nav entry, lib/services/search.ts broadened to 3 entities.
 
-## Next Up
+- [x] Unit 16.8 — timeline complete (2026-08-25): `/api/timeline` router (merged AuditLog+SystemMetric items, filter tabs all/audit/metric, admin-gated), `/admin/activity` page mounting existing timeline components, sidebar entry. Placed under admin/ because audit logs expose other users' data.
 
 1. Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`): 16.1 blog index → 16.2 role/account switch → ~~16.3 notifications~~ → ~~16.4 search page~~ → **16.8 timeline (next)**, then 16.5–16.7/16.9, 16.10 orgs last
 2. Theme preset DB persistence (UserPreferences.theme write — folded into unit 16.9)
