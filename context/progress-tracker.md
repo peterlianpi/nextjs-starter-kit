@@ -58,6 +58,10 @@ Update this file after every meaningful implementation change.
 
 - [x] Unit 14 — theme system complete (2026-08-25): three oklch preset token sets in globals.css under `[data-theme="sepia"|"nord"|"rose-pine"]` (complete palettes; `.dark` baseline untouched), themes config in `lib/site.ts` (`themePresets` id/label/swatch + `themeIds`), client helper `features/nav/lib/theme-preset.ts` (dataset.theme apply/validate/persist to localStorage key `theme-preset`; unknown values fall back to default), ModeToggle extended into dropdown with Light/Dark/System plus labeled swatch picker sourced from lib/site.ts. **Persistence: localStorage-only** (no preferences action/service existed; UserPreferences.theme write deferred). lint + build green.
 
+- [x] In-app docs section complete (2026-08-25): `features/docs/` module (typed structured content in `lib/docs-data.ts`, 10 curated pages distilled from context/docs sources; server renderer `components/docs-content.tsx` reusing `.prose-post`; client sidebar `components/docs-sidebar.tsx` for active-link highlighting), routes `app/docs/page.tsx` (categorized card-grid index) + `app/docs/layout.tsx` (sticky desktop sidebar, mobile `<details>` collapsible nav) + `app/docs/[slug]/page.tsx` (generateStaticParams + generateMetadata, prev/next nav, Edit-on-GitHub link). Zero new deps. All 10 `/docs/*` routes prerendered SSG; lint + build green.
+
+- [x] In-app docs section complete (2026-08-25): `features/docs/` module (typed structured content in `lib/docs-data.ts`, 10 curated pages distilled from context/docs sources; server renderer `components/docs-content.tsx` reusing `.prose-post`; client sidebar `components/docs-sidebar.tsx` for active-link highlighting), routes `app/docs/page.tsx` (categorized card-grid index) + `app/docs/layout.tsx` (sticky desktop sidebar, mobile `<details>` collapsible nav) + `app/docs/[slug]/page.tsx` (generateStaticParams + generateMetadata, prev/next nav, Edit-on-GitHub link). Zero new deps. All 10 `/docs/*` routes prerendered SSG; lint + build green.
+
 ## Next Up
 
 1. Unit 15 backlog or Vercel deployment (all Workstream C units complete — Unit 14 finished 2026-08-25)
