@@ -68,6 +68,8 @@ Update this file after every meaningful implementation change.
 
 - [x] Build fix (2026-08-25): silenced 2 Turbopack "Dynamic filesystem access causes tracing of the whole project" warnings in `lib/services/upload.ts` local provider via `/*turbopackIgnore: true*/` on `path.join()` calls (~lines 60, 92). No behavior change; lint + build green, warnings gone.
 
+- [x] Seeder rewrite (2026-08-25): `prisma/seed.ts` now seeds 4 loginable demo users (admin@example.com → SUPER_ADMIN, editor@example.com → EDITOR, mod@example.com → MODERATOR, user@example.com → USER) with Better Auth credential Account rows, all using password `demo1234`; 3 categories + 5 tags + 6 TipTap-HTML posts (PUBLISHED/DRAFT mix); "Acme Inc." org with owner/member + pending invitation. Old random-user generation removed; audit logs/notifications/system metrics are deleteMany'd and re-created idempotently scoped to the demo users. Added `db:seed` npm script (`bunx tsx prisma/seed.ts`). Not yet run against a live DB locally (P1017 connection closed) — verifier should run `bunx tsx prisma/seed.ts`. lint green.
+
 ## Next Up
 
 1. Unit 15 backlog
