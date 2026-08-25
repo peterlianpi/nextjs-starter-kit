@@ -72,6 +72,8 @@ Update this file after every meaningful implementation change.
 
 - [x] Google OAuth support (2026-08-25): Better Auth `socialProviders.google` in lib/auth.ts (conditional on GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET being set — feature is opt-in via env); Google sign-in buttons on login/register forms (rendered only when configured, surfaced via a server flag); GOOGLE_CLIENT_ID + GOOGLE_CLIENT_SECRET documented in .env.example and docs/ENV-VARS.md; in-app authentication doc page gained an "Enable Google sign-in" walkthrough (OAuth client creation, callback URIs for prod + localhost, env vars, redeploy, testing-mode consent caveat). lint + build green.
 
+- [x] Card routing audit + fix (2026-08-25): home cards carry no hrefs and docs index derives slugs from `getDocsByCategory()` — both verified clean. Dashboard "Available Features" cards fixed: 7 placeholder `/dashboard` links rerouted to real targets (`/admin/media`, `/admin/posts`, `/docs/cms-features`, `/docs/database`, `/docs/api-and-rpc`). Seed attempt failed with P1017 (DATABASE_URL set but server closes connection — DB unreachable/paused locally); needs a reachable Postgres to run `bun run db:seed`. lint + build green.
+
 ## Next Up
 
 1. Unit 15 backlog

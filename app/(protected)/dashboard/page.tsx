@@ -95,13 +95,13 @@ export default function DashboardPage() {
       <div>
         <h2 className="text-xl font-bold tracking-tight mb-4">Available Features</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <ActionCard href="/dashboard" icon={Search} title="Search" description="Full-text search across entities" buttonText="Explore" />
-          <ActionCard href="/dashboard" icon={Upload} title="File Upload" description="Upload files with drag & drop" buttonText="Upload" />
-          <ActionCard href="/dashboard" icon={Table2} title="Data Tables" description="Sortable, filterable tables" buttonText="View" />
-          <ActionCard href="/dashboard" icon={FileSpreadsheet} title="Export" description="Export data to CSV or JSON" buttonText="Export" />
-          <ActionCard href="/dashboard" icon={Clock} title="Activity Feed" description="Timeline of system events" buttonText="View" />
-          <ActionCard href="/dashboard" icon={Key} title="API Keys" description="Manage API key access" buttonText="Manage" />
-          <ActionCard href="/dashboard" icon={Webhook} title="Webhooks" description="Event-driven integrations" buttonText="Configure" />
+          <ActionCard href="/docs/cms-features" icon={Search} title="Search" description="Full-text search across entities" buttonText="Explore" />
+          <ActionCard href="/admin/media" icon={Upload} title="File Upload" description="Upload files with drag & drop" buttonText="Upload" />
+          <ActionCard href="/admin/posts" icon={Table2} title="Data Tables" description="Sortable, filterable tables" buttonText="View" />
+          <ActionCard href="/admin/posts" icon={FileSpreadsheet} title="Export" description="Export data to CSV or JSON" buttonText="Export" />
+          <ActionCard href="/docs/database" icon={Clock} title="Activity Feed" description="Timeline of system events" buttonText="View" />
+          <ActionCard href="/docs/api-and-rpc" icon={Key} title="API Keys" description="Manage API key access" buttonText="Manage" />
+          <ActionCard href="/docs/api-and-rpc" icon={Webhook} title="Webhooks" description="Event-driven integrations" buttonText="Configure" />
           <ActionCard href="/settings" icon={Shield} title="Preferences" description="User settings and preferences" buttonText="Settings" />
         </div>
       </div>
