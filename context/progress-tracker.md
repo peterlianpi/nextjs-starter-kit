@@ -99,15 +99,17 @@ Update this file after every meaningful implementation change.
 
 ## Next Up
 
-Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`):
-1. 16.2 role/account switch (org switcher, role-aware nav, account menu)
-2. 16.5 admin audit-log viewer → 16.6 API keys page → 16.7 webhooks admin
-3. 16.9 settings persistence (notification toggles, theme preset → UserPreferences.theme)
-4. 16.10 organizations end-to-end (API + switcher + members/invites) — last
+Remaining Workstream D units, then Workstream E (`context/specs/17-next-gap-plan.md`):
+1. 16.5 admin audit-log viewer → 16.6 API keys page → 16.7 webhooks admin
+2. 16.9 settings persistence (notification toggles, theme preset → UserPreferences.theme)
+3. 16.10 organizations end-to-end (members, invitations, roles) — last of 16.x
+4. Workstream E: post revisions (PostVersion), scheduled publishing (Post.scheduledAt + cron), comments — then candidate new-gap units
+
+Shipped 2026-08-25: ~~16.2 role/account switch~~ (org switcher + role-aware nav).
 
 ## Backend→Frontend Gap Audit (updated 2026-08-25)
 
-Full matrix in `context/specs/16-frontend-gap-plan.md`; rendered in-app at `/docs/frontend-roadmap`. Completed since the original audit: ~~16.1 blog index~~ (`/blog` public listing), ~~16.3 notifications~~ (mounted router, bell popover + drawer, `/notifications` page), ~~16.4 search~~ (`/search` debounced page with type filters), ~~16.8 timeline~~ (`/admin/activity` with filter tabs). Remaining gaps: org switcher is still a static placeholder (16.2/16.10), zero UI for webhooks (16.7) and API keys (16.6), no global audit-log viewer (16.5), settings notification toggles are local-only and theme preset localStorage-only (16.9). `check-role.ts` router remains dead code (unmounted) — delete in a cleanup pass.
+Full matrix in `context/specs/16-frontend-gap-plan.md`; rendered in-app at `/docs/frontend-roadmap`. Completed since the original audit: ~~16.1 blog index~~ (`/blog` public listing), ~~16.2 role/account switch~~ (org switcher + role-aware nav, 2026-08-25), ~~16.3 notifications~~ (mounted router, bell popover + drawer, `/notifications` page), ~~16.4 search~~ (`/search` debounced page with type filters), ~~16.8 timeline~~ (`/admin/activity` with filter tabs). Remaining gaps: zero UI for webhooks (16.7) and API keys (16.6), no global audit-log viewer (16.5, in progress), settings notification toggles are local-only and theme preset localStorage-only (16.9); member/invite management pending (16.10). `check-role.ts` router remains dead code (unmounted) — delete in a cleanup pass.
 
 ## Open Questions
 

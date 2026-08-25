@@ -81,6 +81,6 @@ Candidates for future units; write specs when scheduled:
 
 ## Status
 
-**In progress:** 16.1 blog-index (Workstream D)
+**In progress:** 16.5 admin-audit-log-viewer (Workstream D)
 
-**Done:** 01-playwright-e2e, 03-build-verify, 04-env-audit, Workstream C (10–14)
+**Done:** 01-playwright-e2e, 03-build-verify, 04-env-audit, Workstream C (10–14), Workstream D units 16.1–16.4 + 16.8

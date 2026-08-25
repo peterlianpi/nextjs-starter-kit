@@ -5,8 +5,10 @@ surfaces, and the ordered build units that close the gaps. Evidence sources:
 `app/api/[[...route]]/route.ts` + sub-routers, `app/` route tree,
 `features/*`, `prisma/schema.prisma`.
 
-Updated 2026-08-25: units 16.1, 16.3, 16.4, 16.8 are **complete**; matrix
-corrected to remove false gaps.
+Updated 2026-08-25: units **16.1, 16.2, 16.3, 16.4, 16.8 are shipped**;
+remaining: 16.5 (audit-log viewer, in progress), 16.6 (API keys page),
+16.7 (webhooks admin), 16.9 (settings persistence), 16.10 (orgs e2e).
+Post-D roadmap continues in `17-next-gap-plan.md`.
 
 ## Gap Matrix
 
@@ -21,7 +23,7 @@ corrected to remove false gaps.
 | Admin analytics | GET `/api/admin/stats`, per-user audit-logs/sessions/notifications endpoints | `/admin` overview consumes stats; `/admin/users/[id]` detail page | **Global audit-log viewer** (`/admin/audit-logs`) with filtering — Unit 16.5 |
 | API keys | `api-keys` router: POST/GET/PATCH/DELETE `/api/keys` (hashed keys) | None | `/settings/api-keys` management page (create-once reveal, revoke, toggle) — Unit 16.6 |
 | Webhooks | `webhooks` router: POST/GET/DELETE `/api/webhooks`, deliveries listing (admin-gated) | None | `/admin/webhooks` page + delivery log drawer — Unit 16.7 |
-| Organizations | DB models only (`Organization`, `Member`, `Invitation`) — **no API endpoints** | `team-switcher.tsx` is a static placeholder dropdown | Org CRUD/membership API + org switcher + member management + invitations — Units 16.2 / 16.10 |
+| Organizations | GET/POST `/api/orgs` live; Member/Invitation endpoints pending | Org switcher + role-aware nav shipped (Unit 16.2 done) | Member management + invitations UI — Unit 16.10 |
 | Timeline ✅ | SystemMetric data seeded; audit logs exist | `/admin/activity` page — merged AuditLog+SystemMetric feed via `/api/timeline`, All/Audit/Metrics tabs, Previous/Next pagination (Unit 16.8 done) | None |
 | Settings | `UserPreferences` model (timezone etc.); theme presets localStorage-only | Profile, password, sessions UI; notification toggles are **local state only** | Persist prefs (incl. theme preset → `UserPreferences.theme`), timezone picker — Unit 16.9 |
 | Monitoring | SystemMetric writes via cron | Metrics surfaced on `/admin/activity` timeline | Charts on admin overview (recharts) — deferred unless needed |
@@ -31,7 +33,7 @@ corrected to remove false gaps.
 | # | Unit | Size | Status / Dependencies |
 |---|------|------|----------------------|
 | 16.1 | **Blog index** — `/blog` public listing | S | ✅ Complete 2026-08-25 |
-| 16.2 | **Role/account switch** — see detailed plan below | M | Planned — next up; no deps |
+| 16.2 | **Role/account switch** — see detailed plan below | M | ✅ Complete 2026-08-25 (org switcher + role-aware nav) |
 | 16.3 | **Notifications** | M | ✅ Complete 2026-08-25 |
 | 16.4 | **Search surface** | S | ✅ Complete 2026-08-25 |
 | 16.5 | **Admin audit-log viewer** — see detailed plan below | M | Planned |
@@ -41,7 +43,7 @@ corrected to remove false gaps.
 | 16.9 | **Settings persistence** — see detailed plan below | M | Planned |
 | 16.10 | **Organizations end-to-end** — see detailed plan below | L | Planned — last; depends on 16.2 switcher shell |
 
-Recommended order (remaining): **16.2 → 16.5 → 16.6 → 16.7 → 16.9 → 16.10**
+Recommended order (remaining): **16.5 → 16.6 → 16.7 → 16.9 → 16.10**
 (16.10 last — largest, needs its own spec refinement).
 
 ## Completed Unit Summaries
