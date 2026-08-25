@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { LayoutDashboard, Settings2, BarChart3, Users, Image, FileText } from "lucide-react";
+import { LayoutDashboard, Settings2, BarChart3, Users, Image, FileText, Bell } from "lucide-react";
 import { NavMain } from "@/features/nav/components/nav-main";
 import { NavUser } from "@/features/nav/components/nav-user";
 import { TeamSwitcher } from "@/features/nav/components/team-switcher";
@@ -13,6 +13,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useSession } from "@/lib/auth-client";
+import { NotificationBell } from "@/features/notifications/components/notification-bell";
 
 const userNavMain = [
   {
@@ -26,6 +27,12 @@ const userNavMain = [
         url: "/dashboard",
       },
     ],
+  },
+  {
+    title: "Notifications",
+    url: "/notifications",
+    icon: Bell,
+    items: [],
   },
   {
     title: "Settings",
@@ -130,7 +137,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher />
+        <div className="flex items-center gap-1 px-2 py-1">
+          <div className="min-w-0 flex-1">
+            <TeamSwitcher />
+          </div>
+          <NotificationBell />
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />

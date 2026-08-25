@@ -89,9 +89,11 @@ Update this file after every meaningful implementation change.
 - [x] Responsive frontend pass (2026-08-25): mobile-first fixes across nav sidebar/user/team-switcher, blog + docs h1 scaling, editor toolbar h-9 touch targets; token colors only. lint + build green.
 - [x] OpenAPI docs (2026-08-25): hand-authored OpenAPI 3.1 spec in lib/openapi.ts (health/auth/posts/admin/upload/search/keys/webhooks), served as JSON at /api/openapi and rendered via @hono/swagger-ui at /api/docs with theme-aware styling (prefers-color-scheme + theme-preset); in-app docs gained an "API Reference" page with curl examples; README API bullet updated. lint + build green.
 
+- [x] Unit 16.3 — notifications complete (2026-08-25): notifications router mounted in catch-all route and rewritten to house conventions; TanStack Query hook (`features/notifications/`); bell popover in app sidebar with unread badge; mark-read and mark-all-read flows. Runtime verified: build green; curl — list OK, read-all updatedCount:1, unread-count → 0.
+
 ## Next Up
 
-1. Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`): 16.1 blog index → 16.2 role/account switch → 16.3 notifications → 16.4 search → 16.8 timeline, then 16.5–16.7/16.9, 16.10 orgs last
+1. Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`): 16.1 blog index → 16.2 role/account switch → ~~16.3 notifications~~ → **16.4 search page (next)** → 16.8 timeline, then 16.5–16.7/16.9, 16.10 orgs last
 2. Theme preset DB persistence (UserPreferences.theme write — folded into unit 16.9)
 3. Unit 15 backlog
 

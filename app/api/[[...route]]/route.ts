@@ -9,6 +9,7 @@ import apiKeys from "./api-keys";
 import webhooks from "./webhooks";
 import posts from "./posts";
 import orgs from "./orgs";
+import notifications from "./notifications";
 
 // ============================================
 // MAIN APP ROUTER
@@ -25,7 +26,8 @@ const route = app
   .route("/keys", apiKeys)
   .route("/webhooks", webhooks)
   .route("/posts", posts)
-  .route("/orgs", orgs);
+  .route("/orgs", orgs)
+  .route("/notifications", notifications);
 
 export const GET = handle(app);
 export const POST = handle(app);

@@ -1,160 +1,203 @@
 import { Hono } from "hono";
-import { auth } from "@/lib/auth";
+import { z } from "zod";
+import { zValidator } from "@hono/zod-validator";
 import prisma from "@/lib/prisma";
+import { getApiSession } from "@/lib/auth/api-helpers";
 
-const app = new Hono()
+// ============================================
+// NOTIFICATIONS ROUTER
+// ============================================
+// Per-user notification list + read-state mutations.
+// All endpoints require a session; ownership is enforced
+// server-side on every mutation boundary.
 
-  // Get all notifications for the current user
-  .get("/", async (c) => {
-    const session = await auth.api.getSession({
-      headers: c.req.raw.headers,
-    });
+const idParamSchema = z.object({
+  id: z.string().min(1),
+});
 
-    if (!session) {
-      return c.json({ error: "Unauthorized" }, 401);
+const listQuerySchema = z.object({
+  cursor: z.string().min(1).optional(),
+  limit: z.coerce.number().int().min(1).max(50).default(20),
+  type: z.string().min(1).optional(),
+});
+
+import type { Context } from "hono";
+
+const unauthorized = (c: Context) =>
+  c.json(
+    {
+      success: false,
+      error: { code: "UNAUTHORIZED", message: "Authentication required" },
+    },
+    401,
+  );
+
+const notifications = new Hono()
+
+  // GET /api/notifications - Cursor-paginated list for current user
+  // Query: ?cursor=<id>&limit=<n>&type=<type> → { notifications, nextCursor }
+  .get("/", zValidator("query", listQuerySchema), async (c) => {
+    try {
+      const session = await getApiSession(c.req.header("cookie"));
+      if (!session?.user) return unauthorized(c);
+
+      const { cursor, limit, type } = c.req.valid("query");
+
+      // Fetch limit+1 so we can tell whether another page exists
+      const items = await prisma.notification.findMany({
+        where: {
+          userId: session.user.id,
+          ...(type ? { type } : {}),
+        },
+        orderBy: { createdAt: "desc" },
+        take: limit + 1,
+        ...(cursor
+          ? { cursor: { id: cursor }, skip: 1 }
+          : {}),
+      });
+
+      const hasMore = items.length > limit;
+      const pageItems = hasMore ? items.slice(0, limit) : items;
+      const nextCursor = hasMore ? pageItems[pageItems.length - 1]?.id ?? null : null;
+
+      return c.json({
+        success: true,
+        data: { notifications: pageItems, nextCursor },
+      });
+    } catch (error) {
+      console.error("[Notifications] list failed:", error);
+      return c.json(
+        {
+          success: false,
+          error: { code: "INTERNAL", message: "Failed to load notifications" },
+        },
+        500,
+      );
     }
-
-    const notifications = await prisma.notification.findMany({
-      where: {
-        userId: session.user.id,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      take: 20,
-    });
-
-    return c.json(notifications);
   })
 
-  // Mark a notification as read (idempotent with race condition prevention)
-  .post("/:id/read", async (c) => {
-    const session = await auth.api.getSession({
-      headers: c.req.raw.headers,
-    });
+  // POST /api/notifications/:id/read - Mark one as read (idempotent)
+  .post("/:id/read", zValidator("param", idParamSchema), async (c) => {
+    try {
+      const session = await getApiSession(c.req.header("cookie"));
+      if (!session?.user) return unauthorized(c);
 
-    if (!session) {
-      return c.json({ error: "Unauthorized" }, 401);
-    }
+      const { id: notificationId } = c.req.valid("param");
 
-    const notificationId = c.req.param("id");
+      // Serializable transaction prevents double-read races
+      const result = await prisma.$transaction(
+        async (tx) => {
+          const notification = await tx.notification.findUnique({
+            where: { id: notificationId },
+          });
 
-    // Use Prisma's interactive transaction to prevent race conditions
-    const result = await prisma.$transaction(
-      async (tx) => {
-        // First, retrieve the current notification state
-        const notification = await tx.notification.findUnique({
-          where: {
-            id: notificationId,
+          if (!notification) {
+            return { success: false, code: "NOT_FOUND" as const };
+          }
+
+          if (notification.userId !== session.user.id) {
+            return { success: false, code: "FORBIDDEN" as const };
+          }
+
+          if (notification.readAt !== null) {
+            return { success: true, code: "ALREADY_READ" as const };
+          }
+
+          const updated = await tx.notification.updateMany({
+            where: { id: notificationId, readAt: null },
+            data: { read: true, readAt: new Date() },
+          });
+
+          return {
+            success: true,
+            code: updated.count === 0 ? ("ALREADY_READ" as const) : ("UPDATED" as const),
+          };
+        },
+        { isolationLevel: "Serializable" },
+      );
+
+      if (result.code === "NOT_FOUND") {
+        return c.json(
+          {
+            success: false,
+            error: {
+              code: "NOT_FOUND",
+              message: "Notification not found",
+            },
           },
-        });
+          404,
+        );
+      }
 
-        if (!notification) {
-          return { success: false, code: "NOT_FOUND" as const };
-        }
-
-        if (notification.userId !== session.user.id) {
-          return { success: false, code: "FORBIDDEN" as const };
-        }
-
-        // Check if already read - skip update if so (idempotent)
-        if (notification.readAt !== null) {
-          console.debug(
-            `[Notifications] Skipping update for already-read notification: ${notificationId}`,
-          );
-          return { success: true, code: "ALREADY_READ" as const };
-        }
-
-        // Use atomic update with condition to prevent race conditions
-        // This ensures the update only happens if readAt is still null
-        const updated = await tx.notification.updateMany({
-          where: {
-            id: notificationId,
-            readAt: null, // Atomic check - only update if still unread
+      if (result.code === "FORBIDDEN") {
+        return c.json(
+          {
+            success: false,
+            error: { code: "FORBIDDEN", message: "Not your notification" },
           },
-          data: {
-            read: true,
-            readAt: new Date(),
-          },
-        });
+          403,
+        );
+      }
 
-        // If no rows were updated, another process already marked it as read
-        if (updated.count === 0) {
-          console.debug(
-            `[Notifications] Race condition avoided for notification: ${notificationId}`,
-          );
-          return { success: true, code: "ALREADY_READ" as const };
-        }
-
-        return { success: true, code: "UPDATED" as const };
-      },
-      {
-        // Use Serializable isolation to prevent race conditions
-        isolationLevel: "Serializable",
-      },
-    );
-
-    if (result.code === "NOT_FOUND") {
-      return c.json({ error: "Notification not found" }, 404);
+      // Idempotent success either way
+      return c.json({ success: true, data: { status: result.code } });
+    } catch (error) {
+      console.error("[Notifications] mark-read failed:", error);
+      return c.json(
+        {
+          success: false,
+          error: { code: "INTERNAL", message: "Failed to mark notification read" },
+        },
+        500,
+      );
     }
-
-    if (result.code === "FORBIDDEN") {
-      return c.json({ error: "Forbidden" }, 403);
-    }
-
-    // Return success regardless of whether we updated or it was already read
-    // This ensures idempotency - calling multiple times is safe
-    return c.json({ success: true, status: result.code });
   })
 
-  // Mark all notifications as read
+  // POST /api/notifications/read-all - Mark all unread as read (idempotent)
   .post("/read-all", async (c) => {
-    const session = await auth.api.getSession({
-      headers: c.req.raw.headers,
-    });
+    try {
+      const session = await getApiSession(c.req.header("cookie"));
+      if (!session?.user) return unauthorized(c);
 
-    if (!session) {
-      return c.json({ error: "Unauthorized" }, 401);
+      const result = await prisma.notification.updateMany({
+        where: { userId: session.user.id, read: false },
+        data: { read: true, readAt: new Date() },
+      });
+
+      return c.json({ success: true, data: { updatedCount: result.count } });
+    } catch (error) {
+      console.error("[Notifications] read-all failed:", error);
+      return c.json(
+        {
+          success: false,
+          error: { code: "INTERNAL", message: "Failed to mark all read" },
+        },
+        500,
+      );
     }
-
-    // Use updateMany with read: false condition to only update unread notifications
-    // This is already idempotent - calling multiple times has no side effects
-    const result = await prisma.notification.updateMany({
-      where: {
-        userId: session.user.id,
-        read: false,
-      },
-      data: {
-        read: true,
-        readAt: new Date(),
-      },
-    });
-
-    console.debug(
-      `[Notifications] Marked ${result.count} notifications as read for user: ${session.user.id}`,
-    );
-
-    return c.json({ success: true, updatedCount: result.count });
   })
 
-  // Get unread notification count
+  // GET /api/notifications/unread-count - Unread count badge
   .get("/unread-count", async (c) => {
-    const session = await auth.api.getSession({
-      headers: c.req.raw.headers,
-    });
+    try {
+      const session = await getApiSession(c.req.header("cookie"));
+      if (!session?.user) return unauthorized(c);
 
-    if (!session) {
-      return c.json({ error: "Unauthorized" }, 401);
+      const count = await prisma.notification.count({
+        where: { userId: session.user.id, read: false },
+      });
+
+      return c.json({ success: true, data: { count } });
+    } catch (error) {
+      console.error("[Notifications] unread-count failed:", error);
+      return c.json(
+        {
+          success: false,
+          error: { code: "INTERNAL", message: "Failed to count notifications" },
+        },
+        500,
+      );
     }
-
-    const count = await prisma.notification.count({
-      where: {
-        userId: session.user.id,
-        read: false,
-      },
-    });
-
-    return c.json({ count });
   });
 
-export default app;
+export default notifications;
