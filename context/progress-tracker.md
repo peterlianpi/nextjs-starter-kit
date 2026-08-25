@@ -64,6 +64,8 @@ Update this file after every meaningful implementation change.
 
 - [x] First Vercel deploy live (2026-08-25): production at https://nextjs-starter-kit-gules.vercel.app — config/docs wired (.env.example production block, project.yaml production env, docs/DEPLOYMENT.md, architecture, in-app docs Deployment page)
 
+- [x] Docs usage-first content pass + theme audit (2026-08-25): added "How to use" walkthroughs to getting-started (full first-run steps), authentication (authClient/auth.api.getSession/checkIsAdmin code samples), api-and-rpc (add-endpoint example + client.api.* consumption with basePath gotcha), cms-features (author end-to-end, cropped uploads, programmatic theme switching), cli-generators (realistic model→migration→usage workflow), database (model+migration workflow); theme hardening — warning note text switched from amber palette colors to token-based text-foreground so notes stay readable under sepia/nord/rose-pine presets; all other docs surfaces verified token-only. lint + build green.
+
 ## Next Up
 
 1. Unit 15 backlog

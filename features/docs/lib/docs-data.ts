@@ -142,6 +142,38 @@ export const docPages: DocPage[] = [
           ["bun test:e2e", "Playwright end-to-end suite"],
         ],
       },
+      { type: "h2", text: "Your first run, step by step" },
+      {
+        type: "list",
+        ordered: true,
+        items: [
+          "Install Bun (curl -fsSL https://bun.sh/install | bash on macOS/Linux; the official installer on Windows)",
+          "Clone the repo and run bun install",
+          "Create a local Postgres database (any 14+ instance) and copy its standard postgres:// URL",
+          "cp .env.example .env, then fill DATABASE_URL, BETTER_AUTH_SECRET (any long random string for dev), and NEXT_PUBLIC_SITE_URL=http://localhost:3000",
+          "For email in dev, set EMAIL_PROVIDER=nodemailer with any SMTP creds — or use Resend test keys; verification links print to the server log if email is not configured",
+          "Run bunx prisma migrate dev to create all tables from schema.prisma",
+          "Run bun run db:test to confirm the connection works before starting the app",
+          "Start bun run dev and open http://localhost:3000",
+        ],
+      },
+      { type: "h3", text: "Sign up and reach the dashboard" },
+      {
+        type: "list",
+        ordered: true,
+        items: [
+          "Go to /signup and create an account with email + password",
+          "Check your inbox (or dev logs) for the verification link and open it",
+          "Log in at /login — you are redirected to the protected /dashboard",
+          "Promote your account to admin to unlock /admin: update the user's role field directly via bun run db:studio, or use an existing admin session to assign roles at /admin/users",
+          "Visit /admin to manage users and the media library",
+        ],
+      },
+      {
+        type: "note",
+        variant: "info",
+        text: 'If something fails at startup, it is almost always DATABASE_URL format. Use plain postgres://user:pass@host:5432/db — never prisma+postgres://.',
+      },
     ],
   },
 
@@ -238,6 +270,61 @@ context/             # AI-assistant project context`,
         type: "p",
         text: "Verification and password-reset emails use templates from features/mail/lib/templates.ts, sent through the provider abstraction in lib/services/email.ts (Nodemailer or Resend via EMAIL_PROVIDER).",
       },
+      { type: "h2", text: "How to use it" },
+      { type: "h3", text: "Sign up / log in from a client component" },
+      {
+        type: "code",
+        lang: "ts",
+        code: `import { authClient, useSession } from "@/lib/auth-client";
+
+// Sign up (sends the verification email automatically)
+const { data, error } = await authClient.signUp.email({
+  email, password, name,
+});
+
+// Sign in
+await authClient.signIn.email({ email, password });
+
+// React hook — session state anywhere in the client tree
+const { data: session } = useSession();
+session?.user?.emailVerified; // boolean
+(session?.user as { role?: string }).role; // current role`,
+      },
+      { type: "h3", text: "Protect a server route or page" },
+      {
+        type: "p",
+        text: "The (protected)/ layout already does this for every page inside it. To check a session in any other Server Component or Route Handler, use the server-side API:",
+      },
+      {
+        type: "code",
+        lang: "ts",
+        code: `import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+const session = await auth.api.getSession({
+  headers: await headers(), // forwards the request cookies
+});
+if (!session?.user) redirect("/login");`,
+      },
+      { type: "h3", text: "Guard admin surfaces" },
+      {
+        type: "code",
+        lang: "ts",
+        code: `import { checkIsAdmin } from "@/lib/auth/admin";
+
+// Server Component / layout gate
+if (!(await checkIsAdmin())) redirect("/dashboard");
+
+// Permission-level checks also live here:
+// canSetRole(), canBanUsers(), canUploadFiles(), hasPermission(...)
+import { hasPermission } from "@/lib/auth/admin";`,
+      },
+      {
+        type: "note",
+        variant: "warning",
+        text: "Client-side role checks are cosmetic only. Every Hono endpoint re-reads the session from cookies server-side (see lib/auth/api-helpers.ts) before returning data.",
+      },
     ],
   },
 
@@ -284,6 +371,74 @@ const { success, data } = await res.json();`,
       {
         type: "p",
         text: "A health endpoint exists at /api/health for uptime monitoring and cron-based service checks.",
+      },
+      { type: "h2", text: "Add a new endpoint" },
+      {
+        type: "p",
+        text: "Create a sub-route module, then chain it onto the base app in route.ts. Follow the posts.ts pattern:",
+      },
+      {
+        type: "code",
+        lang: "ts",
+        code: `// 1. app/api/[[...route]]/widgets.ts
+import { Hono } from "hono";
+import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
+import { auth } from "@/lib/auth";
+
+export const widgets = new Hono()
+  .get("/", async (c) => {
+    // ...query via lib/prisma.ts singleton
+    return c.json({ success: true, data: [] });
+  })
+  .post(
+    "/",
+    zValidator("json", z.object({ title: z.string().min(1) })),
+    async (c) => {
+      const session = await auth.api.getSession({ headers: c.req.raw.headers });
+      if (!session?.user)
+        return c.json(
+          { success: false, error: { code: "UNAUTHORIZED", message: "Auth required" } },
+          401,
+        );
+      const body = c.req.valid("json");
+      // ...create
+      return c.json({ success: true, data: { id: "new-id", ...body } }, 201);
+    },
+  );
+
+// 2. In route.ts, chain it:
+// app.route("/widgets", widgets);`,
+      },
+      { type: "h2", text: "Consume it from the client" },
+      {
+        type: "note",
+        variant: "warning",
+        text: "The basePath gotcha: all routes mount under /api (basePath in route.ts), so RPC paths are client.api.<segment>.* even though files live at the route root. client.api.widgets is /api/widgets — never write client.widgets.",
+      },
+      {
+        type: "code",
+        lang: "ts",
+        code: `import { client } from "@/lib/api/hono-client"; // hc<AppType>("") singleton
+
+// GET /api/widgets
+const res = await client.api.widgets.$get();
+const { success, data } = await res.json();
+
+// POST /api/widgets — fully typed payload + response
+const created = await client.api.widgets.$post({
+  json: { title: "Hello" },
+});
+const { data: widget } = await created.json();`,
+      },
+      { type: "h2", text: "Common patterns" },
+      {
+        type: "list",
+        items: [
+          "Pair the RPC call with TanStack Query for caching/invalidation in client components",
+          "Call Server Components directly with Prisma instead of fetch-ing your own API when no client interactivity is needed",
+          "Log mutations to the audit log via lib/services/activity.ts",
+        ],
       },
     ],
   },
@@ -337,6 +492,35 @@ const { success, data } = await res.json();`,
         variant: "info",
         text: "Only metadata and URLs live in the database; uploaded binaries go to blob storage (Cloudinary/R2/S3/local) tracked by the FileUpload model.",
       },
+      { type: "h2", text: "Adding a model + migration" },
+      {
+        type: "code",
+        lang: "bash",
+        code: '# 1. Edit prisma/schema.prisma — add your model\n#    model Product {\n#      id        String   @id @default(cuid())\n#      name      String\n#      createdAt DateTime @default(now())\n#    }\nbunx prisma migrate dev --name add_product  # 2. creates + applies migration, regenerates client\nbun run db:test                             # 3. smoke-test the connection',
+      },
+      {
+        type: "p",
+        text: 'The generated client lands in lib/generated/prisma. Import the singleton and query immediately:',
+      },
+      {
+        type: "code",
+        lang: "ts",
+        code: `import prisma from "@/lib/prisma";
+
+export async function listProducts() {
+  try {
+    return await prisma.product.findMany({ orderBy: { createdAt: "desc" } });
+  } catch (error) {
+    console.error("[listProducts]", error);
+    return []; // never let DB errors crash a page render
+  }
+}`,
+      },
+      {
+        type: "note",
+        variant: "warning",
+        text: "Do not add url to the datasource block or use prisma+postgres:// URLs — connection config lives in prisma.config.ts as a plain TCP postgres:// string.",
+      },
     ],
   },
 
@@ -378,6 +562,45 @@ const { success, data } = await res.json();`,
         type: "p",
         text: "Four oklch presets (Default, Sepia, Nord, Rosé Pine) are defined as token sets under [data-theme] selectors in globals.css. The preset list lives in lib/site.ts (themePresets); persistence is localStorage-only via features/nav/lib/theme-preset.ts, applied as dataset.theme on <html>. Light/Dark/System mode comes from next-themes.",
       },
+      { type: "h2", text: "How to use it" },
+      { type: "h3", text: "Author a post end-to-end" },
+      {
+        type: "list",
+        ordered: true,
+        items: [
+          "Log in as an admin and go to /admin/posts",
+          "Click New post — the TipTap editor opens with title + slug + content fields; type rich text (headings, lists, code blocks, images) directly",
+          "Click Save/Publish — content is stored as TipTap JSON on the Post record with status PUBLISHED and a unique slug",
+          "View the public page at /blog/<slug> — rendered server-side to HTML and styled by .prose-post",
+          "Use ShareButtons / ShareMenu at the bottom of the post page for X/Facebook/LinkedIn/WhatsApp or native sharing, and PrintButton for a print-optimized layout",
+        ],
+      },
+      { type: "h3", text: "Upload a cropped image" },
+      {
+        type: "list",
+        ordered: true,
+        items: [
+          "Open /admin/media and upload any PNG/JPEG/WebP under 10MB",
+          "The UploadWithCrop modal appears — drag/zoom to frame the crop region",
+          "Confirming uploads through lib/services/upload.ts to the active UPLOAD_PROVIDER and records metadata in FileUpload; the new item is prepended to the grid",
+          "In the editor, image insertion goes through uploadImageFile() in features/editor/hooks/use-editor.ts — that hook is the documented place to wire in editor-side cropping",
+        ],
+      },
+      { type: "h3", text: "Switch themes programmatically" },
+      {
+        type: "code",
+        lang: "ts",
+        code: `import { setThemePreset, getThemePreset } from "@/features/nav/lib/theme-preset";
+// or let users do it via the ModeToggle dropdown in the navbar
+
+setThemePreset("nord"); // sets document.documentElement.dataset.theme
+getThemePreset();       // reads localStorage key "theme-preset"; falls back to default`,
+      },
+      {
+        type: "note",
+        variant: "info",
+        text: "Presets stack on top of light/dark mode: pick Sepia + Dark and every token resolves from the [data-theme=\"sepia\"] palette's dark values. Any UI built only from tokens (bg-muted, border-border, text-foreground...) inherits presets automatically.",
+      },
     ],
   },
 
@@ -412,6 +635,33 @@ const { success, data } = await res.json();`,
         type: "note",
         variant: "warning",
         text: "Generated migrations still need bunx prisma migrate dev to apply, and generated Prisma model snippets must be added to schema.prisma manually before generating the client.",
+      },
+      { type: "h2", text: "A realistic workflow" },
+      {
+        type: "p",
+        text: "Adding a Product domain, from scaffold to typed service usage:",
+      },
+      {
+        type: "code",
+        lang: "bash",
+        code: "bun run make:model -- Product        # prints a Prisma model snippet + module stub\nbun run make:migration -- add-product  # migration skeleton in prisma/migrations flow",
+      },
+      {
+        type: "list",
+        ordered: true,
+        items: [
+          "Paste the generated model snippet into prisma/schema.prisma and adjust fields/relations",
+          "Run bunx prisma migrate dev --name add_product to apply the schema change",
+          "The client regenerates into lib/generated/prisma automatically (or run bun prisma generate)",
+          "Query it anywhere via the singleton: import prisma from \"@/lib/prisma\"; then await prisma.product.findMany() — fully typed",
+          "Expose it over the API with a Hono sub-route (see API & Hono RPC) or a Server Action",
+          "Seed sample rows with bun run make:seeder -- product, fill the generated seeder, run it via tsx",
+        ],
+      },
+      {
+        type: "note",
+        variant: "warning",
+        text: "Generators write files; they never edit schema.prisma or run migrations for you. Always finish with bunx prisma migrate dev.",
       },
     ],
   },

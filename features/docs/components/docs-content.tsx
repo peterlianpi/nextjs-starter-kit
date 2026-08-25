@@ -54,7 +54,7 @@ export function DocsContent({
                 className={cn(
                   "rounded-md border px-4 py-3 text-sm not-prose",
                   block.variant === "warning"
-                    ? "border-amber-500/40 bg-amber-500/10 text-amber-900 dark:text-amber-200"
+                    ? "border-amber-500/40 bg-amber-500/10 text-foreground"
                     : "border-primary/30 bg-primary/5 text-foreground",
                 )}
               >
