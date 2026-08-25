@@ -33,7 +33,7 @@ export default function DocsIndexPage() {
   return (
     <article className="py-4">
       <header className="mb-10">
-        <h1 className="text-4xl font-bold tracking-tight">Documentation</h1>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Documentation</h1>
         <p className="mt-2 max-w-2xl text-lg text-muted-foreground">
           Guides and reference for building with the starter kit — from local
           setup through deployment and operations.

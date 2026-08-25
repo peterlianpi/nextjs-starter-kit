@@ -49,7 +49,7 @@ function ToolbarButton({ onClick, active, disabled, title, children }: ToolbarBu
       type="button"
       variant="ghost"
       size="icon"
-      className={cn("h-8 w-8", active && "bg-accent text-accent-foreground")}
+      className={cn("h-9 w-9 sm:h-8 sm:w-8", active && "bg-accent text-accent-foreground")}
       onClick={onClick}
       disabled={disabled}
       title={title}

@@ -65,7 +65,7 @@ export default async function DocPage({ params }: DocPageProps) {
         <Badge variant="secondary" className="mb-3 w-fit">
           {doc.category}
         </Badge>
-        <h1 className="text-4xl font-bold tracking-tight">{doc.title}</h1>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{doc.title}</h1>
         <p className="mt-2 text-lg text-muted-foreground">{doc.description}</p>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <span className="text-sm text-muted-foreground">

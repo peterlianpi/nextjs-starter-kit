@@ -86,7 +86,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.category.name}
           </Badge>
         )}
-        <h1 className="text-4xl font-bold tracking-tight">{post.title}</h1>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{post.title}</h1>
         <p className="text-lg text-muted-foreground">{post.excerpt}</p>
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <span>{post.author.name ?? "Unknown author"}</span>
