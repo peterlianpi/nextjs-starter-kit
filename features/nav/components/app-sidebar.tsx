@@ -1,14 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { LayoutDashboard, Settings2, BarChart3, Users, Image } from "lucide-react";
+import { LayoutDashboard, Settings2, BarChart3, Users, Image, FileText } from "lucide-react";
 import { NavMain } from "@/features/nav/components/nav-main";
 import { NavUser } from "@/features/nav/components/nav-user";
 import { TeamSwitcher } from "@/features/nav/components/team-switcher";
-import {
-  AdminSwitch,
-  useAdminStatus,
-} from "@/features/nav/components/admin-switch";
 import {
   Sidebar,
   SidebarContent,
@@ -48,6 +44,17 @@ const userNavMain = [
   },
 ];
 
+// Editor-level content management (EDITOR and above)
+const editorNavItems = [
+  {
+    title: "Posts",
+    url: "/admin/posts",
+    icon: FileText,
+    items: [] as { title: string; url: string }[],
+  },
+];
+
+// Full admin surface (ADMIN / SUPER_ADMIN only)
 const adminNavItems = [
   {
     title: "Admin Panel",
@@ -64,6 +71,7 @@ const adminNavItems = [
         url: "/admin/users",
         icon: Users,
       },
+      ...editorNavItems,
       {
         title: "Media Library",
         url: "/admin/media",
@@ -73,21 +81,16 @@ const adminNavItems = [
   },
 ];
 
-const teams = [
-  {
-    name: "Next.js Starter Kit",
-    logo: LayoutDashboard,
-    plan: "Starter",
-  },
-];
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: session, isPending } = useSession();
-  const isAdmin = useAdminStatus();
+
+  const role = session?.user?.role ?? null;
 
   const navMain = React.useMemo(() => {
     const items = [...userNavMain];
-    if (isAdmin) {
+
+    if (role === "ADMIN" || role === "SUPER_ADMIN") {
+      // Full admin surface (includes Posts)
       const settingsIndex = items.findIndex(
         (item) => item.title === "Settings",
       );
@@ -96,9 +99,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       } else {
         items.push(...adminNavItems);
       }
+    } else if (role === "EDITOR") {
+      // Editors get a Posts-only management group
+      const settingsIndex = items.findIndex(
+        (item) => item.title === "Settings",
+      );
+      if (settingsIndex >= 0) {
+        items.splice(settingsIndex, 0, ...editorNavItems);
+      } else {
+        items.push(...editorNavItems);
+      }
     }
+    // USER / MODERATOR / signed-out: no admin or editor section
+
     return items;
-  }, [isAdmin]);
+  }, [role]);
 
   const user = session?.user
     ? {
@@ -115,11 +130,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={teams} />
-        <AdminSwitch
-          isAdmin={!!isAdmin}
-          isLoading={isPending || isAdmin === null}
-        />
+        <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain} />

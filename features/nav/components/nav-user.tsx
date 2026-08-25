@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { authClient, useSession } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -118,7 +119,17 @@ export function NavUser({ user }: { user: User }) {
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="truncate font-medium">{user.name}</span>
+                    {session?.user?.role && (
+                      <Badge
+                        variant="outline"
+                        className="shrink-0 px-1.5 text-[10px] uppercase text-muted-foreground"
+                      >
+                        {session.user.role}
+                      </Badge>
+                    )}
+                  </span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
