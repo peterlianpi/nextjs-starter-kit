@@ -80,11 +80,14 @@ Update this file after every meaningful implementation change.
 
 - [x] Better Auth schema migration (2026-08-25): Added `issuer` field to Account model and `lastRequest` BigInt field to RateLimit model (required by Better Auth v1.7); seed updated to set `accountId: u.id` and `issuer: "local:credential"` for credential accounts; new migration `20260825055711_add_account_issuer` applied.
 
+- [x] Better Auth audit round closed (2026-08-25): (a) Neon DB live — migrations + fresh seed applied, demo logins verified working via API (login 200, signup 200); (b) Better Auth v1.7 schema alignment — Account.issuer added, RateLimit.lastRequest BigInt, seed accountId=user.id + issuer="local:credential"; full field audit vs canonical schema found NO remaining gaps; (c) Google OAuth wired (conditional socialProviders in lib/auth.ts, login/register buttons, docs walkthrough).
+
 ## Next Up
 
-1. Unit 15 backlog
+1. Production env vars + redeploy verification (Vercel)
 2. Editor-side crop integration (`uploadImageFile()` in features/editor/hooks/use-editor.ts)
 3. Theme preset DB persistence (UserPreferences.theme write)
+4. Unit 15 backlog
 
 ## Open Questions
 
