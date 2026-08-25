@@ -56,9 +56,11 @@ Update this file after every meaningful implementation change.
 
 - [x] Units 11 ∥ 12 complete (2026-08-25): Print — `features/print/components/print-button.tsx` (window.print()) + pure `@media print` block in globals.css (centralized hide-list, forced light tokens, break-inside rules, link URL expansion); Social — react-share@5.3.0, `features/social/components/share-buttons.tsx` (X/Facebook/LinkedIn/WhatsApp) + `share-menu.tsx` (native navigator.share on Web Share devices, copy-link fallback with feedback), mounted on blog post page; generateMetadata already emits full OG/Twitter tags. lint + build green.
 
+- [x] Unit 14 — theme system complete (2026-08-25): three oklch preset token sets in globals.css under `[data-theme="sepia"|"nord"|"rose-pine"]` (complete palettes; `.dark` baseline untouched), themes config in `lib/site.ts` (`themePresets` id/label/swatch + `themeIds`), client helper `features/nav/lib/theme-preset.ts` (dataset.theme apply/validate/persist to localStorage key `theme-preset`; unknown values fall back to default), ModeToggle extended into dropdown with Light/Dark/System plus labeled swatch picker sourced from lib/site.ts. **Persistence: localStorage-only** (no preferences action/service existed; UserPreferences.theme write deferred). lint + build green.
+
 ## Next Up
 
-1. Unit 14 — theme system (see `context/specs/00-build-plan.md` Workstream C; Units 11 ∥ 12 completed 2026-08-25)
+1. Unit 15 backlog or Vercel deployment (all Workstream C units complete — Unit 14 finished 2026-08-25)
 
 ## Open Questions
 

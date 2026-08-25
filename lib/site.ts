@@ -51,6 +51,30 @@ export const site = {
 export type SiteConfig = typeof site;
 
 // ============================================
+// THEME PRESETS
+// ============================================
+// Single source of truth for named color themes applied via the
+// `data-theme` attribute on <html>. Each entry's swatch colors are used
+// in the theme picker UI. Token definitions live in app/globals.css
+// under `[data-theme="..."]` selectors.
+
+export type ThemePreset = {
+  id: string;
+  label: string;
+  /** Two colors shown as a swatch: [background, accent] */
+  swatch: [string, string];
+};
+
+export const themePresets: ThemePreset[] = [
+  { id: "default", label: "Default", swatch: ["#ffffff", "#18181b"] },
+  { id: "sepia", label: "Sepia", swatch: ["#f5ecd9", "#8a5a2b"] },
+  { id: "nord", label: "Nord", swatch: ["#2e3440", "#88c0d0"] },
+  { id: "rose-pine", label: "Rosé Pine", swatch: ["#191724", "#c4a7e7"] },
+];
+
+export const themeIds = themePresets.map((t) => t.id) as [string, ...string[]];
+
+// ============================================
 // DERIVED VALUES
 // ============================================
 
