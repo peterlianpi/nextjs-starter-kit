@@ -97,7 +97,9 @@ Update this file after every meaningful implementation change.
 
 - [x] Unit 16.8 — timeline complete (2026-08-25): `/api/timeline` router (merged AuditLog+SystemMetric items, filter tabs all/audit/metric, admin-gated), `/admin/activity` page mounting existing timeline components, sidebar entry. Placed under admin/ because audit logs expose other users' data.
 
-1. Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`): 16.1 blog index → 16.2 role/account switch → ~~16.3 notifications~~ → ~~16.4 search page~~ → **16.8 timeline (next)**, then 16.5–16.7/16.9, 16.10 orgs last
+## Next Up
+
+1. Workstream D frontend-gap units (`context/specs/16-frontend-gap-plan.md`): 16.1 blog index → 16.2 role/account switch → ~~16.3 notifications~~ → ~~16.4 search page~~ → ~~16.8 timeline~~ → remaining units 16.5–16.7/16.9, then 16.10 orgs last
 2. Theme preset DB persistence (UserPreferences.theme write — folded into unit 16.9)
 3. Unit 15 backlog
 
