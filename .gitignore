@@ -57,3 +57,4 @@ playwright-report/
 # stray dev server logs
 .dev-server.log
 .dev-server.err.log
+dev-server.log
