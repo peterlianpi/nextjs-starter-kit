@@ -3,6 +3,7 @@ import { getDocsByCategory, docPages } from "@/features/docs/lib/docs-data";
 import { DocsSidebar } from "@/features/docs/components/docs-sidebar";
 import { DocsTocMobile, DocsTocRail } from "@/features/docs/components/docs-toc";
 import { DocsSearch } from "@/features/docs/components/docs-search";
+import { GlobalSearchTrigger } from "@/features/search/components/global-search-trigger";
 
 /**
  * Docs shell: sidebar (sticky desktop / collapsible <details> mobile) +
@@ -27,7 +28,10 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
           Documentation menu
         </summary>
         <div className="mt-3 rounded-md border border-border bg-card p-4">
-          <DocsSearch docs={searchable} variant="nav" />
+          <GlobalSearchTrigger />
+          <div className="mt-3">
+            <DocsSearch docs={searchable} variant="nav" />
+          </div>
           <div className="mt-3">
             <DocsSidebar groups={groups} />
           </div>
@@ -37,8 +41,9 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
       <div className="flex flex-col gap-8 lg:flex-row lg:gap-10 xl:flex-row">
         {/* Desktop sidebar */}
         <aside className="hidden w-56 shrink-0 lg:block">
-          <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-6">
-            <DocsSearch docs={searchable} variant="nav" />
+            <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pb-6">
+              <GlobalSearchTrigger className="mb-3 [&>div]:flex-1" />
+              <DocsSearch docs={searchable} variant="nav" />
             <DocsSidebar groups={groups} />
           </div>
         </aside>

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { LayoutDashboard, Settings2, BarChart3, Users, Image, FileText, Bell } from "lucide-react";
+import { LayoutDashboard, Settings2, BarChart3, Users, Image, FileText, Bell, Search } from "lucide-react";
 import { NavMain } from "@/features/nav/components/nav-main";
 import { NavUser } from "@/features/nav/components/nav-user";
 import { TeamSwitcher } from "@/features/nav/components/team-switcher";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useSession } from "@/lib/auth-client";
 import { NotificationBell } from "@/features/notifications/components/notification-bell";
+import { SearchTrigger } from "@/features/search/components/search-trigger";
 
 const userNavMain = [
   {
@@ -27,6 +28,12 @@ const userNavMain = [
         url: "/dashboard",
       },
     ],
+  },
+  {
+    title: "Search",
+    url: "/search",
+    icon: Search,
+    items: [],
   },
   {
     title: "Notifications",
@@ -141,6 +148,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <div className="min-w-0 flex-1">
             <TeamSwitcher />
           </div>
+          <SearchTrigger />
           <NotificationBell />
         </div>
       </SidebarHeader>
